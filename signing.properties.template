@@ -1,0 +1,8 @@
+# Copy this file to signing.properties, and then change the passwords.
+# DO NOT check in this file with keystore passwords filled in!
+
+# Signing config
+KeyStore=keystore
+KeyStorePassword=ENTER_PASSWORD_HERE
+KeyAlias= reservationkey
+KeyPassword=ENTER_PASSWORD_HERE
