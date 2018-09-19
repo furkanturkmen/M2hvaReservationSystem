@@ -1,6 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+
+
+// Load signing properties from external file.
+    def signingProperties = new Properties()
+    signingProperties.load(new FileInputStream(rootProject.file("signing.properties")))
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file(signingProperties.KeyStore)
+            storePassword signingProperties.KeyStorePassword
+            keyAlias signingProperties.KeyAlias
+            keyPassword signingProperties.KeyPassword
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.hva.m2mobi.m2hva_reservationsystem"
@@ -11,8 +26,36 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        acc {
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.release
+            renderscriptDebuggable false
+            minifyEnabled true
+            applicationIdSuffix 'acc'
+            versionNameSuffix 'acc'
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.release
+            renderscriptDebuggable false
+            minifyEnabled true
+            pseudoLocalesEnabled true
+            applicationIdSuffix 'release'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        buildtest {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.release
+            renderscriptDebuggable true
+            minifyEnabled true
+            pseudoLocalesEnabled false
+            applicationIdSuffix 'test'
+            versionNameSuffix 'test'
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
