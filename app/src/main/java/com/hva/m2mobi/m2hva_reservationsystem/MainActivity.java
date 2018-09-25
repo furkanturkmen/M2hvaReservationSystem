@@ -1,7 +1,10 @@
 package com.hva.m2mobi.m2hva_reservationsystem;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +17,19 @@ public class MainActivity extends AppCompatActivity {
         
         String test;
         
-        // comment
+        Button testBtn = (Button) findViewById(R.id.testBtn);
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity();
+            }
+        });
+
+    }
+
+    private void launchActivity() {
+        Intent i = new Intent(getApplicationContext(), RoomDetailActivity.class);
+        startActivity(i);
     }
 }

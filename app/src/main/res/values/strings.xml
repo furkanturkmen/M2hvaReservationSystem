@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">M2hva-ReservationSystem</string>
     <string name="reserve_this_room">Reserve this room</string>
-    <string name="whiteboard_npointer_nhdmi">Whiteboard,\npointer</string>
+    <string name="whiteboard_pointer">Whiteboard,\npointer</string>
     <string name="max_13">max 13.</string>
     <string name="_2nd_floor">2nd floor.</string>
     <string name="details_oreo_room">Details Oreo room</string>
