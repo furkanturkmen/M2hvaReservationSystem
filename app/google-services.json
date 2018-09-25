@@ -8,234 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:111994486684:android:5a4d4e2fdec5df5e",
-        "android_client_info": {
-          "package_name": "com.example.furkan_asus.reservationsystem"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111994486684-21n90orpqcpmn08smmldt3o8fahj1pav.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem",
-            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
-          }
-        },
-        {
-          "client_id": "111994486684-lk0oo51bb18d0gcot2ik5gc7vshjqkb6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem",
-            "certificate_hash": "53d0ffbfc2263f2010803231ed214e0e324816c4"
-          }
-        },
-        {
-          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:111994486684:android:53655a7e5d7a4e52",
-        "android_client_info": {
-          "package_name": "com.example.furkan_asus.reservationsystem.acc"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111994486684-gra569csp9rqcaaujnbavghfgku6eprt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem.acc",
-            "certificate_hash": "8672ecd89c44c9842aa83cece45fd90057316d64"
-          }
-        },
-        {
-          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:111994486684:android:12d1df3eedc4cff9",
-        "android_client_info": {
-          "package_name": "com.example.furkan_asus.reservationsystem.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111994486684-r4flb891snv0d06bt6j29ce49h8gcke4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem.dev",
-            "certificate_hash": "8672ecd89c44c9842aa83cece45fd90057316d64"
-          }
-        },
-        {
-          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:111994486684:android:0a71b84ee7419c5c",
-        "android_client_info": {
-          "package_name": "com.example.furkan_asus.reservationsystem.prod"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111994486684-ecm759606oc376eo4o4crua5jk371pv3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem.prod",
-            "certificate_hash": "8672ecd89c44c9842aa83cece45fd90057316d64"
-          }
-        },
-        {
-          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:111994486684:android:ac36cf866e02c206",
-        "android_client_info": {
-          "package_name": "com.example.furkan_asus.reservationsystem.test"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111994486684-i66uscvdbnpqjvn7d605k09v4tp571vv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.furkan_asus.reservationsystem.test",
-            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
-          }
-        },
-        {
-          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:111994486684:android:d6edd6837e77ec2d",
         "android_client_info": {
           "package_name": "com.hva.m2mobi.m2hva_reservationsystem"
@@ -243,11 +15,143 @@
       },
       "oauth_client": [
         {
-          "client_id": "111994486684-rrju8mq63js13hqplep59vg3id8l0s4s.apps.googleusercontent.com",
+          "client_id": "111994486684-h4q297b63t65nq04psnatsup2emt311g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hva.m2mobi.m2hva_reservationsystem",
-            "certificate_hash": "5e969048496cf1f94047f1e91bd17e1552681941"
+            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
+          }
+        },
+        {
+          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111994486684:android:cc55bff4288ce3e0",
+        "android_client_info": {
+          "package_name": "com.hva.m2mobi.m2hva_reservationsystem.acc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111994486684-scn6aop84lh95t7k5h79s5fqr4jfi1gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.acc",
+            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
+          }
+        },
+        {
+          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111994486684:android:b50fbd53a5cd3424",
+        "android_client_info": {
+          "package_name": "com.hva.m2mobi.m2hva_reservationsystem.release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111994486684-7chjr654acj5avs7d7l69bu1065fht0u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.release",
+            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
+          }
+        },
+        {
+          "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL5ve9AjhrqDNKAxUrWJdKqbaXR03a57k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111994486684:android:6d8b8291f753c26d",
+        "android_client_info": {
+          "package_name": "com.hva.m2mobi.m2hva_reservationsystem.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111994486684-bp4m2gn8mtan131ud40trepb77sulptu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.test",
+            "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
           }
         },
         {
