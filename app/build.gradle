@@ -1,6 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+
+
+// Load signing properties from external file.
+    def signingProperties = new Properties()
+    signingProperties.load(new FileInputStream(rootProject.file("signing.properties")))
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file(signingProperties.KeyStore)
+            storePassword signingProperties.KeyStorePassword
+            keyAlias signingProperties.KeyAlias
+            keyPassword signingProperties.KeyPassword
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.hva.m2mobi.m2hva_reservationsystem"
@@ -11,19 +26,53 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        acc {
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.release
+            renderscriptDebuggable false
+            minifyEnabled true
+            applicationIdSuffix 'acc'
+            versionNameSuffix 'acc'
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.release
+            renderscriptDebuggable false
+            minifyEnabled true
+            pseudoLocalesEnabled true
+            applicationIdSuffix 'release'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        buildtest {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.release
+            renderscriptDebuggable true
+            minifyEnabled true
+            pseudoLocalesEnabled false
+            applicationIdSuffix 'test'
+            versionNameSuffix 'test'
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+
+ext{
+    //dependencies
+    fireBaseVersion = '16.0.3'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.google.firebase:firebase-auth:16.0.3'
-    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation "com.google.firebase:firebase-auth:${fireBaseVersion}"
+    implementation "com.google.firebase:firebase-core:${fireBaseVersion}"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
