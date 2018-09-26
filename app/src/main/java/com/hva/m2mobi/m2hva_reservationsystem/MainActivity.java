@@ -1,5 +1,6 @@
 package com.hva.m2mobi.m2hva_reservationsystem;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -11,9 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-        String test;
-        
-        // comment
+        Intent intent = new Intent(MainActivity.this, RoomsOverviewActivity.class);
+        startActivity(intent);
     }
 }
