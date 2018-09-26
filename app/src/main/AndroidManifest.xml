@@ -19,11 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-        android:name=".Login"
-        android:label="login" />
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2" />
+            android:name=".TabActivity"
+            android:label="@string/title_activity_tab" >
+        </activity>
     </application>
 
 </manifest>
