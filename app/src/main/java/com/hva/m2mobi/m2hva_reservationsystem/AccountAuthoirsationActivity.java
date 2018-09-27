@@ -5,13 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 
 //Activity to get the account the user wants to use and authorise it for using the calendar
-public class AccountAuthoirsation extends AppCompatActivity {
+public class AccountAuthoirsationActivity extends AppCompatActivity {
 
     private static final int REQUEST_ACCOUNT_CHOOSER = 123;
 

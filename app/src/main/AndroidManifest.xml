@@ -25,7 +25,8 @@
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"></activity>
-        <activity android:name=".AccountAuthoirsation"></activity>
+        <activity android:name=".AccountAuthoirsationActivity"></activity>
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>
