@@ -2,10 +2,10 @@ package com.hva.m2mobi.m2hva_reservationsystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -15,15 +15,13 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CalendarTask extends AsyncTask<Activity,Void,Void>{
+
+public class CalendarTask extends AsyncTask<CalendarTaskParams,Void,Void>{
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     /**
@@ -31,63 +29,62 @@ public class CalendarTask extends AsyncTask<Activity,Void,Void>{
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
-    private static final int CALLBACK_WHEN_PERMISSION_ACCEPTED = 0;
-    private Context context;
-    private Activity activity;
-
-    public void main() throws IOException, GeneralSecurityException {
+    private static final String CALENDAR_ID = "rbvkmi4iflbmllftnd9d12c9g0@group.calendar.google.com";
+    static final int REQUEST_CODE = 123;
+    private GoogleAccountCredential mCredential;
+    private TaskIF resultResolver;
+    private void authorizeAccount(Activity activity) throws IOException{
+        Context context = activity.getBaseContext();
         // Build a new authorized API client service.
-        final NetHttpTransport HTTP_TRANSPORT = new com.google.api.client.http.javanet.NetHttpTransport();
-         GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(context, SCOPES)
+         mCredential = GoogleAccountCredential.usingOAuth2(context, SCOPES)
                 .setBackOff(new ExponentialBackOff());
-         mCredential.setSelectedAccountName("kylewatson98@gmail.com");
+         //mCredential.setSelectedAccountName("kylewatson98@gmail.com");
+        int noOfAccounts = mCredential.getAllAccounts().length;
+        if(noOfAccounts > 1) {
+            Intent chooseAccount = mCredential.newChooseAccountIntent();
+            activity.startActivityForResult(chooseAccount, REQUEST_CODE);
+        }else{
+            setAccountName(mCredential.getAllAccounts()[0].name, activity);
+        }
+    }
 
+    public void getEvents(Activity activity) throws  IOException{
+       Context context = activity.getBaseContext();
 
-            Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, mCredential)
-                    .setApplicationName(context.getString(R.string.app_name))
-                    .build();
-            // Do whatever you want with the Drive service
+        final NetHttpTransport HTTP_TRANSPORT = new com.google.api.client.http.javanet.NetHttpTransport();
+        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, mCredential)
+                .setApplicationName(context.getString(R.string.app_name))
+                .build();
+        // Do whatever you want with the Drive service
 
 
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
 
-        List<Event> items = new ArrayList<>();
         try{
-            Events events = service.events().list("primary")
+            Events events = service.events().list(CALENDAR_ID)
                     .setMaxResults(10)
                     .setTimeMin(now)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
-            items = events.getItems();
+            resultResolver.onCalendarEventsReturned(events);
         } catch (UserRecoverableAuthIOException e) {
             activity.startActivityForResult(e.getIntent(), 2);
         }
-        if (items.isEmpty()) {
-            Log.i("CalendarTask","No upcoming events found.");
-        } else {
-            Log.i("CalendarTask","Upcoming events");
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    start = event.getStart().getDate();
-                }
-                Log.i("CalendarTask",event.getSummary() + " :: " + start);
-            }
-        }
+    }
+
+    void setAccountName(String name, Activity activity) throws IOException{
+        mCredential.setSelectedAccountName(name);
+        getEvents(activity);
     }
 
     @Override
-    protected Void doInBackground(Activity... activities) {
-        activity = activities[0];
-        context = activity.getBaseContext();
-
+    protected Void doInBackground(CalendarTaskParams... params) {
+        resultResolver = params[0].result;
         try {
-            main();
+            authorizeAccount(params[0].activity);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
             e.printStackTrace();
         }
         return null;
