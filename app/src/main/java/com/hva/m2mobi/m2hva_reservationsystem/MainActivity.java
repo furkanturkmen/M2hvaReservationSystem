@@ -1,8 +1,6 @@
 package com.hva.m2mobi.m2hva_reservationsystem;
 
 import android.Manifest;
-import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,17 +13,22 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CalendarTask calendar;
-    private TaskIF result = new TaskIF() {
+    private CalendarEventListener result = new CalendarEventListener() {
         @Override
         public void onCalendarEventsReturned(Events events) {
-            List<Event> items = events.getItems();
+            List<Event> items = new ArrayList<>();
+            if(events == null){
+                Log.e("Calendar Event UI", "Account name could not be found");
+            }else {
+                items = events.getItems();
+            }
+
+            //place holder actions when events are returned - need to sort them out and add them as cards
             if (items.isEmpty()) {
                 Log.i("CalendarTask","No upcoming events found.");
             } else {
@@ -40,18 +43,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
     private CalendarTaskParams params = new CalendarTaskParams(result,this);
+
+    private static final int REQUEST_ACCOUNT_AUTHORISATION = 123;
+    private static final int REQUEST_PERMISSIONS_INIT = 666;
+    private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        requestPermissions(2);
+        requestPermissions(REQUEST_PERMISSIONS_INIT);
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.event_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getEvents();
+                requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
             }
         });
     }
@@ -63,26 +72,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        calendar = new CalendarTask();
-        if(requestCode == 1 && grantResults[0] == 0)
-            calendar.execute(params);
+        if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
+            if(params.accountName == null || params.accountName.isEmpty())
+                startActivityForResult(new Intent(this,AccountAuthoirsation.class),REQUEST_ACCOUNT_AUTHORISATION);
+            else
+                getEvents();
+        }
     }
 
     private void getEvents(){
-        requestPermissions(1);
+        new CalendarTask().execute(params);
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode,
-                                    final Intent data) {
-
-        if (requestCode == CalendarTask.REQUEST_CODE && resultCode == RESULT_OK) {
-            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-            try {
-                calendar.setAccountName(accountName, this);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_ACCOUNT_AUTHORISATION && resultCode == RESULT_OK){
+            params.accountName = data.getStringExtra("name");
+            getEvents();
         }
     }
+
 }

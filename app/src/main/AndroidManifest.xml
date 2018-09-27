@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hva.m2mobi.m2hva_reservationsystem">
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,8 +24,8 @@
         </activity>
         <activity
             android:name=".TabActivity"
-            android:label="@string/title_activity_tab" >
-        </activity>
+            android:label="@string/title_activity_tab"></activity>
+        <activity android:name=".AccountAuthoirsation"></activity>
     </application>
 
 </manifest>
