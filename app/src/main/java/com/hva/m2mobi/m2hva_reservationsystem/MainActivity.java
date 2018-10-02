@@ -14,20 +14,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-        String test;
-        
         Button testBtn = (Button) findViewById(R.id.testBtn);
-
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchActivity();
             }
         });
-
     }
-
+  
     private void launchActivity() {
         Intent i = new Intent(getApplicationContext(), RoomDetailActivity.class);
         startActivity(i);
