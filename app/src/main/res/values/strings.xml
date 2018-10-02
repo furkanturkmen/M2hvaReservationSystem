@@ -4,5 +4,7 @@
     <string name="whiteboard_pointer">Whiteboard,\npointer</string>
     <string name="max_13">max 13.</string>
     <string name="_2nd_floor">2nd floor.</string>
-    <string name="details_oreo_room">Details Oreo room</string>
+    <string name="room_oreo">Oreo</string>
+    <string name="button_label_enabled" />
+    <string name="details_room">Details</string>
 </resources>

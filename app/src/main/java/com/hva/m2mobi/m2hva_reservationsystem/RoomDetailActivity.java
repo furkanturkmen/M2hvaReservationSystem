@@ -19,13 +19,6 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         reserveBtn = findViewById(R.id.reserveBtn);
 
-
-        reserveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSnackbar();
-            }
-        });
     }
 
     public void showSnackbar() {

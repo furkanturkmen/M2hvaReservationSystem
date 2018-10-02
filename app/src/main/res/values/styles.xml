@@ -3,13 +3,40 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorAccentBlue</item>
+        <item name="colorPrimaryDark">@color/colorAccentDarkBlue</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 
+    <!-- Splashscreen application. -->
     <style name="AppTheme.Launcher" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
+
+
+    //M2Orange Button
+    <style name="M2OrangeButton" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
+        <item name="colorButtonNormal">@color/colorAccentOrange</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    //Title for Cards
+    <style name="CardTitle" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/colorAccentDarkBlue</item>
+    </style>
+
+    //Content for Cards
+    <style name="CardContent" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
 
 </resources>
