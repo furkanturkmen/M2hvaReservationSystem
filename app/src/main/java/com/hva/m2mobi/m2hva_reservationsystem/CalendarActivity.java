@@ -157,6 +157,8 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 params.calendarAction = params.ADD_EVENT;
+                RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
+                params.roomName = rb.getText().toString();
                 datePickerDialog.show();
 
             }
@@ -165,7 +167,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void requestPermissions(int requestCode){
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.GET_ACCOUNTS},requestCode);
+                new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR},requestCode);
     }
 
     @Override
@@ -187,6 +189,8 @@ public class CalendarActivity extends AppCompatActivity {
         if(requestCode == REQUEST_ACCOUNT_AUTHORISATION && resultCode == RESULT_OK){
             params.accountName = data.getStringExtra("name");
             getEvents();
+        }else if(requestCode == REQUEST_ACCOUNT_AUTHORISATION && resultCode == RESULT_CANCELED){
+            //show auth error
         }
     }
 

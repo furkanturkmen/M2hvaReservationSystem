@@ -21,9 +21,10 @@ import java.util.Collections;
 
 //A task to retrieve events from the public calendar
 public class CalendarTask extends AsyncTask<CalendarTaskParams,Void,Void>{
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final String CALENDAR_ID = "rbvkmi4iflbmllftnd9d12c9g0@group.calendar.google.com";
+    static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    static final String CALENDAR_ID = "rbvkmi4iflbmllftnd9d12c9g0@group.calendar.google.com";
     static final java.util.List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    static final int ACCOUNT_AUTH_REQUEST = 22;
 
     private GoogleAccountCredential mCredential;
     private CalendarEventListener eventListener;
@@ -80,10 +81,12 @@ public class CalendarTask extends AsyncTask<CalendarTaskParams,Void,Void>{
                 break;
             }
 
-            //eventListener.onCalendarEventsReturned(events.execute());
+            eventListener.onCalendarEventsReturned(events.execute());
         } catch (UserRecoverableAuthIOException e) {
             Log.e("Calendar Data Retrieval", "Could not authorise user: " + mCredential.getSelectedAccountName());
-
+            e.printStackTrace();
+            activity.startActivityForResult(e.getIntent(), ACCOUNT_AUTH_REQUEST);
+            //Log.e("Calendar Data Retrieval",e.getMessage());
             //show unauthorised user ui
         }
     }
