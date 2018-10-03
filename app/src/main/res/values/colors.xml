@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorLaunchScreen">#FFAA41</color>
+    <color name="colorPrimary">#3C4146</color>
+    <color name="colorPrimaryDark">#231F20</color>
+    <color name="colorAccent">#f7f8f9</color>
+    <color name="colorLaunchScreen">#226fad</color>
+    <color name="colorAccentBlue">#3ca0f0</color>
+    <color name="colorAccentDarkBlue">#226fad</color>
+    <color name="colorAccentOrange">#ffaa41</color>
 </resources>
