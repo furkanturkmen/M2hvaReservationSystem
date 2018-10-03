@@ -14,7 +14,8 @@ import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTask;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTaskParams;
 
 //Activity to get the account the user wants to use and authorise it for using the calendar
-public class AccountAuthoirsationActivity extends AppCompatActivity {
+
+public class AccountAuthorisationActivity extends AppCompatActivity {
 
     private static final int REQUEST_ACCOUNT_CHOOSER = 123;
     Intent returnIntent = new Intent();

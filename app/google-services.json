@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "111994486684-trmbb52inbc55r346jo1in8dhl5l1hs6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem",
+            "certificate_hash": "53d0ffbfc2263f2010803231ed214e0e324816c4"
+          }
+        },
+        {
+          "client_id": "111994486684-uff8ukl3vddb7nv1m8lik432p69e2hr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem",
+            "certificate_hash": "3bce20475cff6546f4f0542af9d291ac4332a221"
+          }
+        },
+        {
           "client_id": "111994486684-4t7bopur6i5vdhvbsbok19f53a4gc09u.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -58,6 +74,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "111994486684-36b83qau9sdjupfmqe2sn85mp6d63p3m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.acc",
+            "certificate_hash": "53d0ffbfc2263f2010803231ed214e0e324816c4"
+          }
+        },
+        {
+          "client_id": "111994486684-2d7uira64ohdu527lq0j3h8g326j7ou4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.acc",
+            "certificate_hash": "02257c7a98026b5d165f1179fee27c2c820f93de"
+          }
+        },
         {
           "client_id": "111994486684-scn6aop84lh95t7k5h79s5fqr4jfi1gf.apps.googleusercontent.com",
           "client_type": 1,
@@ -152,6 +184,22 @@
           "android_info": {
             "package_name": "com.hva.m2mobi.m2hva_reservationsystem.test",
             "certificate_hash": "bcb55bce65ea859372b1e030f759b835516bec1d"
+          }
+        },
+        {
+          "client_id": "111994486684-c5qsr7f502s4edl4n41mkq1mqhvhkrf8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.test",
+            "certificate_hash": "02257c7a98026b5d165f1179fee27c2c820f93de"
+          }
+        },
+        {
+          "client_id": "111994486684-abc53grkjb0ap0ttm55ikcgd3ei3ej0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hva.m2mobi.m2hva_reservationsystem.test",
+            "certificate_hash": "53d0ffbfc2263f2010803231ed214e0e324816c4"
           }
         },
         {
