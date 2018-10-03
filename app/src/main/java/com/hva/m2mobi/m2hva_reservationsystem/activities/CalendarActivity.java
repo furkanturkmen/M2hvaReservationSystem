@@ -177,7 +177,7 @@ public class CalendarActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
             if(params.accountName == null || params.accountName.isEmpty())
-                startActivityForResult(new Intent(this,AccountAuthoirsationActivity.class),REQUEST_ACCOUNT_AUTHORISATION);
+                startActivityForResult(new Intent(this,AccountAuthorisationActivity.class),REQUEST_ACCOUNT_AUTHORISATION);
             else
                 getEvents();
         }
