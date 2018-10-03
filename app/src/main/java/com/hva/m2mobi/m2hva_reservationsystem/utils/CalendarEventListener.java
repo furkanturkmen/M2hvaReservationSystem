@@ -1,7 +1,7 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.utils;
 
 import com.google.api.services.calendar.model.Events;
 
-interface CalendarEventListener {
+public interface CalendarEventListener {
     void onCalendarEventsReturned(Events events);
 }
