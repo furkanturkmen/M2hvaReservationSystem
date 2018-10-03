@@ -1,9 +1,11 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+
+import com.hva.m2mobi.m2hva_reservationsystem.R;
 
 /**
  * Created by khaled on 02-10-18.

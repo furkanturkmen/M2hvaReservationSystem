@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.hva.m2mobi.m2hva_reservationsystem.R;
 
 public class RoomDetailActivity extends AppCompatActivity {
 
