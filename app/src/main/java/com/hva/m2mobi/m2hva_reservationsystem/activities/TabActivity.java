@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.hva.m2mobi.m2hva_reservationsystem.fragments.ProfileFragment;
+import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomBookingFragment;
 
 public class TabActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -19,11 +19,14 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarEventListener;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTask;
+import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTaskParams;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {

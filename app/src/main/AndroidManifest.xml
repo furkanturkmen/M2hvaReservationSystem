@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,15 +25,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RoomDetailActivity" />
-        <activity
-            android:name=".TabActivity"
             android:label="@string/title_activity_tab" />
-        <activity android:name=".AccountAuthoirsationActivity" />
-        <activity android:name=".CalendarActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
+        <activity android:name=".activities.RoomsOverviewActivity"></activity>
+        <activity android:name=".activities.RoomDetailActivity">
+        </activity>
+       <activity android:name=".activities.ReserveRoomActivity">
+       </activity>
+        <activity
+            android:name=".activities.TabActivity"
+            android:label="@string/title_activity_tab"></activity>
+        <activity android:name=".activities.AccountAuthorisationActivity"></activity>
+        <activity android:name=".activities.CalendarActivity"></activity>
     </application>
-
 </manifest>
