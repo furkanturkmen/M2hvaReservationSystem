@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hva.m2mobi.m2hva_reservationsystem">
 
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReserveRoomActivity"
+      
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +23,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RoomDetailActivity">
+        </activity>
+       <activity android:name=".ReserveRoomActivity">
+       </activity>
+        <activity
+            android:name=".TabActivity"
+            android:label="@string/title_activity_tab"></activity>
+        <activity android:name=".AccountAuthoirsationActivity"></activity>
+        <activity android:name=".CalendarActivity"></activity>
+
     </application>
 
 </manifest>
