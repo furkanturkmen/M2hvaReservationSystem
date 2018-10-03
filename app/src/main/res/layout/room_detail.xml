@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccentBlue"
-    tools:context="RoomDetailActivity"
+    tools:context=".activities.RoomDetailActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <!--<TextView-->

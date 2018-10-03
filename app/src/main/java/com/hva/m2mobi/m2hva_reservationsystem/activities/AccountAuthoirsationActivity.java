@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Events;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarEventListener;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTask;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTaskParams;
 
 //Activity to get the account the user wants to use and authorise it for using the calendar
 public class AccountAuthoirsationActivity extends AppCompatActivity {
