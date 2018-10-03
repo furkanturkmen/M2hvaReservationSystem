@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
 public class RoomsOverviewPlaceholder {
     private String mRoomName;

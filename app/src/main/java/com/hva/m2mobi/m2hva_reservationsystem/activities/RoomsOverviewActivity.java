@@ -1,9 +1,13 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.adapters.RoomsOverviewAdapter;
+import com.hva.m2mobi.m2hva_reservationsystem.adapters.RoomsOverviewPlaceholder;
 
 import java.util.ArrayList;
 import java.util.List;
