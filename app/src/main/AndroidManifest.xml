@@ -30,7 +30,7 @@
         <activity
             android:name=".activities.TabActivity"
             android:label="@string/title_activity_tab"></activity>
-        <activity android:name=".activities.AccountAuthoirsationActivity"></activity>
+        <activity android:name=".activities.AccountAuthorisationActivity"></activity>
         <activity android:name=".activities.CalendarActivity"></activity>
     </application>
 </manifest>
