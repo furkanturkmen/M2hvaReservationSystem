@@ -2,19 +2,16 @@
     <string name="app_name">M2hva-ReservationSystem</string>
     <string name="reserve_room_title">Reserve Room</string>
     <string name="reserve_this_room">Reserve this Room</string>
-    <string name="reserve_this_room">Reserve this room</string>
     <string name="whiteboard_pointer">Whiteboard,\npointer</string>
     <string name="max_13">max 13.</string>
     <string name="_2nd_floor">2nd floor.</string>
     <string name="room_oreo">Oreo</string>
     <string name="button_label_enabled" />
     <string name="details_room">Details</string>
-
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_room_booking">Book a Room</string>
     <string name="title_profile">My Profile</string>
     <string name="title_activity_tab">My Profile</string>
     <string name="button_get_events">Get Events</string>
-
 </resources>

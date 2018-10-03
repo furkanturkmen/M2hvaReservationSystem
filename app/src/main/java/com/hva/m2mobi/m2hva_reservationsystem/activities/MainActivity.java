@@ -1,10 +1,13 @@
-package com.hva.m2mobi.m2hva_reservationsystem;
+package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.RoomDetailActivity;
 
 public class MainActivity extends AppCompatActivity {
 
