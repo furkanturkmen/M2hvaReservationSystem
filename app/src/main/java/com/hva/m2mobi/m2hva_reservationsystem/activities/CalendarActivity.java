@@ -151,7 +151,23 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View view) {
                 params.calendarAction = params.GET_ROOM_EVENTS;
                 RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
-                params.roomName = rb.getText().toString();
+                switch(rb.getText().toString()){
+                    case "Oreo":
+                        params.room = CalendarTaskParams.ROOM_OREO;
+                        break;
+                    case "KitKat":
+                        params.room = CalendarTaskParams.ROOM_KITK;
+                        break;
+                    case "ICS":
+                        params.room = CalendarTaskParams.ROOM_ICSW;
+                        break;
+                    case "Jelly Bean":
+                        params.room = CalendarTaskParams.ROOM_JELB;
+                        break;
+                    case "Marshmallow":
+                        params.room = CalendarTaskParams.ROOM_MARS;
+                        break;
+                }
                 requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
             }
         });
@@ -161,7 +177,23 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View view) {
                 params.calendarAction = params.ADD_EVENT;
                 RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
-                params.roomName = rb.getText().toString();
+                switch(rb.getText().toString()){
+                    case "Oreo":
+                        params.room = CalendarTaskParams.ROOM_OREO;
+                        break;
+                    case "KitKat":
+                        params.room = CalendarTaskParams.ROOM_KITK;
+                        break;
+                    case "ICS":
+                        params.room = CalendarTaskParams.ROOM_ICSW;
+                        break;
+                    case "Jelly Bean":
+                        params.room = CalendarTaskParams.ROOM_JELB;
+                        break;
+                    case "Marshmallow":
+                        params.room = CalendarTaskParams.ROOM_MARS;
+                        break;
+                }
                 datePickerDialog.show();
 
             }
