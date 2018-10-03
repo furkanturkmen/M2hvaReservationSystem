@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">M2hva-ReservationSystem</string>
+    <string name="reserve_room_title">Reserve Room</string>
+    <string name="reserve_this_room">Reserve this Room</string>
 </resources>
