@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+      
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -24,6 +25,8 @@
         </activity>
         <activity android:name=".RoomDetailActivity">
         </activity>
+       <activity android:name=".ReserveRoomActivity">
+       </activity>
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"></activity>
