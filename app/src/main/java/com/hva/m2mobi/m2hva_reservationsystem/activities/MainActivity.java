@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+      
         Button testBtn = (Button) findViewById(R.id.testBtn);
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,5 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private void launchActivity() {
         Intent i = new Intent(getApplicationContext(), RoomDetailActivity.class);
         startActivity(i);
+
     }
 }
