@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             // No user is signed in
             sentToLogin();
+        } else {
+            launchActivity();
         }
-        launchActivity();
     }
 
 
