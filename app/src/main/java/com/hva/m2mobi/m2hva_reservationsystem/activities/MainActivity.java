@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void launchActivity() {
-        Intent i = new Intent(getApplicationContext(),RoomsOverviewActivity .class);
+        Intent i = new Intent(getApplicationContext(),RoomDetailActivity .class);
         startActivity(i);
 
     }
