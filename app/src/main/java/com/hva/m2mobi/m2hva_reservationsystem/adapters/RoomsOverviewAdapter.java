@@ -12,19 +12,19 @@ import com.hva.m2mobi.m2hva_reservationsystem.R;
 
 import java.util.List;
 
-public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdapter.RoomsOverviewViewHolder>{
+public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdapter.RoomsOverviewViewHolder> {
     private Context context;
-    public List<RoomsOverviewPlaceholder> listRoomsOverview;
+    public List<Room> mListRooms;
 
     public class RoomsOverviewViewHolder extends RecyclerView.ViewHolder {
-        public TextView roomName;
-        public TextView roomAvailability;
+        private TextView roomName;
+        private TextView roomAvailability;
         public View view;
 
         public RoomsOverviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            roomName = itemView.findViewById(R.id.textRoomName);
-            roomAvailability = itemView.findViewById(R.id.textRoomAvailability);
+            roomName = itemView.findViewById(R.id.room_name);
+            roomAvailability = itemView.findViewById(R.id.room_availability);
             view = itemView;
         }
     }
@@ -38,18 +38,18 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
 
     @Override
     public void onBindViewHolder(@NonNull RoomsOverviewViewHolder holder, int position) {
-        final RoomsOverviewPlaceholder roomsOverviewPlaceholder = listRoomsOverview.get(position);
-        holder.roomName.setText(roomsOverviewPlaceholder.getmRoomName());
-        holder.roomAvailability.setText(roomsOverviewPlaceholder.getmRoomAvailability());
+        Room room = mListRooms.get(position);
+        holder.roomName.setText(room.getName());
+        holder.roomAvailability.setText(room.getAvailability());
     }
 
     @Override
     public int getItemCount() {
-        return listRoomsOverview.size();
+        return mListRooms.size();
     }
 
-    public RoomsOverviewAdapter(Context context, List<RoomsOverviewPlaceholder> listRoomsOverview){
+    public RoomsOverviewAdapter(Context context, List<Room> MListRooms) {
         this.context = context;
-        this.listRoomsOverview = listRoomsOverview;
+        this.mListRooms = MListRooms;
     }
 }
