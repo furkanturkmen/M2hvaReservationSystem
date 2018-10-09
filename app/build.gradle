@@ -21,7 +21,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.hva.m2mobi.m2hva_reservationsystem"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -95,6 +95,7 @@ dependencies {
     implementation('com.google.apis:google-api-services-calendar:v3-rev305-1.23.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    implementation 'com.google.firebase:firebase-database:16.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
