@@ -19,11 +19,10 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
-import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarEventListener;
-import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTask;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
-import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarTaskParams;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,33 +30,29 @@ import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    private CalendarEventListener result = new CalendarEventListener() {
-        @Override
-        public void onCalendarEventsReturned(Events events) {
-            List<Event> items = new ArrayList<>();
-            if(events == null){
-                Log.e("Calendar Event UI", "Account name could not be found");
-            }else {
-                items = events.getItems();
-            }
+    public void onCalendarEventsReturned(Events events) {
+        List<Event> items = new ArrayList<>();
+        if (events == null) {
+            Log.e("Calendar Event UI", "Account name could not be found");
+        } else {
+            items = events.getItems();
+        }
 
-            //place holder actions when events are returned - need to sort them out and add them as cards
-            if (items.isEmpty()) {
-                Log.i("CalendarTask","No upcoming events found.");
-            } else {
-                Log.i("CalendarTask","Upcoming events");
-                for (Event event : items) {
-                    DateTime start = event.getStart().getDateTime();
-                    if (start == null) {
-                        start = event.getStart().getDate();
-                    }
-                    Log.i("CalendarTask",event.getSummary() + " :: " + start);
+        //place holder actions when events are returned - need to sort them out and add them as cards
+        if (items.isEmpty()) {
+            Log.i("CalendarTask", "No upcoming events found.");
+        } else {
+            Log.i("CalendarTask", "Upcoming events");
+            for (Event event : items) {
+                DateTime start = event.getStart().getDateTime();
+                if (start == null) {
+                    start = event.getStart().getDate();
                 }
+                Log.i("CalendarTask", event.getSummary() + " :: " + start);
             }
         }
-    };
+    }
 
-    private CalendarTaskParams params = new CalendarTaskParams(result,this);
 
     private static final int REQUEST_ACCOUNT_AUTHORISATION = 123;
     private static final int REQUEST_PERMISSIONS_INIT = 666;
@@ -66,6 +61,9 @@ public class CalendarActivity extends AppCompatActivity {
     private  int selectedYear,selectedMonth,selectedDay, selectedHour,selectedMinute;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
+    private String mAccountName;
+    private Event mEvent;
+    private int mRoom;
 
     private DatePickerDialog.OnDateSetListener datePickerDialogListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -109,9 +107,31 @@ public class CalendarActivity extends AppCompatActivity {
                     .setDateTime(endDateTime)
                     .setTimeZone("Europe/Amsterdam");
             event.setEnd(end);
-
-            params.event = event;
-            requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
+            mEvent = event;
+            final RadioGroup roomGroup = findViewById(R.id.roomGroup);
+            RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
+            switch(rb.getText().toString()){
+                case "Oreo":
+                    mRoom = CalendarConnection.ROOM_OREO;
+                    break;
+                case "KitKat":
+                    mRoom = CalendarConnection.ROOM_KITK;
+                    break;
+                case "ICS":
+                    mRoom = CalendarConnection.ROOM_ICSW;
+                    break;
+                case "Jelly Bean":
+                    mRoom = CalendarConnection.ROOM_JELB;
+                    break;
+                case "Marshmallow":
+                    mRoom = CalendarConnection.ROOM_MARS;
+                    break;
+            }
+            try {
+                new CalendarConnection(mAccountName,CalendarActivity.this).addEvent(mEvent,mRoom);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -132,16 +152,22 @@ public class CalendarActivity extends AppCompatActivity {
         eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.calendarAction = params.GET_ALL_EVENTS;
-                requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
+                try {
+                    new CalendarConnection(mAccountName,CalendarActivity.this).getAllEvents();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Button myEventButton = findViewById(R.id.my_event_button);
         myEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.calendarAction = params.GET_MY_EVENTS;
-                requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
+                try {
+                    new CalendarConnection(mAccountName,CalendarActivity.this).getMyEvents();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         final Button roomEventButton = findViewById(R.id.room_event_button);
@@ -149,53 +175,36 @@ public class CalendarActivity extends AppCompatActivity {
         roomEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.calendarAction = params.GET_ROOM_EVENTS;
                 RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
                 switch(rb.getText().toString()){
                     case "Oreo":
-                        params.room = CalendarTaskParams.ROOM_OREO;
+                        mRoom = CalendarConnection.ROOM_OREO;
                         break;
                     case "KitKat":
-                        params.room = CalendarTaskParams.ROOM_KITK;
+                        mRoom = CalendarConnection.ROOM_KITK;
                         break;
                     case "ICS":
-                        params.room = CalendarTaskParams.ROOM_ICSW;
+                        mRoom = CalendarConnection.ROOM_ICSW;
                         break;
                     case "Jelly Bean":
-                        params.room = CalendarTaskParams.ROOM_JELB;
+                        mRoom = CalendarConnection.ROOM_JELB;
                         break;
                     case "Marshmallow":
-                        params.room = CalendarTaskParams.ROOM_MARS;
+                        mRoom = CalendarConnection.ROOM_MARS;
                         break;
                 }
-                requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
+                try {
+                    new CalendarConnection(mAccountName,CalendarActivity.this).getRoomEvents(mRoom);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Button addEventButton = findViewById(R.id.add_event_button);
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.calendarAction = params.ADD_EVENT;
-                RadioButton rb = findViewById(roomGroup.getCheckedRadioButtonId());
-                switch(rb.getText().toString()){
-                    case "Oreo":
-                        params.room = CalendarTaskParams.ROOM_OREO;
-                        break;
-                    case "KitKat":
-                        params.room = CalendarTaskParams.ROOM_KITK;
-                        break;
-                    case "ICS":
-                        params.room = CalendarTaskParams.ROOM_ICSW;
-                        break;
-                    case "Jelly Bean":
-                        params.room = CalendarTaskParams.ROOM_JELB;
-                        break;
-                    case "Marshmallow":
-                        params.room = CalendarTaskParams.ROOM_MARS;
-                        break;
-                }
                 datePickerDialog.show();
-
             }
         });
     }
@@ -206,24 +215,9 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
-            if(params.accountName == null || params.accountName.isEmpty())
-                startActivityForResult(new Intent(this,AccountAuthorisationActivity.class),REQUEST_ACCOUNT_AUTHORISATION);
-            else
-                getEvents();
-        }
-    }
-
-    private void getEvents(){
-        new CalendarTask().execute(params);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ACCOUNT_AUTHORISATION && resultCode == RESULT_OK){
-            params.accountName = data.getStringExtra("name");
-            getEvents();
+            mAccountName = data.getStringExtra("name");
         }else if(requestCode == REQUEST_ACCOUNT_AUTHORISATION && resultCode == RESULT_CANCELED){
             //show auth error
         }
