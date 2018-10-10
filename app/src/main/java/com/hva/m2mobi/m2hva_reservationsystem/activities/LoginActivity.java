@@ -30,11 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 101;
-    private EditText loginEmailText;
-    private EditText loginPasswordText;
-    private Button loginBtn;
     private SignInButton loginGoogleBtn;
-    private Button loginRegisterBtn;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -46,11 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        loginEmailText = (EditText) findViewById(R.id.login_email);
-        loginPasswordText = (EditText) findViewById(R.id.login_password);
-        loginBtn = (Button) findViewById(R.id.login_btn);
         loginGoogleBtn = (SignInButton) findViewById(R.id.login_google_btn);
-        loginRegisterBtn = (Button) findViewById(R.id.login_register_btn);
+
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -59,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
         loginGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,28 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String loginEmail = loginEmailText.getText().toString();
-                String loginPassword = loginPasswordText.getText().toString();
-
-                if (!TextUtils.isEmpty(loginEmail) && !TextUtils.isEmpty(loginPassword)) {
-                    mAuth.signInWithEmailAndPassword(loginEmail, loginPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                updateUI();
-                            } else {
-                                String errorMessage = task.getException().getMessage();
-                                Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
-            }
-        });
 
     }
 
