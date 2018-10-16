@@ -28,5 +28,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-
+    <string name="no_connection_title">Connection failure!</string>
+    <string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
+    <string name="no_booking_title">OMG!</string>
+    <string name="no_booking_text">You have no upcoming events.\nLet\'s change that!</string>
 </resources>
