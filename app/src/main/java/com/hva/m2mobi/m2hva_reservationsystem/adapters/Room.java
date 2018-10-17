@@ -5,11 +5,10 @@ public class Room {
     private String description;
     private String availability;
 
-    public Room() {
-    }
 
-    public Room(String name, String availability ){
+    public Room(String name, String description, String availability) {
         this.name = name;
+        this.description = description;
         this.availability = availability;
     }
 
