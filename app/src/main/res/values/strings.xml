@@ -1,4 +1,9 @@
 <resources>
+    <!--Strings for tab navigation-->
+    <string name="my_reservations">My Reservations</string>
+    <string name="rooms">Rooms</string>
+    <string name="all_reservations">All Reservations</string>
+
     <string name="app_name">M2hva-ReservationSystem</string>
     <string name="todo">TODO</string>
     <string name="reserve_room_title">Reserve Room</string>
