@@ -1,6 +1,6 @@
 package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
-import android.content.Context;
+
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,37 +10,64 @@ import android.widget.TextView;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdapter.RoomsOverviewViewHolder> {
-    private Context context;
-    public List<Room> mListRooms;
+    public ArrayList<Room> mListRooms;
+    private OnItemClickListener mListener;
 
-    public class RoomsOverviewViewHolder extends RecyclerView.ViewHolder {
-        private TextView roomName;
-        private TextView roomAvailability;
-        public View view;
 
-        public RoomsOverviewViewHolder(@NonNull View itemView) {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public static class RoomsOverviewViewHolder extends RecyclerView.ViewHolder {
+        private TextView name;
+        private TextView description;
+        private TextView availabilty;
+
+        public RoomsOverviewViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            roomName = itemView.findViewById(R.id.room_name);
-            roomAvailability = itemView.findViewById(R.id.room_availability);
-            view = itemView;
+            name = itemView.findViewById(R.id.room_name);
+            availabilty = itemView.findViewById(R.id.room_availability);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
         }
+    }
+
+    public RoomsOverviewAdapter(ArrayList<Room> MListRooms) {
+        this.mListRooms = MListRooms;
     }
 
     @NonNull
     @Override
     public RoomsOverviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_cell_roomsoverview, parent, false);
-        return new RoomsOverviewViewHolder(view);
+        RoomsOverviewViewHolder rovh = new RoomsOverviewViewHolder(view, mListener);
+        return rovh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RoomsOverviewViewHolder holder, int position) {
         Room room = mListRooms.get(position);
-        holder.roomName.setText(room.getName());
-        holder.roomAvailability.setText(room.getAvailability());
+        holder.name.setText(room.getName());
+        holder.availabilty.setText(room.getAvailability());
     }
 
     @Override
@@ -48,8 +75,4 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         return mListRooms.size();
     }
 
-    public RoomsOverviewAdapter(Context context, List<Room> MListRooms) {
-        this.context = context;
-        this.mListRooms = MListRooms;
-    }
 }
