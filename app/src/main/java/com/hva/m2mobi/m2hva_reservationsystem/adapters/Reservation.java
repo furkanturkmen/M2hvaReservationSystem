@@ -1,13 +1,13 @@
 package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
+import android.annotation.TargetApi;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
+@TargetApi(Build.VERSION_CODES.O)
 public class Reservation {
     private String title;
     private ArrayList<String> attendees = new ArrayList<String>();
@@ -50,5 +50,17 @@ public class Reservation {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    public void setReservationDate(String reservationDate){
+        this.reservationDate = reservationDate;
+    }
+    public void setStartTime(String startTime){
+        this.startTime = startTime;
+    }
+    public void setEndTime(String endTime){
+        this.endTime = endTime;
+    }
+    public void setAttendees(ArrayList attendees){
+        this.attendees = attendees;
     }
 }
