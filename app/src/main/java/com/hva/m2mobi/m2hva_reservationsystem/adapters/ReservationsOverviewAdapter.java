@@ -19,7 +19,6 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
 
     public interface OnItemClickListener {
         void onItemClick(int position);
-        void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -29,13 +28,15 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
 
     public static class ReservationsViewHolder extends RecyclerView.ViewHolder {
         private TextView description;
-        private ImageView mDeleteImage;
+        private TextView date;
+        private TextView time;
 
 
         public ReservationsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             description = itemView.findViewById(R.id.reservation_description);
-            mDeleteImage = itemView.findViewById(R.id.image_delete);
+            date = itemView.findViewById(R.id.reservation_date);
+            time = itemView.findViewById(R.id.reservation_time);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -48,21 +49,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
                     }
                 }
             });
-
-            mDeleteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onDeleteClick(position);
-                        }
-                    }
-                }
-            });
         }
-
-
     }
 
     public ReservationsOverviewAdapter(ArrayList<Reservation> reservationsList) {
@@ -81,6 +68,8 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
         Reservation currentItem = mResevationsList.get(position);
         holder.description.setText(currentItem.getDescription());
+        holder.date.setText(currentItem.getDate());
+        holder.time.setText(currentItem.getTime());
     }
 
     @Override
