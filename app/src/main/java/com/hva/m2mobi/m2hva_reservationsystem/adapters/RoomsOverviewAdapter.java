@@ -60,8 +60,7 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     @Override
     public RoomsOverviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_cell_roomsoverview, parent, false);
-        RoomsOverviewViewHolder rovh = new RoomsOverviewViewHolder(view, mListener);
-        return rovh;
+        return new RoomsOverviewViewHolder(view, mListener);
     }
 
     @Override

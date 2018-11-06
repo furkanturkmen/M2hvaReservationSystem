@@ -17,7 +17,8 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            app:srcCompat="@drawable/beach_house" />
+            app:srcCompat="@drawable/beach_house"
+            android:contentDescription="TODO" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -45,10 +45,10 @@ public class RoomsOverviewFragment extends Fragment {
     }
 
     public void buildRecylerView() {
-        mRecyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new RoomsOverviewAdapter(exampleList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        RoomsOverviewAdapter mAdapter = new RoomsOverviewAdapter(exampleList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

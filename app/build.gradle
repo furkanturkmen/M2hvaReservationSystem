@@ -21,7 +21,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.hva.m2mobi.m2hva_reservationsystem"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -35,8 +35,8 @@ android {
             signingConfig signingConfigs.release
             renderscriptDebuggable false
             minifyEnabled true
-            applicationIdSuffix 'acc'
-            versionNameSuffix 'acc'
+            applicationIdSuffix "acc"
+            versionNameSuffix "acc"
         }
         release {
             debuggable false
@@ -45,7 +45,7 @@ android {
             renderscriptDebuggable false
             minifyEnabled true
             pseudoLocalesEnabled true
-            applicationIdSuffix 'release'
+            applicationIdSuffix "release"
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -56,8 +56,8 @@ android {
             renderscriptDebuggable true
             minifyEnabled true
             pseudoLocalesEnabled false
-            applicationIdSuffix 'test'
-            versionNameSuffix 'test'
+            applicationIdSuffix "test"
+            versionNameSuffix "test"
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

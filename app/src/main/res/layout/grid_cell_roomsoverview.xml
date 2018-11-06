@@ -63,7 +63,7 @@
                 android:background="@color/colorAccentOrange"
                 android:text="View"
                 android:textColor="@color/colorAccent"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

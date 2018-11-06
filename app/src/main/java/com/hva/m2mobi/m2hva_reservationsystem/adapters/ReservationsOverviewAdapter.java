@@ -61,8 +61,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     @Override
     public ReservationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_cell_reservationsoverview, parent, false);
-        ReservationsViewHolder rvh = new ReservationsViewHolder(view, mListener);
-        return rvh;
+        return new ReservationsViewHolder(view, mListener);
     }
 
     @Override
