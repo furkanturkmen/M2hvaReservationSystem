@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem.adapters;
+package com.hva.m2mobi.m2hva_reservationsystem.models;
 
 import android.annotation.TargetApi;
 import android.os.Build;
