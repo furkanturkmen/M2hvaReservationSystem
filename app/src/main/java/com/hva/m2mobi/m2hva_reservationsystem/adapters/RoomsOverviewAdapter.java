@@ -30,12 +30,12 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     public static class RoomsOverviewViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView description;
-        private TextView availabilty;
+        private TextView availability;
 
         public RoomsOverviewViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             name = itemView.findViewById(R.id.room_name);
-            availabilty = itemView.findViewById(R.id.room_availability);
+            availability = itemView.findViewById(R.id.room_availability);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,7 +67,7 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     public void onBindViewHolder(@NonNull RoomsOverviewViewHolder holder, int position) {
         Room room = mListRooms.get(position);
         holder.name.setText(room.getName());
-        holder.availabilty.setText(room.getAvailability());
+        holder.availability.setText(room.getAvailability());
     }
 
     @Override

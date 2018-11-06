@@ -90,7 +90,7 @@ public class ReservationOverviewFragment extends Fragment {
     public void buildRecylerView() {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new ReservationsOverviewAdapter(exampleList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);

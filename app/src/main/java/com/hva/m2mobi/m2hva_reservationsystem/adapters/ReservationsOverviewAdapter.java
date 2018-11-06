@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
@@ -14,7 +13,7 @@ import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import java.util.ArrayList;
 
 public class ReservationsOverviewAdapter extends RecyclerView.Adapter<ReservationsOverviewAdapter.ReservationsViewHolder> {
-    public ArrayList<Reservation> mResevationsList;
+    public ArrayList<Reservation> mReservationsList;
     private OnItemClickListener mListener;
 
 
@@ -54,7 +53,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     }
 
     public ReservationsOverviewAdapter(ArrayList<Reservation> reservationsList) {
-        mResevationsList = reservationsList;
+        mReservationsList = reservationsList;
     }
 
     @NonNull
