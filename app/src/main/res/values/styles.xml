@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorAccentBlue</item>
         <item name="colorPrimaryDark">@color/colorAccentDarkBlue</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccentOrange</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">@dimen/font_small</item>
@@ -17,6 +17,9 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
+    <style name="QuickReserveButton">
+        <item name="android:background">@color/colorAccentOrange</item>
+    </style>
 
     //M2Orange Button
     <style name="M2OrangeButton" parent="Base.Theme.AppCompat.Light">
@@ -24,6 +27,12 @@
         <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
         <item name="colorButtonNormal">@color/colorAccentOrange</item>
         <item name="android:textSize">@dimen/font_small</item>
+    </style>
+    <style name="NavBar" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
+        <item name="colorButtonNormal">@color/colorAccentOrange</item>
+        <item name="android:background">@color/colorAccentDarkBlue</item>
     </style>
 
     //Title for Cards
