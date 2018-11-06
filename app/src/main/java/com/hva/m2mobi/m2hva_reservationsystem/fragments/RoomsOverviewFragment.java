@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.activities.RoomDetailActivity;
-import com.hva.m2mobi.m2hva_reservationsystem.adapters.Room;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.RoomsOverviewAdapter;
 
 import java.util.ArrayList;
