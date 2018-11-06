@@ -1,9 +1,13 @@
 package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
 
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,7 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 public class ReservationOverviewFragment extends Fragment {
     View view;
     private RecyclerView mRecyclerView;
+    private ArrayList attendees;
     private ReservationsOverviewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -58,11 +63,14 @@ public class ReservationOverviewFragment extends Fragment {
 
 
 
+
+
+
         mAdapter.setOnItemClickListener(new ReservationsOverviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Snackbar snackbar = Snackbar
-                        .make(view, exampleList.get(position).getDescription() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                        .make(view, exampleList.get(position).getTitle() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(view, "Message is restored!", Snackbar.LENGTH_SHORT);
@@ -78,13 +86,18 @@ public class ReservationOverviewFragment extends Fragment {
     }
 
     public void createExampleList() {
+        attendees = new ArrayList<>();
+        String furkan = "furkan";
+        String kyle = "kyle";
+        attendees.add(furkan);
+        attendees.add(kyle);
         exampleList = new ArrayList<>();
-        exampleList.add(new Reservation("Jungle Room", "10-01-2019", "09:00-10:00"));
-        exampleList.add(new Reservation("Hunting Room", "4-02-2019", "08:30-09:30"));
-        exampleList.add(new Reservation("Elephant", "15-03-2019", "11:00-12:30"));
-        exampleList.add(new Reservation("Mammoth", "26-04-2019", "14:30-16:00"));
-        exampleList.add(new Reservation("Beach house", "19-05-2019", "15:30-17:00"));
-        exampleList.add(new Reservation("Auditorium", "23-05-2019", "10:30-13:00"));
+        exampleList.add(new Reservation("Jungle Room", attendees,"10-01-2019", "09:00", "10:00"));
+        exampleList.add(new Reservation("Hunting Room", attendees, "4-02-2019", "08:30","09:30"));
+        exampleList.add(new Reservation("Elephant", attendees,"15-03-2019", "11:00","12:30"));
+        exampleList.add(new Reservation("Mammoth", attendees,"26-04-2019", "14:30","16:00"));
+        exampleList.add(new Reservation("Beach house", attendees,"19-05-2019", "15:30","17:00"));
+        exampleList.add(new Reservation("Auditorium", attendees,"23-05-2019", "10:30","13:00"));
     }
 
     public void buildRecylerView() {
@@ -95,6 +108,8 @@ public class ReservationOverviewFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+
 
     }
 }

@@ -13,14 +13,14 @@ public class Reservation {
     private ArrayList<String> attendees = new ArrayList<String>();
 
     //formatters for date and time
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
-    private String formattedDate = dateFormatter.format(LocalDate.now());
-    private String formattedTime = timeFormatter.format(LocalDate.now());
+//    private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+//    private DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
+//    private String formattedDate = dateFormatter.format(LocalDate.now());
+//    private String formattedTime = timeFormatter.format(LocalDate.now());
 
-    private String reservationDate = formattedDate;
-    private String startTime = formattedTime;
-    private String endTime = formattedTime;
+    private String reservationDate;// = formattedDate;
+    private String startTime;// = formattedTime;
+    private String endTime;// = formattedTime;
 
     //reservation object
     public Reservation(String title, ArrayList attendees, String reservationDate, String startTime, String endTime) {

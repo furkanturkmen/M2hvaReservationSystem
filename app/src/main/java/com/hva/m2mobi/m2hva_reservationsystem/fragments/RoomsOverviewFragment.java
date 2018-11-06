@@ -30,8 +30,6 @@ public class RoomsOverviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_rooms_overview, container, false);
         createExampleList();
         buildRecylerView();
-
-
         return view;
     }
 
@@ -62,5 +60,4 @@ public class RoomsOverviewFragment extends Fragment {
             }
         });
     }
-
 }
