@@ -1,4 +1,4 @@
-package com.hva.m2mobi.m2hva_reservationsystem.adapters;
+package com.hva.m2mobi.m2hva_reservationsystem.models;
 
 public class Reservation {
     private String description;

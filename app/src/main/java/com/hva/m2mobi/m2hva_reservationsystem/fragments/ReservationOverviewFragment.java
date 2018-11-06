@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
-import com.hva.m2mobi.m2hva_reservationsystem.adapters.Reservation;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
 
 import java.util.ArrayList;

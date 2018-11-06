@@ -11,30 +11,32 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        android:label="@string/title_activity_tab" />
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".activities.RoomDetailActivity"></activity>
-        <activity android:name=".activities.ReserveRoomActivity"></activity>
+            android:label="@string/title_activity_login">
+        </activity>
         <activity
             android:name=".activities.TabActivity"
             android:label="@string/title_activity_tab" />
-        <activity android:name=".activities.CalendarActivity"></activity>
-    </application>
 
+        <activity
+            android:name=".activities.StateActivity"
+            android:label="@string/title_activity_state" />
+    </application>
 </manifest>
