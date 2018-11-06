@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
-import com.hva.m2mobi.m2hva_reservationsystem.activities.RoomDetailActivity;
-import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.StateActivity;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.RoomsOverviewAdapter;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.util.ArrayList;
 
@@ -57,7 +57,7 @@ public class RoomsOverviewFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Log.d("tots", "" + position);
-                Intent intent = new Intent(getContext(),RoomDetailActivity.class);
+                Intent intent = new Intent(getContext(),StateActivity.class);
                 startActivity(intent);
             }
         });
