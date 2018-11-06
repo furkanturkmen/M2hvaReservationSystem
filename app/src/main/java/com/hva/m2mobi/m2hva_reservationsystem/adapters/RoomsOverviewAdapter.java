@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.util.ArrayList;
 

@@ -75,6 +75,7 @@
     <string name="title_activity_tab">My Profile</string>
     <string name="button_get_events">Get Events</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_state">Error</string>
 
     <!--Login -->
     <string name="prompt_email">Email</string>

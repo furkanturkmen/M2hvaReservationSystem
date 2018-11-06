@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hva.m2mobi.m2hva_reservationsystem">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -11,33 +11,32 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-            android:label="@string/title_activity_tab" />
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".activities.RoomsOverviewActivity"></activity>
-        <activity android:name=".activities.RoomDetailActivity">
+            android:label="@string/title_activity_login">
         </activity>
-       <activity android:name=".activities.ReserveRoomActivity">
-       </activity>
         <activity
             android:name=".activities.TabActivity"
-            android:label="@string/title_activity_tab"></activity>
-        <activity android:name=".activities.AccountAuthorisationActivity"></activity>
-        <activity android:name=".activities.CalendarActivity"></activity>
+            android:label="@string/title_activity_tab" />
+
+        <activity
+            android:name=".activities.StateActivity"
+            android:label="@string/title_activity_state" />
     </application>
 </manifest>
