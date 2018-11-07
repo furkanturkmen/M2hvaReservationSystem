@@ -7,9 +7,13 @@
     <color name="colorAccentBlue">#3ca0f0</color>
     <color name="colorAccentDarkBlue">#226fad</color>
     <color name="colorAccentOrange">#ffaa41</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+
     <color name="colorBackground">#ffffff</color>
     <color name="colorItem">#000000</color>
     <color name="colorFAB">#F9A825</color>
 
     <color name="navigation_bar_txt_color">#ffffff</color>
+
 </resources>

@@ -88,4 +88,9 @@
     <string name="no_booking_title">OMG!</string>
     <string name="no_booking_text">You have no upcoming meetings.\nLet\'s change that!</string>
     <string name="no_booking_action_text">Book a room now!</string>
+    <string name="make_a_reservation">Make a reservation</string>
+    <string name="reserve_room_duration">Duration</string>
+    <string name="reserve_room_time">Time</string>
+    <string name="reserve_room_name">Room name</string>
+    <string name="reserve_room_capacity">Room capacity</string>
 </resources>
