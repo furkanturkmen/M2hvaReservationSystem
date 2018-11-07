@@ -9,32 +9,24 @@ import java.util.ArrayList;
 
 @TargetApi(Build.VERSION_CODES.O)
 public class Reservation {
-    private String title;
+
     private ArrayList<String> attendees = new ArrayList<String>();
+    private String reservationDate;// = formattedDate;
+    private String startTime;// = formattedTime;
+    private String endTime;// = formattedTime;
 
-    //formatters for date and time
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
-    private String formattedDate = dateFormatter.format(LocalDate.now());
-    private String formattedTime = timeFormatter.format(LocalDate.now());
-
-    private String reservationDate = formattedDate;
-    private String startTime = formattedTime;
-    private String endTime = formattedTime;
+    public Room reservationRoom;
 
     //reservation object
-    public Reservation(String title, ArrayList attendees, String reservationDate, String startTime, String endTime) {
-        this.title = title;
+    public Reservation(ArrayList attendees, String reservationDate, String startTime, String endTime, Room room) {
         this.attendees = attendees;
         this.reservationDate = reservationDate;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.reservationRoom = room;
     }
 
     //getters for all variables
-    public String getTitle() {
-        return title;
-    }
     public String getReservationDate(){
         return reservationDate;
     }
@@ -48,10 +40,16 @@ public class Reservation {
         return attendees;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Room getReservationRoom() {
+        return reservationRoom;
     }
+
+    public void setReservationRoom(Room reservationRoom) {
+        this.reservationRoom = reservationRoom;
+    }
+
     public void setReservationDate(String reservationDate){
+
         this.reservationDate = reservationDate;
     }
     public void setStartTime(String startTime){
@@ -60,7 +58,8 @@ public class Reservation {
     public void setEndTime(String endTime){
         this.endTime = endTime;
     }
-    public void setAttendees(ArrayList attendees){
+
+    public void setAttendees(ArrayList<String> attendees) {
         this.attendees = attendees;
     }
 }

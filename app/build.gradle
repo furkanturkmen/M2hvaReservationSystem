@@ -111,6 +111,12 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:${testVersion}"
     androidTestImplementation "com.android.support:support-annotations:${compileVersion}"
     androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    //API calls library
+    implementation "io.reactivex.rxjava2:rxjava:2.2.3"
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

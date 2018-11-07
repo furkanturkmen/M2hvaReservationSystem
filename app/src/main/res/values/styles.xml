@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
@@ -29,6 +30,13 @@
         <item name="colorButtonNormal">@color/colorAccentOrange</item>
         <item name="android:textSize">@dimen/font_small</item>
     </style>
+    <style name="NavBar" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
+        <item name="colorButtonNormal">@color/colorAccentOrange</item>
+        <item name="android:background">@color/colorAccentDarkBlue</item>
+    </style>
+
     <style name="NavBar" parent="Base.Theme.AppCompat.Light">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>

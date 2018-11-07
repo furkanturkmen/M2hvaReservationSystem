@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageResRoom"
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -26,18 +26,25 @@
             android:padding="8dp">
 
 
-            <TextView
-                android:id="@+id/reservation_description"
-                style="@style/CardTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:text="TextView" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reservation_title"
+                    style="@style/CardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="TextView" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -45,28 +52,50 @@
                     style="@style/CardContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:text="TextView" />
+                    android:gravity="right"
+                    android:text="@string/rsv_date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/reservation_time"
                     style="@style/CardContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:text="TextView" />
+                    android:gravity="right"
+                    android:text="@string/rsv_clock" />
+
+                <TextView
+                    android:id="@+id/reservation_attendees"
+                    style="@style/CardContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:gravity="right"
+                    android:text="@string/rsv_user" />
+
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
 
     <View
-        android:id="@+id/divider6"
+        android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        android:background="?android:attr/listDivider" />
 
 </android.support.constraint.ConstraintLayout>
