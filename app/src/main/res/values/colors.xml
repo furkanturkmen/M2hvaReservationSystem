@@ -7,4 +7,5 @@
     <color name="colorAccentBlue">#3ca0f0</color>
     <color name="colorAccentDarkBlue">#226fad</color>
     <color name="colorAccentOrange">#ffaa41</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>
