@@ -5,8 +5,13 @@
 
     <item
         android:id="@+id/nav_rooms"
-        android:title="Rooms" />
+        android:title="Rooms"
+        android:icon="@drawable/viewgrid"
+        android:orderInCategory="1"/>
+
     <item
         android:id="@+id/nav_reservations"
-        android:title="Reservations" />
+        android:title="Reservations"
+        android:icon="@drawable/clipboardtext"
+        android:orderInCategory="2"/>
 </menu>

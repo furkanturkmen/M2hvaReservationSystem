@@ -1,9 +1,9 @@
 <resources>
-<!--Tab navigation-->
-<string name="title_activity_tab">Example Tab Activity</string>
-<string name="my_reservations">My reservations</string>
-<string name="rooms">Rooms</string>
-<string name="all_reservations">All reservations</string>
+    <!--Tab navigation-->
+    <string name="title_activity_tab">Example Tab Activity</string>
+    <string name="my_reservations">My reservations</string>
+    <string name="rooms">Rooms</string>
+    <string name="all_reservations">All reservations</string>
 
 <!--Room overview page-->
 <string name="view_room">View</string>
@@ -50,6 +50,17 @@
 
 <!--Picking a time-->
 <string name="add_meeting">Add meeting</string>
+    <!--Others/placeholders-->
+    <string name="app_name">M2hva-ReservationSystem</string>
+    <string name="todo">TODO</string>
+    <string name="reserve_room_title">Reserve Room</string>
+    <string name="button_label_enabled">Button Label Enabled</string>
+    <string name="details_room">Details</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="button_get_events">Get Events</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_state">Error</string>
 
 <!--Empty/error states-->
 <string name="refresh">Refresh</string>
@@ -83,15 +94,20 @@
 <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-<string name="no_connection_title">Connection failure!</string>
-<string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
-<string name="no_booking_title">OMG!</string>
-<string name="no_booking_text">You have no upcoming meetings.\nLet\'s change that!</string>
-<string name="no_booking_action_text">Book a room now!</string>
-
+  
     // Icons by fontawsome cheatsheet
     <string name="rsv_date">&#xf073;</string>
     <string name="rsv_clock">&#xf017;</string>
     <string name="rsv_user">&#xf508;</string>
 
+    <string name="no_connection_title">Connection failure!</string>
+    <string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
+    <string name="no_booking_title">OMG!</string>
+    <string name="no_booking_text">You have no upcoming meetings.\nLet\'s change that!</string>
+    <string name="no_booking_action_text">Book a room now!</string>
+    <string name="make_a_reservation">Make a reservation</string>
+    <string name="reserve_room_duration">Duration</string>
+    <string name="reserve_room_time">Time</string>
+    <string name="reserve_room_name">Room name</string>
+    <string name="reserve_room_capacity">Room capacity</string>
 </resources>
