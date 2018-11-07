@@ -103,7 +103,14 @@ public class ReservationOverviewFragment extends Fragment {
         String kyle = "kyle";
         attendees.add(furkan);
         attendees.add(kyle);
+        exampleList = new ArrayList<>();
+        Reservation res;
 
+        //filling reservation list
+        for(int i=0; i<roomList.size(); i++) {
+            res = new Reservation(attendees, "10-01-2019", "09:00", "10:00", roomList.get(i));
+            exampleList.add(res);
+        }
     }
 
     public void createRoomList(){
@@ -118,6 +125,7 @@ public class ReservationOverviewFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
+        Log.d("size",""+exampleList.size());
         mAdapter = new ReservationsOverviewAdapter(exampleList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

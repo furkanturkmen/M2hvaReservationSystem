@@ -37,13 +37,6 @@
         <item name="android:background">@color/colorAccentDarkBlue</item>
     </style>
 
-    <style name="NavBar" parent="Base.Theme.AppCompat.Light">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
-        <item name="colorButtonNormal">@color/colorAccentOrange</item>
-        <item name="android:background">@color/colorAccentDarkBlue</item>
-    </style>
-
     //Title for Cards
     <style name="CardTitle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/font_large</item>
