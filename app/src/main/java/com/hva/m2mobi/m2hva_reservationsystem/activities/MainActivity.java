@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onClick(View v) {
                 // Add new booking
-                Toast.makeText(getApplicationContext(), "FloatingActionButton selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this,ReserveRoomActivity.class);
+                startActivity(intent);
 
             }
         });

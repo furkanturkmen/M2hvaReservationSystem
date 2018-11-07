@@ -38,5 +38,7 @@
         <activity
             android:name=".activities.StateActivity"
             android:label="@string/title_activity_state" />
+
+        <activity android:name=".activities.ReserveRoomActivity"/>
     </application>
 </manifest>

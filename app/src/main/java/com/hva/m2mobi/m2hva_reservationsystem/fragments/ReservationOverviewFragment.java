@@ -103,7 +103,13 @@ public class ReservationOverviewFragment extends Fragment {
         String kyle = "kyle";
         attendees.add(furkan);
         attendees.add(kyle);
-
+        exampleList = new ArrayList<>();
+        exampleList.add(new Reservation(attendees,"10-01-2019", "09:00", "10:00",roomList.get(0)));
+        exampleList.add(new Reservation(attendees, "4-02-2019", "08:30","09:30",roomList.get(1)));
+        exampleList.add(new Reservation(attendees,"15-03-2019", "11:00","12:30",roomList.get(2)));
+        exampleList.add(new Reservation(attendees,"26-04-2019", "14:30","16:00",roomList.get(3)));
+        exampleList.add(new Reservation(attendees,"19-05-2019", "15:30","17:00",roomList.get(0)));
+        exampleList.add(new Reservation(attendees,"23-05-2019", "10:30","13:00",roomList.get(1)));
     }
 
     public void createRoomList(){
@@ -118,6 +124,7 @@ public class ReservationOverviewFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
+        Log.d("size",""+exampleList.size());
         mAdapter = new ReservationsOverviewAdapter(exampleList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
