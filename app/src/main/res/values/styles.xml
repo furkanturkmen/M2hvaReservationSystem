@@ -3,11 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorAccentBlue</item>
-        <item name="colorPrimaryDark">@color/colorAccentDarkBlue</item>
-        <item name="colorAccent">@color/colorAccentOrange</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:popupTheme">@style/PopupTheme</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
@@ -36,7 +37,7 @@
     </style>
 
     //Title for Cards
-    <style name="CardTitle" parent="Base.Theme.AppCompat.Light">
+    <style name="CardTitle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">@color/colorAccentDarkBlue</item>
     </style>
@@ -45,6 +46,19 @@
     <style name="CardContent" parent="Base.Theme.AppCompat.Light">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+
+    // Background toolbar menu
+    <style name="PopupTheme" parent="Theme.AppCompat.Light">
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:textColor">@color/colorItem</item>
+    </style>
+
+
+    Bottom navigation menu
+    <style name="BottomNavigation" parent="Theme.AppCompat.Light">
+        <item name="android:background">@color/colorAccentDarkBlue</item>
     </style>
 
 
