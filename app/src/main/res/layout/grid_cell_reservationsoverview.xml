@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageResRoom"
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"

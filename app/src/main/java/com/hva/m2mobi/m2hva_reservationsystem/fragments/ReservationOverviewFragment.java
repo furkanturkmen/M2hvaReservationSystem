@@ -1,27 +1,26 @@
 package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
-
-import android.content.res.Resources;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
-
+import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import java.util.ArrayList;
+
+
 
 public class ReservationOverviewFragment extends Fragment {
     View view;
@@ -29,12 +28,16 @@ public class ReservationOverviewFragment extends Fragment {
     private ArrayList attendees;
     private ReservationsOverviewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private DatabaseReference fbRef;
+    private FirebaseDatabase fb;
 
     ArrayList<Reservation> exampleList;
+    ArrayList<Room> roomList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reservations_overview, container, false);
+        createRoomList();
         createExampleList();
         buildRecylerView();
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
@@ -52,52 +55,63 @@ public class ReservationOverviewFragment extends Fragment {
 
                         //Get the index corresponding to the selected position
                         int position = (viewHolder.getAdapterPosition());
-                        exampleList.remove(position);
                         mAdapter.notifyItemRemoved(position);
+                        Snackbar snackbar = Snackbar
+                                .make(view, exampleList.get(position).reservationRoom.getName() + " reservation has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Snackbar undoSnackbar = Snackbar.make(view, "Reservation has been restored!", Snackbar.LENGTH_SHORT);
+                                        undoSnackbar.show();
+                                    }
+                                });
+                        exampleList.remove(position);
+                        snackbar.show();
                     }
                 };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-
-
-
-
-
-
         mAdapter.setOnItemClickListener(new ReservationsOverviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Snackbar snackbar = Snackbar
-                        .make(view, exampleList.get(position).getTitle() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                        .make(view, exampleList.get(position).reservationRoom.getName() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(view, "Message is restored!", Snackbar.LENGTH_SHORT);
                                 snackbar1.show();
                             }
-                        });;
+                        });
 
                 snackbar.show();
             }
         });
 
+        fb = FirebaseDatabase.getInstance();
+        fbRef = fb.getReference("reservations");
+        System.out.println("SOUT: " + fbRef.child("res1"));
+
         return view;
     }
 
+
     public void createExampleList() {
+        //attendees list
         attendees = new ArrayList<>();
         String furkan = "furkan";
         String kyle = "kyle";
         attendees.add(furkan);
         attendees.add(kyle);
-        exampleList = new ArrayList<>();
-        exampleList.add(new Reservation("Jungle Room", attendees,"10-01-2019", "09:00", "10:00"));
-        exampleList.add(new Reservation("Hunting Room", attendees, "4-02-2019", "08:30","09:30"));
-        exampleList.add(new Reservation("Elephant", attendees,"15-03-2019", "11:00","12:30"));
-        exampleList.add(new Reservation("Mammoth", attendees,"26-04-2019", "14:30","16:00"));
-        exampleList.add(new Reservation("Beach house", attendees,"19-05-2019", "15:30","17:00"));
-        exampleList.add(new Reservation("Auditorium", attendees,"23-05-2019", "10:30","13:00"));
+
+    }
+
+    public void createRoomList(){
+        roomList = new ArrayList<>();
+        roomList.add(new Room(R.drawable.beach_house,"Beach House 2.0", "Plants", "10"));
+        roomList.add(new Room(R.drawable.hunting_room, "Hunter Room", "Rifles", "5"));
+        roomList.add(new Room(R.drawable.beach_house,"Elephant", "", "20"));
+        roomList.add(new Room(R.drawable.hunting_room, "Auditorium", "Place for audits", "16"));
     }
 
     public void buildRecylerView() {
@@ -105,11 +119,7 @@ public class ReservationOverviewFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new ReservationsOverviewAdapter(exampleList);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
     }
 }

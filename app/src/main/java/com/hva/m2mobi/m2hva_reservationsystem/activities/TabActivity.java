@@ -27,12 +27,12 @@ public class TabActivity extends AppCompatActivity {
             fragmentTransaction = fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_room_booking:
-                    mTextMessage.setText(R.string.title_room_booking);
+                    mTextMessage.setText(R.string.rooms);
                     RoomBookingFragment fFragment = new RoomBookingFragment();
                     fragmentTransaction.replace(R.id.container_frame,fFragment);
                     break;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
+                    mTextMessage.setText(R.string.my_reservations);
                     ProfileFragment sFragment = new ProfileFragment();
                     fragmentTransaction.replace(R.id.container_frame,sFragment);
                     break;

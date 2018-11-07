@@ -35,7 +35,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         private TextView date;
         private TextView time;
         private TextView attendees;
-        private TextView like;
+        private ImageView resRoom;
 
 
         public ReservationsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
@@ -44,6 +44,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
             date = itemView.findViewById(R.id.reservation_date);
             time = itemView.findViewById(R.id.reservation_time);
             attendees = itemView.findViewById(R.id.reservation_attendees);
+            resRoom = itemView.findViewById(R.id.imageResRoom);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,7 +75,8 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     @Override
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
         Reservation currentItem = mResevationsList.get(position);
-        holder.title.setText(currentItem.getTitle());
+        holder.resRoom.setImageResource(currentItem.getReservationRoom().getImgResource());
+        holder.title.setText(currentItem.reservationRoom.getName());
         holder.date.setText(holder.date.getText() + " " + currentItem.getReservationDate());
         holder.time.setText(holder.time.getText() + " " + currentItem.getStartTime() + " - " + currentItem.getEndTime());
         holder.attendees.setText(holder.attendees.getText() + " " + currentItem.getAttendees().size());

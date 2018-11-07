@@ -28,6 +28,7 @@
         <item name="colorButtonNormal">@color/colorAccentOrange</item>
         <item name="android:textSize">@dimen/font_small</item>
     </style>
+
     <style name="NavBar" parent="Base.Theme.AppCompat.Light">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
@@ -37,14 +38,14 @@
 
     //Title for Cards
     <style name="CardTitle" parent="Base.Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/font_larger</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">@color/colorAccentDarkBlue</item>
     </style>
 
     //Content for Cards
     <style name="CardContent" parent="Base.Theme.AppCompat.Light">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
 
