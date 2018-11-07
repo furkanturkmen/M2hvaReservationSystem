@@ -62,7 +62,7 @@ public class ReservationOverviewFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Snackbar snackbar = Snackbar
-                        .make(view, exampleList.get(position).getDescription() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                        .make(view,  " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(view, "Message is restored!", Snackbar.LENGTH_SHORT);
@@ -78,13 +78,13 @@ public class ReservationOverviewFragment extends Fragment {
     }
 
     public void createExampleList() {
-        exampleList = new ArrayList<>();
-        exampleList.add(new Reservation("Jungle Room", "10-01-2019", "09:00-10:00"));
-        exampleList.add(new Reservation("Hunting Room", "4-02-2019", "08:30-09:30"));
-        exampleList.add(new Reservation("Elephant", "15-03-2019", "11:00-12:30"));
-        exampleList.add(new Reservation("Mammoth", "26-04-2019", "14:30-16:00"));
-        exampleList.add(new Reservation("Beach house", "19-05-2019", "15:30-17:00"));
-        exampleList.add(new Reservation("Auditorium", "23-05-2019", "10:30-13:00"));
+//        exampleList = new ArrayList<>();
+//        exampleList.add(new Reservation("Jungle Room", "10-01-2019", "09:00-10:00"));
+//        exampleList.add(new Reservation("Hunting Room", "4-02-2019", "08:30-09:30"));
+//        exampleList.add(new Reservation("Elephant", "15-03-2019", "11:00-12:30"));
+//        exampleList.add(new Reservation("Mammoth", "26-04-2019", "14:30-16:00"));
+//        exampleList.add(new Reservation("Beach house", "19-05-2019", "15:30-17:00"));
+//        exampleList.add(new Reservation("Auditorium", "23-05-2019", "10:30-13:00"));
     }
 
     public void buildRecylerView() {

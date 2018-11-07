@@ -65,15 +65,15 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
 
     @Override
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
-        Reservation currentItem = mResevationsList.get(position);
-        holder.description.setText(currentItem.getDescription());
-        holder.date.setText(currentItem.getDate());
-        holder.time.setText(currentItem.getTime());
+//        Reservation currentItem = mResevationsList.get(position);
+//        holder.description.setText(currentItem.getDescription());
+//        holder.date.setText(currentItem.getDate());
+//        holder.time.setText(currentItem.getTime());
     }
 
     @Override
     public int getItemCount() {
-        return mResevationsList.size();
+        return 0;
     }
 
 
