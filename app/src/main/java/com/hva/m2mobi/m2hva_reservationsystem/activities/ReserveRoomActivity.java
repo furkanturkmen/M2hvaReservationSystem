@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
 public class ReserveRoomActivity extends AppCompatActivity {
     @BindView(R.id.reserve_room_capacity)
@@ -39,41 +41,48 @@ public class ReserveRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        loadCapacityData();
+        loadRoomNames();
     }
 
     @OnClick(R.id.reserve_room_button)
-    void submitReservation() {
+    private void submitReservation() {
         // TODO call server...
     }
 
     @OnClick(R.id.reserve_room_date)
-    void showDate() {
+    private void showDate() {
         datePickerDialog().show();
     }
 
     @OnClick(R.id.reserve_room_timepicker)
-    void chooseTime() {
+    private void chooseTime() {
         // TODO go to next activity
     }
 
-    private void loadCapacityData() {
-//        ArrayList<Integer> stringArrayList = new ArrayList<>();
-//        stringArrayList.add(4);
-//        stringArrayList.add(6);
-//        stringArrayList.add(8);
-//        stringArrayList.add(10);
-//        stringArrayList.add(12);
-//
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                stringArrayList, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerCapacity.setAdapter(adapter);
+    @OnItemSelected(R.id.reserve_room_capacity)
+    private void roomCapacitySelected(int position) {
+       spinnerCapacity.getItemAtPosition(position);
+    }
 
+    @OnItemSelected(R.id.reserve_room_name)
+    private void roomNameSelected( int position) {
+//        String text = spinnerRoom.getItemAtPosition(position).toString();
+//        String text = spinner.getSelectedItem().toString();
+    }
+
+    private void loadCapacityData() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.capacity_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCapacity.setAdapter(adapter);
     }
 
     private void loadRoomNames() {
-
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.roomnames_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCapacity.setAdapter(adapter);
     }
 
     @Override
@@ -81,7 +90,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
 
     private DatePickerDialog datePickerDialog() {
         final Calendar calendar = Calendar.getInstance();

@@ -48,6 +48,21 @@
     <item>SUN</item>
 </string-array>
 
+    <integer-array name = "capacity_array">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </integer-array>
+
+    <string-array name = "roomnames_array">
+        <item>Mammoth</item>
+        <item>Big Meeting Room</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
 <!--Picking a time-->
 <string name="add_meeting">Add meeting</string>
 
