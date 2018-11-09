@@ -9,12 +9,12 @@ public class Room {
     private boolean availability = true;
     private String time;
 
-    public Room(int imgResource, String name, String description, String calendarID, String time, int capacity) {
+    public Room(int imgResource, String name, String description, String calendarID, int capacity) {
         this.imgResource = imgResource;
         this.name = name;
         this.description = description;
         this.calendarID = calendarID;
-        this.time = time;      
+        this.time = "10:00";
         this.capacity = capacity;
     }
 

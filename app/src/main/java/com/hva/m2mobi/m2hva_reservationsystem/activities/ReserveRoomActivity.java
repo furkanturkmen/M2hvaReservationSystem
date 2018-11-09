@@ -47,113 +47,116 @@ public class ReserveRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-      
+
         loadCapacityData();
         loadRoomNames();
         loadDurationData();
 
-    @OnClick(R.id.reserve_room_button)
-    void submitReservation() {
-        Reservation res = new Reservation(3,"18:00","19:00",
-                CalendarConnection.ROOMS[0],"kylewatson98@gmail.com","09-11-2018");
-        new CalendarAsyncTask().execute(res);
-    }
+        }
 
-    @OnClick(R.id.reserve_room_date)
-    void showDate() {
-        datePickerDialog().show();
-    }
+        @OnClick(R.id.reserve_room_button)
+        void submitReservation () {
+            Reservation res = new Reservation(3, "22:30", "23:30",
+                    CalendarConnection.ROOMS[3], "f.turkmenn@gmail.com", "12-11-2018");
+            new CalendarAsyncTask().execute(res);
+        }
 
-    @OnClick(R.id.reserve_room_timepicker)
-     void chooseTime() {
-        // TODO go to next activity
-    }
+        @OnClick(R.id.reserve_room_date)
+        void showDate () {
+            datePickerDialog().show();
+        }
 
-    @OnItemSelected(R.id.reserve_room_capacity)
-    void roomCapacitySelected(int position) {
-       spinnerCapacity.getItemAtPosition(position);
-    }
+        @OnClick(R.id.reserve_room_timepicker)
+        void chooseTime () {
+            // TODO go to next activity
+        }
 
-    @OnItemSelected(R.id.reserve_room_name)
-    void roomNameSelected( int position) {
-        spinnerRoom.getItemAtPosition(position);
+        @OnItemSelected(R.id.reserve_room_capacity)
+        void roomCapacitySelected ( int position){
+            spinnerCapacity.getItemAtPosition(position);
+        }
+
+        @OnItemSelected(R.id.reserve_room_name)
+        void roomNameSelected ( int position){
+            spinnerRoom.getItemAtPosition(position);
 //        String text = spinner.getSelectedItem().toString();
-    }
+        }
 
 
-    @OnItemSelected(R.id.reserve_room_duration)
-    void roomDurationSelected( int position) {
-        spinnerDuration.getItemAtPosition(position);
+        @OnItemSelected(R.id.reserve_room_duration)
+        void roomDurationSelected ( int position){
+            spinnerDuration.getItemAtPosition(position);
 //        String text = spinner.getSelectedItem().toString();
-    }
+        }
 
-    private void loadCapacityData() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.capacity_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCapacity.setAdapter(adapter);
-    }
+        private void loadCapacityData () {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.capacity_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCapacity.setAdapter(adapter);
+        }
 
-    private void loadRoomNames() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.roomnames_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRoom.setAdapter(adapter);
-    }
+        private void loadRoomNames () {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.roomnames_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerRoom.setAdapter(adapter);
+        }
 
-    private void loadDurationData() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.duration_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDuration.setAdapter(adapter);
-    }
+        private void loadDurationData () {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.duration_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDuration.setAdapter(adapter);
+        }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+        @Override
+        public boolean onSupportNavigateUp () {
+            onBackPressed();
+            return true;
+        }
 
-    private DatePickerDialog datePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int startYear = calendar.get(Calendar.YEAR);
-        int starthMonth = calendar.get(Calendar.MONTH);
-        int startDay = calendar.get(Calendar.DAY_OF_MONTH);
+        private DatePickerDialog datePickerDialog () {
+            final Calendar calendar = Calendar.getInstance();
+            int startYear = calendar.get(Calendar.YEAR);
+            int starthMonth = calendar.get(Calendar.MONTH);
+            int startDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                Calendar pickDate = Calendar.getInstance();
-                pickDate.set(year, monthOfYear, dayOfMonth);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar pickDate = Calendar.getInstance();
+                    pickDate.set(year, monthOfYear, dayOfMonth);
 //                datePicker.setText(dateFormatter.format(newDate.getTime()));
+                }
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+            return datePickerDialog;
+        }
+
+        public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Reservation... reservations) {
+                try {
+                    new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
+                    return null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        return datePickerDialog;
-    }
-
-    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Reservation... reservations) {
-            try {
-                new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return null;
+            @Override
+            protected void onPostExecute(Void v) {
+                super.onPostExecute(v);
+                finish();
             }
         }
-        @Override
-        protected void onPostExecute(Void v) {
-            super.onPostExecute(v);
-            finish();
-        }
-    }
 
 }
 
