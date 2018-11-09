@@ -48,7 +48,32 @@
     <item>SUN</item>
 </string-array>
 
-<!--Picking a time-->
+    <string-array name = "capacity_array">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name = "roomnames_array">
+        <item>Mammut</item>
+        <item>Jungle</item>
+        <item>Elephant</item>
+        <item>Hunting Room</item>
+        <item>Beach House</item>
+        <item>Zoo</item>
+    </string-array>
+
+    <string-array name = "duration_array">
+        <item>1h</item>
+        <item>2h</item>
+        <item>3h</item>
+        <item>4h</item>
+    </string-array>
+
+
+    <!--Picking a time-->
 <string name="add_meeting">Add meeting</string>
 
 <!--Empty/error states-->
@@ -70,6 +95,7 @@
 <string name="button_get_events">Get Events</string>
 <string name="title_activity_login">Sign in</string>
 <string name="title_activity_state">Error</string>
+<string name="toolbar_title">Rooms</string>
 
 <!--Login -->
 <string name="prompt_email">Email</string>
@@ -84,10 +110,12 @@
         completions."
     </string>
   
-    // Icons by fontawsome cheatsheet
+    <!--Icons by fontawsome cheatsheet-->
     <string name="rsv_date">&#xf073;</string>
     <string name="rsv_clock">&#xf017;</string>
     <string name="rsv_user">&#xf508;</string>
+    <string name="status_red">&#xf057;</string>
+    <string name="status_green">&#xf058;</string>
 
     <string name="no_connection_title">Connection failure!</string>
     <string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
@@ -99,4 +127,8 @@
     <string name="reserve_room_time">Time</string>
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Room capacity</string>
+    <string name="capacity">Capacity</string>
+    <string name="until_booked_time">@string/rsv_clock</string>
+    <string name="room_name">Room name</string>
+    <string name="room_description">Description</string>
 </resources>

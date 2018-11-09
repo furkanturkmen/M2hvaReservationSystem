@@ -7,13 +7,14 @@ public class Room {
     private String calendarID;
     private int capacity;
     private boolean availability = true;
+    private String time;
 
-
-    public Room(int imgResource, String name, String description, String calendarID, int capacity) {
+    public Room(int imgResource, String name, String description, String calendarID, String time, int capacity) {
         this.imgResource = imgResource;
         this.name = name;
         this.description = description;
         this.calendarID = calendarID;
+        this.time = time;      
         this.capacity = capacity;
     }
 
@@ -63,5 +64,13 @@ public class Room {
 
     public void setAvailability(boolean availability) {
         this.availability = availability;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
