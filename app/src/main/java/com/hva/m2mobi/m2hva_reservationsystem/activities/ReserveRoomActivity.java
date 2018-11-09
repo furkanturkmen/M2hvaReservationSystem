@@ -20,7 +20,6 @@ import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,43 +50,40 @@ public class ReserveRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         loadCapacityData();
         loadRoomNames();
         loadDurationData();
-
     }
 
-        @OnClick(R.id.reserve_room_button)
-        void submitReservation () {
-            Reservation res = new Reservation(3, "22:30", "23:30",
-                    CalendarConnection.ROOMS[3], "f.turkmenn@gmail.com", "12-11-2018");
-            new CalendarAsyncTask().execute(res);
-        }
+    @OnClick(R.id.reserve_room_button)
+    void submitReservation() {
+        Reservation res = new Reservation(3, "22:30", "23:30",
+                CalendarConnection.ROOMS[3], "f.turkmenn@gmail.com", "12-11-2018");
+        new CalendarAsyncTask().execute(res);
+    }
 
     @OnClick(R.id.reserve_room_date)
     void showDate() {
-    datePickerDialog();
+        datePickerDialog();
     }
 
     @OnClick(R.id.reserve_room_timepicker)
-     void chooseTime() {
+    void chooseTime() {
         timePickerDialog();
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
     void roomCapacitySelected(int position) {
-       spinnerCapacity.getItemAtPosition(position);
+        spinnerCapacity.getItemAtPosition(position);
     }
 
     @OnItemSelected(R.id.reserve_room_name)
-    void roomNameSelected( int position) {
+    void roomNameSelected(int position) {
         spinnerRoom.getItemAtPosition(position);
     }
 
-
     @OnItemSelected(R.id.reserve_room_duration)
-    void roomDurationSelected( int position) {
+    void roomDurationSelected(int position) {
         spinnerDuration.getItemAtPosition(position);
     }
 
@@ -112,7 +108,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         spinnerDuration.setAdapter(adapter);
     }
 
-
     private void datePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -122,7 +117,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            datePicker.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                datePicker.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -133,46 +128,45 @@ public class ReserveRoomActivity extends AppCompatActivity {
         int hour = myCalender.get(Calendar.HOUR_OF_DAY);
         int minute = myCalender.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
-                                          int minute) {
-                        timePicker.setText(hourOfDay + ":" + minute);
-                    }
-                }, hour, minute, false);
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay,
+                                  int minute) {
+                timePicker.setText(hourOfDay + ":" + minute);
+            }
+        }, hour, minute, false);
         timePickerDialog.show();
     }
-
-        }
-
-        public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Reservation... reservations) {
-                try {
-                    new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
-                    return null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Void v) {
-                super.onPostExecute(v);
-                finish();
-            }
-        }
-
+    
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
+    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Reservation... reservations) {
+            try {
+                new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            finish();
+        }
+    }
 }
+
 
 
 
