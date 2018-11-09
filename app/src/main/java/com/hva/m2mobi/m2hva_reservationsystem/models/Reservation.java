@@ -2,6 +2,7 @@ package com.hva.m2mobi.m2hva_reservationsystem.models;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,33 +11,39 @@ import java.util.ArrayList;
 @TargetApi(Build.VERSION_CODES.O)
 public class Reservation {
 
-    private ArrayList<String> attendees = new ArrayList<String>();
-    private String reservationDate;// = formattedDate;
-    private String startTime;// = formattedTime;
-    private String endTime;// = formattedTime;
-
-    public Room reservationRoom;
+    private int attendees;
+    private String startTime;
+    private String endTime;
+    private Room reservationRoom;
+    private String creator;
 
     //reservation object
-    public Reservation(ArrayList attendees, String reservationDate, String startTime, String endTime, Room room) {
+    public Reservation(int attendees, String startTime, String endTime, Room room, String creator) {
         this.attendees = attendees;
-        this.reservationDate = reservationDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationRoom = room;
+        this.creator = creator;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String string = "Start Time: " + startTime + "\n";
+        string += "End Time: " + endTime + "\n";
+        string += "Room: " + reservationRoom.getName() + "\n";
+        string += "Creator: " + creator + "\n";
+        return string;
     }
 
     //getters for all variables
-    public String getReservationDate(){
-        return reservationDate;
-    }
     public String getStartTime(){
         return startTime;
     }
     public String getEndTime(){
         return endTime;
     }
-    public ArrayList getAttendees(){
+    public int getAttendees(){
         return attendees;
     }
 
@@ -47,11 +54,6 @@ public class Reservation {
     public void setReservationRoom(Room reservationRoom) {
         this.reservationRoom = reservationRoom;
     }
-
-    public void setReservationDate(String reservationDate){
-
-        this.reservationDate = reservationDate;
-    }
     public void setStartTime(String startTime){
         this.startTime = startTime;
     }
@@ -59,7 +61,15 @@ public class Reservation {
         this.endTime = endTime;
     }
 
-    public void setAttendees(ArrayList<String> attendees) {
+    public void setAttendees(int attendees) {
         this.attendees = attendees;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

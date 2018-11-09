@@ -68,7 +68,7 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     public void onBindViewHolder(@NonNull RoomsOverviewViewHolder holder, int position) {
         Room room = mListRooms.get(position);
         holder.name.setText(room.getName());
-        holder.availabilty.setText(room.getAvailability());
+        holder.availabilty.setText(room.getCalendarID());
     }
 
     @Override
