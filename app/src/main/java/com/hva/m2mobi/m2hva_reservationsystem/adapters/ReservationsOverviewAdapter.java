@@ -11,13 +11,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ReservationsOverviewAdapter extends RecyclerView.Adapter<ReservationsOverviewAdapter.ReservationsViewHolder> {
-    public ArrayList<Reservation> mResevationsList;
+    public List<Reservation> mResevationsList;
     private OnItemClickListener mListener;
 
 
@@ -60,7 +68,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         }
     }
 
-    public ReservationsOverviewAdapter(ArrayList<Reservation> reservationsList) {
+    public ReservationsOverviewAdapter(List<Reservation> reservationsList) {
         mResevationsList = reservationsList;
     }
 
@@ -76,10 +84,11 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
         Reservation currentItem = mResevationsList.get(position);
         holder.resRoom.setImageResource(currentItem.getReservationRoom().getImgResource());
-        holder.title.setText(currentItem.reservationRoom.getName());
-        holder.date.setText(holder.date.getText() + " " + currentItem.getReservationDate());
+        holder.title.setText(currentItem.getReservationRoom().getName());
+
+        holder.date.setText(holder.date.getText() + " " + currentItem.getDate());
         holder.time.setText(holder.time.getText() + " " + currentItem.getStartTime() + " - " + currentItem.getEndTime());
-        holder.attendees.setText(holder.attendees.getText() + " " + currentItem.getAttendees().size());
+        holder.attendees.setText(holder.attendees.getText() + " " + currentItem.getAttendees());
 
         Typeface custom_font;
         custom_font = ResourcesCompat.getFont(holder.attendees.getContext(), R.font.fa_solid_900);
