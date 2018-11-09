@@ -70,6 +70,7 @@
 <string name="button_get_events">Get Events</string>
 <string name="title_activity_login">Sign in</string>
 <string name="title_activity_state">Error</string>
+<string name="toolbar_title">Rooms</string>
 
 <!--Login -->
 <string name="prompt_email">Email</string>
@@ -84,7 +85,7 @@
         completions."
     </string>
   
-    // Icons by fontawsome cheatsheet
+    <!--Icons by fontawsome cheatsheet-->
     <string name="rsv_date">&#xf073;</string>
     <string name="rsv_clock">&#xf017;</string>
     <string name="rsv_user">&#xf508;</string>
@@ -99,4 +100,8 @@
     <string name="reserve_room_time">Time</string>
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Room capacity</string>
+    <string name="capacity">Capacity</string>
+    <string name="until_booked_time">Until 8:00</string>
+    <string name="room_name">Room name</string>
+    <string name="room_description">Description</string>
 </resources>

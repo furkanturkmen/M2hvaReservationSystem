@@ -1,11 +1,13 @@
 package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
@@ -31,11 +33,14 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         private TextView name;
         private TextView description;
         private TextView availabilty;
+        private ImageView imageRoom;
 
         public RoomsOverviewViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             name = itemView.findViewById(R.id.room_name);
             availabilty = itemView.findViewById(R.id.room_availability);
+            imageRoom = itemView.findViewById(R.id.room_image);
+            description = itemView.findViewById(R.id.room_description);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -48,7 +53,6 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
                     }
                 }
             });
-
         }
     }
 
@@ -69,6 +73,13 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         Room room = mListRooms.get(position);
         holder.name.setText(room.getName());
         holder.availabilty.setText(room.getAvailability());
+        holder.description.setText(room.getDescription());
+        holder.imageRoom.setImageResource(room.getImgResource());
+        if(room.getDescription().equals("Available")){
+            holder.availabilty.setTextColor(Color.GREEN);
+        } else{
+            holder.availabilty.setTextColor(Color.RED);
+        }
     }
 
     @Override

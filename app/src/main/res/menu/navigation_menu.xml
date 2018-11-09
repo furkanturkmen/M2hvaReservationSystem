@@ -6,12 +6,12 @@
     <item
         android:id="@+id/nav_rooms"
         android:title="Rooms"
-        android:icon="@drawable/viewgrid"
+        android:icon="@drawable/ic_view_day"
         android:orderInCategory="1"/>
 
     <item
         android:id="@+id/nav_reservations"
         android:title="Reservations"
-        android:icon="@drawable/clipboardtext"
+        android:icon="@drawable/ic_clip_board"
         android:orderInCategory="2"/>
 </menu>
