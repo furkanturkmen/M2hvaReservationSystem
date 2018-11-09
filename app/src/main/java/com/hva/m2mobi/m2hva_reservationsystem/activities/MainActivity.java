@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         fab = (FloatingActionButton) findViewById(R.id.fab_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +94,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (menuItem.getItemId()) {
             case R.id.nav_rooms:
                 selectedFragment = new RoomsOverviewFragment();
+                toolbar.setTitle("Rooms");
                 break;
             case R.id.nav_reservations:
                 selectedFragment = new ReservationOverviewFragment();
+                toolbar.setTitle("My reservations");
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();

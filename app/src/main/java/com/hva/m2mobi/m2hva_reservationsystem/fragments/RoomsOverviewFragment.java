@@ -30,16 +30,19 @@ public class RoomsOverviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_rooms_overview, container, false);
         createExampleList();
         buildRecylerView();
+        System.out.println(exampleList.get(0).getAvailability());
+
         return view;
     }
 
     public void createExampleList() {
+
         exampleList = new ArrayList<>();
-        exampleList.add(new Room(R.drawable.beach_house,"Room 1", "Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.hunting_room, "Room 2","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.beach_house, "Room 3","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.hunting_room, "Room 4","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.beach_house, "Room 5","Description sample", "Available"));
+        exampleList.add(new Room(R.drawable.beach_house,"Elephant", "Big sized room", "Available", "08:00", 15));
+        exampleList.add(new Room(R.drawable.hunting_room, "Hunting Room","With all the plaques", "Not Available", "", 12));
+        exampleList.add(new Room(R.drawable.beach_house, "Beach House 2.0","Zoo with several plants", "Available", "16:00", 2));
+        exampleList.add(new Room(R.drawable.hunting_room, "Auditorium","Dead memes", "Not Available", "", 6));
+
     }
 
     public void buildRecylerView() {

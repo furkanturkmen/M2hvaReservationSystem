@@ -2,10 +2,10 @@
 <resources>
 
     <!-- font sizes -->
-    <dimen name="font_larger">31sp</dimen>
-    <dimen name="font_large">25sp</dimen>
-    <dimen name="font_normal">18sp</dimen>
-    <dimen name="font_small">13sp</dimen>
+    <dimen name="font_larger">25sp</dimen>
+    <dimen name="font_large">20sp</dimen>
+    <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
 
     <!-- card margins -->
     <dimen name="card_margins">16dp</dimen>
