@@ -1,6 +1,7 @@
 package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 
@@ -26,6 +28,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
     Spinner spinnerRoom;
     @BindView(R.id.reserve_room_date)
     TextView datePicker;
+    @BindView(R.id.reserve_room_timepicker)
+    TextView timePicker;
     @BindView(R.id.reserve_room_duration)
     Spinner spinnerDuration;
     @BindView(R.id.reserve_room_button)
@@ -53,12 +57,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     @OnClick(R.id.reserve_room_date)
     void showDate() {
-        datePickerDialog().show();
+    datePickerDialog();
     }
 
     @OnClick(R.id.reserve_room_timepicker)
      void chooseTime() {
-        // TODO go to next activity
+        timePickerDialog();
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
@@ -69,14 +73,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
     @OnItemSelected(R.id.reserve_room_name)
     void roomNameSelected( int position) {
         spinnerRoom.getItemAtPosition(position);
-//        String text = spinner.getSelectedItem().toString();
     }
 
 
     @OnItemSelected(R.id.reserve_room_duration)
     void roomDurationSelected( int position) {
         spinnerDuration.getItemAtPosition(position);
-//        String text = spinner.getSelectedItem().toString();
     }
 
     private void loadCapacityData() {
@@ -100,30 +102,42 @@ public class ReserveRoomActivity extends AppCompatActivity {
         spinnerDuration.setAdapter(adapter);
     }
 
+
+    private void datePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            datePicker.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void timePickerDialog() {
+        final Calendar myCalender = Calendar.getInstance();
+        int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        timePicker.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, minute, false);
+        timePickerDialog.show();
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
-    private DatePickerDialog datePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int startYear = calendar.get(Calendar.YEAR);
-        int starthMonth = calendar.get(Calendar.MONTH);
-        int startDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                Calendar pickDate = Calendar.getInstance();
-                pickDate.set(year, monthOfYear, dayOfMonth);
-//                datePicker.setText(dateFormatter.format(newDate.getTime()));
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-        return datePickerDialog;
-    }
-
 }
+
+
 
