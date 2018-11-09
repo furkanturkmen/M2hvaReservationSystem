@@ -4,16 +4,17 @@ public class Room {
     private int imgResource;
     private String name;
     private String description;
-    private String availability;
-    private String time;
+    private String calendarID;
     private int capacity;
+    private boolean availability = true;
+    private String time;
 
-    public Room(int imgResource, String name, String description, String availability, String time, int capacity) {
+    public Room(int imgResource, String name, String description, String calendarID, String time, int capacity) {
         this.imgResource = imgResource;
         this.name = name;
         this.description = description;
-        this.availability = availability;
-        this.time = time;
+        this.calendarID = calendarID;
+        this.time = time;      
         this.capacity = capacity;
     }
 
@@ -41,11 +42,27 @@ public class Room {
         this.description = description;
     }
 
-    public String getAvailability() {
+    public String getCalendarID() {
+        return calendarID;
+    }
+
+    public void setCalendarID(String calendarID) {
+        this.calendarID = calendarID;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean isAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(boolean availability) {
         this.availability = availability;
     }
 
@@ -55,13 +72,5 @@ public class Room {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 }

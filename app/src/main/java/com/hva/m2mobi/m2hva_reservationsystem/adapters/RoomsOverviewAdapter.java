@@ -101,8 +101,6 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         custom_font = ResourcesCompat.getFont(holder.time.getContext(), R.font.fa_solid_900);
         holder.time.setTypeface(custom_font);
         holder.availabilty.setTypeface(custom_font);
-
-
     }
 
     @Override

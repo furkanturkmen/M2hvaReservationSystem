@@ -1,6 +1,7 @@
 package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.app.DatePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,8 +12,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,14 +47,16 @@ public class ReserveRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+      
         loadCapacityData();
         loadRoomNames();
         loadDurationData();
-    }
 
     @OnClick(R.id.reserve_room_button)
-   void submitReservation() {
-        // TODO call server...
+    void submitReservation() {
+        Reservation res = new Reservation(3,"18:00","19:00",
+                CalendarConnection.ROOMS[0],"kylewatson98@gmail.com","09-11-2018");
+        new CalendarAsyncTask().execute(res);
     }
 
     @OnClick(R.id.reserve_room_date)
@@ -123,6 +131,28 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         return datePickerDialog;
+    }
+
+    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Reservation... reservations) {
+            try {
+                new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            finish();
+        }
     }
 
 }
