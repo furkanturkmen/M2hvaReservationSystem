@@ -115,10 +115,10 @@ public class ReservationOverviewFragment extends Fragment {
 
     public void createRoomList(){
         roomList = new ArrayList<>();
-        roomList.add(new Room(R.drawable.beach_house,"Beach House 2.0", "Plants", "10"));
-        roomList.add(new Room(R.drawable.hunting_room, "Hunter Room", "Rifles", "5"));
-        roomList.add(new Room(R.drawable.beach_house,"Elephant", "", "20"));
-        roomList.add(new Room(R.drawable.hunting_room, "Auditorium", "Place for audits", "16"));
+        roomList.add(new Room(R.drawable.beach_house,"Beach House 2.0", "Plants", "10", "", 15));
+        roomList.add(new Room(R.drawable.hunting_room, "Hunter Room", "Rifles", "5", "", 12));
+        roomList.add(new Room(R.drawable.beach_house,"Elephant", "", "20", "", 6));
+        roomList.add(new Room(R.drawable.hunting_room, "Auditorium", "Place for audits", "16", "", 7));
     }
 
     public void buildRecylerView() {

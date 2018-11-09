@@ -89,6 +89,8 @@
     <string name="rsv_date">&#xf073;</string>
     <string name="rsv_clock">&#xf017;</string>
     <string name="rsv_user">&#xf508;</string>
+    <string name="status_red">&#xf057;</string>
+    <string name="status_green">&#xf058;</string>
 
     <string name="no_connection_title">Connection failure!</string>
     <string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
@@ -101,7 +103,7 @@
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Room capacity</string>
     <string name="capacity">Capacity</string>
-    <string name="until_booked_time">Until 8:00</string>
+    <string name="until_booked_time">@string/rsv_clock</string>
     <string name="room_name">Room name</string>
     <string name="room_description">Description</string>
 </resources>
