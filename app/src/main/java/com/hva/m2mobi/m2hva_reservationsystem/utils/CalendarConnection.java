@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -22,6 +23,7 @@ import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +46,10 @@ public class CalendarConnection{
             new Room(R.drawable.beach_house,"Beach House 2.0","Small Room", "352a8lc5v10v6qm5prf3sp89gs@group.calendar.google.com",2),
             new Room(R.drawable.beach_house,"Zoo","Auditorium", "abujhftkqu0k3a9h2dbtcm9d5k@group.calendar.google.com",20)
     };
+
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
+    public static final String TIME_FORMAT = "HH:mm";
+    //"24-01-2019/09:00"
 
     private Calendar calendar;
     private String accountName;
@@ -70,37 +76,50 @@ public class CalendarConnection{
     public void addEvent(Reservation reservation) throws IOException, ParseException {
         Event event = new Event();
         java.util.Calendar utilCalendar = java.util.Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        utilCalendar.setTime(sdf.parse(reservation.getStartTime()));
-        EventDateTime edt = new EventDateTime().setDate(new DateTime(utilCalendar.getTime()));
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT+TIME_FORMAT);
+        utilCalendar.setTime(sdf.parse(reservation.getDate()+reservation.getStartTime()));
+        EventDateTime edt = new EventDateTime().setDateTime(new DateTime(utilCalendar.getTime()));
         event.setStart(edt);
-        utilCalendar.setTime(sdf.parse(reservation.getEndTime()));
-        edt.setDate(new DateTime(utilCalendar.getTime()));
+        utilCalendar.setTime(sdf.parse(reservation.getDate()+reservation.getEndTime()));
+        edt.setDateTime(new DateTime(utilCalendar.getTime()));
         event.setEnd(edt);
+        event.setSummary("Meeting with " + accountName);
+        event.setDescription(reservation.getAttendees() + " people attending.");
 
         if(event != null)
             calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute();
     }
 
-    private List<Reservation> eventListToReservation(List<Event> events, Room room) throws IOException {
+    private List<Reservation> eventListToReservation(List<Event> events, Room room) throws IOException, ParseException {
         List <Reservation> res = new ArrayList<>();
         for (Event event:events) {
-            if(event != null){
-                Reservation newRes = new Reservation(0, event.getStart().toPrettyString(), event.getEnd().toString(),room, event.getCreator().getEmail());
+            if(event != null) {
+                SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                SimpleDateFormat tf = new SimpleDateFormat(TIME_FORMAT);
+                SimpleDateFormat pf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Date startDate = pf.parse(event.getStart().getDateTime().toString());
+                Date endDate = pf.parse(event.getEnd().getDateTime().toString());
+
+                String startTime = tf.format(startDate);
+                String endTime = tf.format(endDate);
+                String date = df.format(startDate);
+                Reservation newRes = new Reservation(0, startTime, endTime, room, event.getCreator().getEmail(), date);
+                //Reservation newRes = new Reservation(0, event.getStart().toPrettyString(), event.getEnd().toString(),room, event.getCreator().getEmail());
                 res.add(newRes);
             }
         }
         return res;
     }
 
-    public List<Reservation> getMyEvents(int noOfEvents) throws IOException {
+    public List<Reservation> getMyEvents(int noOfEvents) throws IOException, ParseException {
         List<Reservation> allEvents = getAllEvents(noOfEvents);
+        Log.d("All Events", allEvents.size()+"");
         List <Reservation> ownerEvents = filterEventsByOwner(allEvents,accountName);
 
         return ownerEvents;
     }
 
-    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException {
+    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)
@@ -121,7 +140,7 @@ public class CalendarConnection{
         return event.execute().getItems();
     }*/
 
-    public List<Reservation> getAllEvents(int noOfEvents) throws IOException{
+    public List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException {
         List<Reservation> items = new ArrayList<>();
         for (Room room: ROOMS) {
             List<Reservation> result = getRoomEvents(room,noOfEvents);
@@ -134,12 +153,12 @@ public class CalendarConnection{
     private List<Reservation> filterEventsByOwner(List<Reservation> items, String accountName){
         if (items.isEmpty())
             return items;
-
+        List<Reservation> newItems = new ArrayList<>();
         for (Reservation res : items) {
             String name = res.getCreator();
-            if (!name.equals(accountName))
-                items.remove(res);
+            if (name.equals(accountName))
+                newItems.add(res);
         }
-        return items;
+        return newItems;
     }
 }

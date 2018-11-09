@@ -1,7 +1,13 @@
 package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +21,18 @@ import android.view.ViewGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.MainActivity;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
-import java.util.ArrayList;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 
 
 public class ReservationOverviewFragment extends Fragment {
@@ -31,15 +44,62 @@ public class ReservationOverviewFragment extends Fragment {
     private DatabaseReference fbRef;
     private FirebaseDatabase fb;
 
-    ArrayList<Reservation> exampleList;
+    List<Reservation> reservationList;
     ArrayList<Room> roomList;
+
+    private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reservations_overview, container, false);
-        createRoomList();
-        createExampleList();
-        buildRecylerView();
+        Log.d("onCreate", "created successfully");
+        requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
+
+        return view;
+    }
+
+    private void requestPermissions(int requestCode){
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_CALENDAR},requestCode);
+        }else if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.GET_ACCOUNTS},requestCode);
+        }else{
+            new CalendarAsyncTask().execute();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+
+        Log.d("OnRequest",permissions[0] + " permission name");
+        if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
+            Log.d("OnRequest","passed perms");
+            new CalendarAsyncTask().execute();
+        }
+    }
+
+    /*public void getReservationList() {
+        //attendees list
+        CalendarConnection con = new CalendarConnection(getContext());
+        try {
+            reservationList = (ArrayList<Reservation>) con.getMyEvents(20);
+            for (Reservation res:reservationList) {
+                Log.d("Res List", res.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    public void buildRecylerView() {
+        mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mAdapter = new ReservationsOverviewAdapter(reservationList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -57,14 +117,14 @@ public class ReservationOverviewFragment extends Fragment {
                         int position = (viewHolder.getAdapterPosition());
                         mAdapter.notifyItemRemoved(position);
                         Snackbar snackbar = Snackbar
-                                .make(view, exampleList.get(position).reservationRoom.getName() + " reservation has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                                .make(view, reservationList.get(position).getReservationRoom().getName() + " reservation has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         Snackbar undoSnackbar = Snackbar.make(view, "Reservation has been restored!", Snackbar.LENGTH_SHORT);
                                         undoSnackbar.show();
                                     }
                                 });
-                        exampleList.remove(position);
+                        reservationList.remove(position);
                         snackbar.show();
                     }
                 };
@@ -72,62 +132,33 @@ public class ReservationOverviewFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        mAdapter.setOnItemClickListener(new ReservationsOverviewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Snackbar snackbar = Snackbar
-                        .make(view, exampleList.get(position).reservationRoom.getName() + " has been clicked.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(view, "Message is restored!", Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                            }
-                        });
-
-                snackbar.show();
-            }
-        });
 
         fb = FirebaseDatabase.getInstance();
         fbRef = fb.getReference("reservations");
         System.out.println("SOUT: " + fbRef.child("res1"));
-
-        return view;
     }
-
-
-    public void createExampleList() {
-        //attendees list
-        attendees = new ArrayList<>();
-        String furkan = "furkan";
-        String kyle = "kyle";
-        attendees.add(furkan);
-        attendees.add(kyle);
-        exampleList = new ArrayList<>();
-        Reservation res;
-
-        //filling reservation list
-        for(int i=0; i<roomList.size(); i++) {
-            res = new Reservation(attendees, "10-01-2019", "09:00", "10:00", roomList.get(i));
-            exampleList.add(res);
+    public class CalendarAsyncTask extends AsyncTask<Void, Void, List> {
+        public CalendarAsyncTask() {
         }
-    }
 
-    public void createRoomList(){
-        roomList = new ArrayList<>();
-        roomList.add(new Room(R.drawable.beach_house,"Beach House 2.0", "Plants", "10"));
-        roomList.add(new Room(R.drawable.hunting_room, "Hunter Room", "Rifles", "5"));
-        roomList.add(new Room(R.drawable.beach_house,"Elephant", "", "20"));
-        roomList.add(new Room(R.drawable.hunting_room, "Auditorium", "Place for audits", "16"));
-    }
+        @Override
+        protected List doInBackground(Void... voids) {
+            try {
+                return new CalendarConnection(getContext()).getMyEvents(10);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
 
-    public void buildRecylerView() {
-        mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        Log.d("size",""+exampleList.size());
-        mAdapter = new ReservationsOverviewAdapter(exampleList);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        @Override
+        protected void onPostExecute(List list) {
+            super.onPostExecute(list);
+            reservationList = list;
+            buildRecylerView();
+        }
     }
 }

@@ -12,18 +12,20 @@ import java.util.ArrayList;
 public class Reservation {
 
     private int attendees;
+    private String date;
     private String startTime;
     private String endTime;
     private Room reservationRoom;
     private String creator;
 
     //reservation object
-    public Reservation(int attendees, String startTime, String endTime, Room room, String creator) {
+    public Reservation(int attendees, String startTime, String endTime, Room room, String creator, String date) {
         this.attendees = attendees;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationRoom = room;
         this.creator = creator;
+        this.date = date;
     }
 
     @NonNull
@@ -71,5 +73,13 @@ public class Reservation {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

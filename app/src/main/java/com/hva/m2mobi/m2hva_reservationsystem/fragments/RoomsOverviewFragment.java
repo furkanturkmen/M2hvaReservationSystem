@@ -35,11 +35,11 @@ public class RoomsOverviewFragment extends Fragment {
 
     public void createExampleList() {
         exampleList = new ArrayList<>();
-        exampleList.add(new Room(R.drawable.beach_house,"Room 1", "Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.hunting_room, "Room 2","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.beach_house, "Room 3","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.hunting_room, "Room 4","Description sample", "Available"));
-        exampleList.add(new Room(R.drawable.beach_house, "Room 5","Description sample", "Available"));
+//        exampleList.add(new Room(R.drawable.beach_house,"Room 1", "Description sample", "Available"));
+//        exampleList.add(new Room(R.drawable.hunting_room, "Room 2","Description sample", "Available"));
+//        exampleList.add(new Room(R.drawable.beach_house, "Room 3","Description sample", "Available"));
+//        exampleList.add(new Room(R.drawable.hunting_room, "Room 4","Description sample", "Available"));
+//        exampleList.add(new Room(R.drawable.beach_house, "Room 5","Description sample", "Available"));
     }
 
     public void buildRecylerView() {
