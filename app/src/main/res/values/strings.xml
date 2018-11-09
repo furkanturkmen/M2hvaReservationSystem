@@ -48,7 +48,32 @@
     <item>SUN</item>
 </string-array>
 
-<!--Picking a time-->
+    <string-array name = "capacity_array">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name = "roomnames_array">
+        <item>Mammut</item>
+        <item>Jungle</item>
+        <item>Elephant</item>
+        <item>Hunting Room</item>
+        <item>Beach House</item>
+        <item>Zoo</item>
+    </string-array>
+
+    <string-array name = "duration_array">
+        <item>1h</item>
+        <item>2h</item>
+        <item>3h</item>
+        <item>4h</item>
+    </string-array>
+
+
+    <!--Picking a time-->
 <string name="add_meeting">Add meeting</string>
 
 <!--Empty/error states-->
