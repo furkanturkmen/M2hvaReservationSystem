@@ -64,6 +64,7 @@ public class CalendarConnection{
             throw new SecurityException("Calendar Connection requires GET_ACCOUNTS permission");
         }
         accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Log.d("Connection", accountName);
         GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(context, SCOPES)
                 .setBackOff(new ExponentialBackOff());
         mCredential.setSelectedAccountName(accountName);
@@ -81,7 +82,7 @@ public class CalendarConnection{
         EventDateTime edt = new EventDateTime().setDateTime(new DateTime(utilCalendar.getTime()));
         event.setStart(edt);
         utilCalendar.setTime(sdf.parse(reservation.getDate()+reservation.getEndTime()));
-        edt.setDateTime(new DateTime(utilCalendar.getTime()));
+        edt = new EventDateTime().setDateTime(new DateTime(utilCalendar.getTime()));
         event.setEnd(edt);
         event.setSummary("Meeting with " + accountName);
         event.setDescription(reservation.getAttendees() + " people attending.");

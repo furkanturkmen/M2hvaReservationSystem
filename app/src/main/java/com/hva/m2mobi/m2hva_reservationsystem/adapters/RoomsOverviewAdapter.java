@@ -84,7 +84,7 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         holder.imageRoom.setImageResource(room.getImgResource());
         holder.capacity.setText(room.getCapacity() + "");
 
-        if(room.getAvailability().equals("Available")){
+        if(room.isAvailability()){
             holder.availabilty.setTextColor(Color.rgb(0, 150, 0));
             holder.availabilty.setText(R.string.status_green);
             holder.availabilty.setText(holder.availabilty.getText());

@@ -30,7 +30,6 @@ public class RoomsOverviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_rooms_overview, container, false);
         createExampleList();
         buildRecylerView();
-        System.out.println(exampleList.get(0).getAvailability());
 
         return view;
     }

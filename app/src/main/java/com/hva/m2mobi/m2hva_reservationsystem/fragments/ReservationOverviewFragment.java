@@ -157,6 +157,9 @@ public class ReservationOverviewFragment extends Fragment {
         @Override
         protected void onPostExecute(List list) {
             super.onPostExecute(list);
+            if(list == null){
+                list = new ArrayList();
+            }
             reservationList = list;
             buildRecylerView();
         }
