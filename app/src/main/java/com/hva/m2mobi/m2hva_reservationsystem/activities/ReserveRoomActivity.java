@@ -27,7 +27,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
     @BindView(R.id.reserve_room_date)
     TextView datePicker;
     @BindView(R.id.reserve_room_duration)
-    TextView durationSpinner;
+    Spinner spinnerDuration;
     @BindView(R.id.reserve_room_button)
     Button reservationButton;
     @BindView(R.id.reserve_room_toolbar)
@@ -43,31 +43,39 @@ public class ReserveRoomActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         loadCapacityData();
         loadRoomNames();
+        loadDurationData();
     }
 
     @OnClick(R.id.reserve_room_button)
-    private void submitReservation() {
+   void submitReservation() {
         // TODO call server...
     }
 
     @OnClick(R.id.reserve_room_date)
-    private void showDate() {
+    void showDate() {
         datePickerDialog().show();
     }
 
     @OnClick(R.id.reserve_room_timepicker)
-    private void chooseTime() {
+     void chooseTime() {
         // TODO go to next activity
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
-    private void roomCapacitySelected(int position) {
+    void roomCapacitySelected(int position) {
        spinnerCapacity.getItemAtPosition(position);
     }
 
     @OnItemSelected(R.id.reserve_room_name)
-    private void roomNameSelected( int position) {
-//        String text = spinnerRoom.getItemAtPosition(position).toString();
+    void roomNameSelected( int position) {
+        spinnerRoom.getItemAtPosition(position);
+//        String text = spinner.getSelectedItem().toString();
+    }
+
+
+    @OnItemSelected(R.id.reserve_room_duration)
+    void roomDurationSelected( int position) {
+        spinnerDuration.getItemAtPosition(position);
 //        String text = spinner.getSelectedItem().toString();
     }
 
@@ -82,7 +90,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.roomnames_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCapacity.setAdapter(adapter);
+        spinnerRoom.setAdapter(adapter);
+    }
+
+    private void loadDurationData() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.duration_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDuration.setAdapter(adapter);
     }
 
     @Override

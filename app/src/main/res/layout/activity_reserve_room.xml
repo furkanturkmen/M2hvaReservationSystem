@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/reserve_room_border_spinner"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp" />
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -55,8 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/reserve_room_border_spinner"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp" />
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -123,16 +123,16 @@
                 android:textStyle="bold"
                 tools:text="12:00" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/reserve_room_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/reserve_room_border_spinner"
-                android:paddingStart="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
+                android:paddingStart="26dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:textStyle="bold"
                 tools:text="1h" />
 
