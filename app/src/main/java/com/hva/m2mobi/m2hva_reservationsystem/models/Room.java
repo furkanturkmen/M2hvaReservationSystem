@@ -58,7 +58,7 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public boolean isAvailability() {
+    public boolean isAvailable() {
         return availability;
     }
 

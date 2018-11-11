@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -23,7 +22,6 @@ import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class CalendarConnection{
 
     //List of calendar ID's (this will be replaced with getting each ID from the database)
 
-    public static final java.util.List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    private static final java.util.List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
     public static final Room[] ROOMS = {new Room(R.drawable.beach_house,"Mammut","Big Room", "h1omqjoq2o29qs177sb27fleec@group.calendar.google.com",10),
             new Room(R.drawable.beach_house,"Jungle","Medium Room", "nrqltuh2vd42ge4rgfsa909mdo@group.calendar.google.com",8),
             new Room(R.drawable.beach_house,"Elephant","Medium Room", "k26b7a8cvd0rk4oamf58d16ph4@group.calendar.google.com",8),
@@ -49,7 +47,6 @@ public class CalendarConnection{
 
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     public static final String TIME_FORMAT = "HH:mm";
-    //"24-01-2019/09:00"
 
     private Calendar calendar;
     private String accountName;
@@ -64,7 +61,6 @@ public class CalendarConnection{
             throw new SecurityException("Calendar Connection requires GET_ACCOUNTS permission");
         }
         accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Log.d("Connection", accountName);
         GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(context, SCOPES)
                 .setBackOff(new ExponentialBackOff());
         mCredential.setSelectedAccountName(accountName);
@@ -90,12 +86,10 @@ public class CalendarConnection{
         event.setEnd(edt);
         event.setSummary("Meeting with " + accountName);
         event.setDescription(reservation.getAttendees() + " people attending.");
-
-        if(event != null)
-            calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute();
+        calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute();
     }
 
-    private List<Reservation> eventListToReservation(List<Event> events, Room room) throws IOException, ParseException {
+    private List<Reservation> eventListToReservation(List<Event> events, Room room) throws ParseException {
         List <Reservation> res = new ArrayList<>();
         for (Event event:events) {
             if(event != null) {
@@ -109,8 +103,9 @@ public class CalendarConnection{
                 String endTime = tf.format(endDate);
                 String date = df.format(startDate);
 
-                Reservation newRes = new Reservation(0, startTime, endTime, room, event.getCreator().getEmail(), date,event.getId());
-                //Reservation newRes = new Reservation(0, event.getStart().toPrettyString(), event.getEnd().toString(),room, event.getCreator().getEmail());
+                Reservation newRes = new Reservation(0, startTime, endTime, room,
+                        event.getCreator().getEmail(), date,event.getId());
+
                 res.add(newRes);
             }
         }
@@ -119,14 +114,10 @@ public class CalendarConnection{
 
     public List<Reservation> getMyEvents(int noOfEvents) throws IOException, ParseException {
         List<Reservation> allEvents = getAllEvents(noOfEvents);
-        Log.d("All Events", allEvents.size()+"");
-        List <Reservation> ownerEvents = filterEventsByOwner(allEvents,accountName);
-        Log.d("my Events", ownerEvents.size()+"");
-
-        return ownerEvents;
+        return filterEventsByOwner(allEvents,accountName);
     }
 
-    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
+    private List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)
@@ -137,17 +128,7 @@ public class CalendarConnection{
         return eventListToReservation(result.getItems(),room);
     }
 
-   /* public List<Event> getCurrentRoomEvent(int room) throws IOException{
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Calendar.Events.List event = calendar.events().list(CALENDAR_ID[room]);
-        event.setMaxResults(1)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true);
-        return event.execute().getItems();
-    }*/
-
-    public List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException {
+    private List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException {
         List<Reservation> items = new ArrayList<>();
         for (Room room: ROOMS) {
             List<Reservation> result = getRoomEvents(room,noOfEvents);

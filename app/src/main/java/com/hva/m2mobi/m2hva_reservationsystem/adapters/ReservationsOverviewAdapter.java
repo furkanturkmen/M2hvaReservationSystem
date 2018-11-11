@@ -7,25 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.EventDateTime;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
-import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class ReservationsOverviewAdapter extends RecyclerView.Adapter<ReservationsOverviewAdapter.ReservationsViewHolder> {
-    public List<Reservation> mResevationsList;
+    private List<Reservation> mReservationList;
     private OnItemClickListener mListener;
 
 
@@ -37,6 +28,9 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         mListener = listener;
     }
 
+    public void setReservationList(List<Reservation> list){
+        mReservationList = list;
+    }
 
     public static class ReservationsViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
@@ -69,26 +63,25 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     }
 
     public ReservationsOverviewAdapter(List<Reservation> reservationsList) {
-        mResevationsList = reservationsList;
+        mReservationList = reservationsList;
     }
 
     @NonNull
     @Override
     public ReservationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_cell_reservationsoverview, parent, false);
-        ReservationsViewHolder rvh = new ReservationsViewHolder(view, mListener);
-        return rvh;
+        return new ReservationsViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
-        Reservation currentItem = mResevationsList.get(position);
+        Reservation currentItem = mReservationList.get(position);
         holder.resRoom.setImageResource(currentItem.getReservationRoom().getImgResource());
         holder.title.setText(currentItem.getReservationRoom().getName());
 
-        holder.date.setText(holder.date.getText() + " " + currentItem.getDate());
-        holder.time.setText(holder.time.getText() + " " + currentItem.getStartTime() + " - " + currentItem.getEndTime());
-        holder.attendees.setText(holder.attendees.getText() + " " + currentItem.getAttendees());
+        holder.date.setText(String.format("%s %s", holder.date.getText(), currentItem.getDate()));
+        holder.time.setText(String.format("%s %s - %s", holder.time.getText(), currentItem.getStartTime(), currentItem.getEndTime()));
+        holder.attendees.setText(String.format("%s %s", holder.attendees.getText(), currentItem.getAttendees()));
 
         Typeface custom_font;
         custom_font = ResourcesCompat.getFont(holder.attendees.getContext(), R.font.fa_solid_900);
@@ -99,8 +92,6 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
 
     @Override
     public int getItemCount() {
-        return mResevationsList.size();
+        return mReservationList.size();
     }
-
-
 }
