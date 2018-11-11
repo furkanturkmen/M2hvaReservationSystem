@@ -74,6 +74,10 @@ public class CalendarConnection{
                 .build();
     }
 
+    public void removeEvent(Reservation reservation) throws IOException {
+        calendar.events().delete(reservation.getReservationRoom().getCalendarID(), reservation.getID()).execute();
+    }
+
     public void addEvent(Reservation reservation) throws IOException, ParseException {
         Event event = new Event();
         java.util.Calendar utilCalendar = java.util.Calendar.getInstance();
@@ -104,7 +108,8 @@ public class CalendarConnection{
                 String startTime = tf.format(startDate);
                 String endTime = tf.format(endDate);
                 String date = df.format(startDate);
-                Reservation newRes = new Reservation(0, startTime, endTime, room, event.getCreator().getEmail(), date);
+
+                Reservation newRes = new Reservation(0, startTime, endTime, room, event.getCreator().getEmail(), date,event.getId());
                 //Reservation newRes = new Reservation(0, event.getStart().toPrettyString(), event.getEnd().toString(),room, event.getCreator().getEmail());
                 res.add(newRes);
             }
@@ -116,6 +121,7 @@ public class CalendarConnection{
         List<Reservation> allEvents = getAllEvents(noOfEvents);
         Log.d("All Events", allEvents.size()+"");
         List <Reservation> ownerEvents = filterEventsByOwner(allEvents,accountName);
+        Log.d("my Events", ownerEvents.size()+"");
 
         return ownerEvents;
     }

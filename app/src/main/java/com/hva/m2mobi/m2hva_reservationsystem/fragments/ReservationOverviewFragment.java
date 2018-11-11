@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,20 +40,33 @@ public class ReservationOverviewFragment extends Fragment {
     View view;
     private RecyclerView mRecyclerView;
     private ArrayList attendees;
-    private ReservationsOverviewAdapter mAdapter;
+    private List<Reservation> reservationList = new ArrayList<>();
+    private Reservation lastRemoved;
+    private final ReservationsOverviewAdapter mAdapter = new ReservationsOverviewAdapter(reservationList);
     private RecyclerView.LayoutManager mLayoutManager;
     private DatabaseReference fbRef;
     private FirebaseDatabase fb;
+    private RelativeLayout loader;
+    private RelativeLayout noBooking;
 
-    List<Reservation> reservationList;
-    ArrayList<Room> roomList;
+
+    private static final int GET_RESERVATIONS = 0;
+    private static final int REMOVE_RESERVATION = 1;
+    private static final int ADD_RESERVATION = 2;
 
     private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reservations_overview, container, false);
+
+        loader = view.findViewById(R.id.loadingPanel);
+        loader.setVisibility(View.GONE);
+        noBooking = view.findViewById(R.id.noBooking);
+        inflater.inflate(R.layout.no_bookings,noBooking);
+        noBooking.setVisibility(View.GONE);
         Log.d("onCreate", "created successfully");
+        buildRecylerView();
         requestPermissions(REQUEST_PERMISSIONS_CALENDAR);
 
         return view;
@@ -66,7 +80,7 @@ public class ReservationOverviewFragment extends Fragment {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.GET_ACCOUNTS},requestCode);
         }else{
-            new CalendarAsyncTask().execute();
+            new CalendarAsyncTask(GET_RESERVATIONS).execute();
         }
     }
     @Override
@@ -75,28 +89,14 @@ public class ReservationOverviewFragment extends Fragment {
         Log.d("OnRequest",permissions[0] + " permission name");
         if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
             Log.d("OnRequest","passed perms");
-            new CalendarAsyncTask().execute();
+            new CalendarAsyncTask(GET_RESERVATIONS).execute();
         }
     }
-
-    /*public void getReservationList() {
-        //attendees list
-        CalendarConnection con = new CalendarConnection(getContext());
-        try {
-            reservationList = (ArrayList<Reservation>) con.getMyEvents(20);
-            for (Reservation res:reservationList) {
-                Log.d("Res List", res.toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void buildRecylerView() {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new ReservationsOverviewAdapter(reservationList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -114,17 +114,18 @@ public class ReservationOverviewFragment extends Fragment {
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
                         //Get the index corresponding to the selected position
-                        int position = (viewHolder.getAdapterPosition());
-                        mAdapter.notifyItemRemoved(position);
+                        final int position = (viewHolder.getAdapterPosition());
                         Snackbar snackbar = Snackbar
-                                .make(view, reservationList.get(position).getReservationRoom().getName() + " reservation has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Snackbar undoSnackbar = Snackbar.make(view, "Reservation has been restored!", Snackbar.LENGTH_SHORT);
-                                        undoSnackbar.show();
-                                    }
-                                });
-                        reservationList.remove(position);
+                                .make(view, reservationList.get(position).getReservationRoom().getName() + " reservation has been deleted.", Snackbar.LENGTH_LONG);//setAction("UNDO", new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View view) {
+////                                        Snackbar undoSnackbar = Snackbar.make(view, "Reservation has been restored!", Snackbar.LENGTH_SHORT);
+////                                        undoSnackbar.show();
+////                                        new CalendarAsyncTask(ADD_RESERVATION).execute(lastRemoved);
+//                                    }
+//                                });
+                        lastRemoved = reservationList.get(position);
+                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(reservationList.get(position));
                         snackbar.show();
                     }
                 };
@@ -137,14 +138,26 @@ public class ReservationOverviewFragment extends Fragment {
         fbRef = fb.getReference("reservations");
         System.out.println("SOUT: " + fbRef.child("res1"));
     }
-    public class CalendarAsyncTask extends AsyncTask<Void, Void, List> {
-        public CalendarAsyncTask() {
+    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
+        private int task;
+        public CalendarAsyncTask(int task) {
+            this.task = task;
+            loader.setVisibility(View.VISIBLE);
+            noBooking.setVisibility(View.GONE);
         }
 
         @Override
-        protected List doInBackground(Void... voids) {
+        protected List doInBackground(Reservation... reservations) {
             try {
-                return new CalendarConnection(getContext()).getMyEvents(10);
+                CalendarConnection con = new CalendarConnection(getContext());
+                switch(task){
+                    case REMOVE_RESERVATION:
+                        con.removeEvent(reservations[0]);
+                        break;
+                    case ADD_RESERVATION:
+                        con.addEvent(reservations[0]);
+                }
+                return con.getMyEvents(10);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -157,11 +170,17 @@ public class ReservationOverviewFragment extends Fragment {
         @Override
         protected void onPostExecute(List list) {
             super.onPostExecute(list);
-            if(list == null){
-                list = new ArrayList();
+
+            loader.setVisibility(View.GONE);
+            if(list != null) {
+                Log.d("async post",list.size()+"");
+                reservationList = list;
+                mAdapter.mResevationsList = list;
+                mAdapter.notifyDataSetChanged();
+                if(list.isEmpty()){
+                    noBooking.setVisibility(View.VISIBLE);
+                }
             }
-            reservationList = list;
-            buildRecylerView();
         }
     }
 }

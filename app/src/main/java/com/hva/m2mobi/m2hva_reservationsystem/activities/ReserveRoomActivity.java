@@ -81,7 +81,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
        String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Log.d("Connection", accountName);
         Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime,
-                CalendarConnection.ROOMS[spinnerRoom.getSelectedItemPosition()], accountName, datePicker.getText().toString());
+                CalendarConnection.ROOMS[spinnerRoom.getSelectedItemPosition()], accountName, datePicker.getText().toString(),"");
         new CalendarAsyncTask().execute(res);
     }
 

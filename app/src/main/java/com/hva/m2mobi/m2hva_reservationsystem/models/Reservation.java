@@ -17,15 +17,17 @@ public class Reservation {
     private String endTime;
     private Room reservationRoom;
     private String creator;
+    private String ID;
 
     //reservation object
-    public Reservation(int attendees, String startTime, String endTime, Room room, String creator, String date) {
+    public Reservation(int attendees, String startTime, String endTime, Room room, String creator, String date, String ID) {
         this.attendees = attendees;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationRoom = room;
         this.creator = creator;
         this.date = date;
+        this.ID = ID;
     }
 
     @NonNull
@@ -81,5 +83,13 @@ public class Reservation {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 }
