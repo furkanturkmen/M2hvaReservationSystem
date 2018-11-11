@@ -53,6 +53,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_room);
+
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,6 +62,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadCapacityData();
         loadRoomNames();
         loadDurationData();
+        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+        SimpleDateFormat stf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
+        Calendar calendar = Calendar.getInstance();
+
+
+        datePicker.setText(sdf.format(calendar.getTime()));
+        timePicker.setText(stf.format(calendar.getTime()));
     }
 
     @OnClick(R.id.reserve_room_button)
@@ -120,6 +129,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     private void loadRoomNames() {
 
+        int roomIntent = getIntent().getIntExtra("room",0);
         if(adapter == null){
             roomArray = new ArrayList<>();
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roomArray);
@@ -130,10 +140,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
         for (Room room:CalendarConnection.ROOMS) {
             Log.d("room cap",room.getCapacity()+"" );
             Log.d("spin cap",spinnerCapacity.getSelectedItem().toString() );
-            if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
+            if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString())) {
                 roomArray.add(room.getName());
+            }
         }
         adapter.notifyDataSetChanged();
+
+        spinnerRoom.setSelection(roomIntent);
     }
 
     private void loadDurationData() {
