@@ -52,10 +52,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(this);
+        RoomsOverviewFragment rf = new RoomsOverviewFragment();
+        rf.setRetainInstance(true);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,rf).commit();
+    }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RoomsOverviewFragment()).commit();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
 
-
+        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ReservationOverviewFragment()).commit();
     }
 
     @Override
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 toolbar.setTitle("My reservations");
                 break;
         }
+        selectedFragment.setRetainInstance(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
         return true;
 

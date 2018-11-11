@@ -54,6 +54,7 @@
         <item>6</item>
         <item>8</item>
         <item>10</item>
+        <item>20</item>
     </string-array>
 
     <string-array name = "roomnames_array">
@@ -126,7 +127,7 @@
     <string name="reserve_room_duration">Duration</string>
     <string name="reserve_room_time">Time</string>
     <string name="reserve_room_name">Room name</string>
-    <string name="reserve_room_capacity">Room capacity</string>
+    <string name="reserve_room_capacity">Amount of attendees</string>
     <string name="capacity">Capacity</string>
     <string name="until_booked_time">@string/rsv_clock</string>
     <string name="room_name">Room name</string>
