@@ -6,9 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,6 +14,7 @@ import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
@@ -42,8 +41,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
     TextView timePicker;
     @BindView(R.id.reserve_room_duration)
     Spinner spinnerDuration;
-    @BindView(R.id.reserve_room_button)
-    Button reservationButton;
     @BindView(R.id.reserve_room_toolbar)
     Toolbar toolbar;
 
@@ -54,7 +51,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_room);
 
-
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,13 +58,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadCapacityData();
         loadRoomNames();
         loadDurationData();
-        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
-        SimpleDateFormat stf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
-        Calendar calendar = Calendar.getInstance();
-
-
-        datePicker.setText(sdf.format(calendar.getTime()));
-        timePicker.setText(stf.format(calendar.getTime()));
+        loadDateData();
     }
 
     @OnClick(R.id.reserve_room_button)
@@ -83,14 +73,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String duration = spinnerDuration.getSelectedItem().toString().substring(0,1);
-        Log.d("duration", duration);
         cal.add(Calendar.HOUR,Integer.parseInt(duration));
         String endTime =  sdf.format(cal.getTime());
-        Log.d("end time", endTime);
        String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Log.d("Connection", accountName);
         Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime,
-                CalendarConnection.ROOMS[spinnerRoom.getSelectedItemPosition()], accountName, datePicker.getText().toString(),"");
+                CalendarConnection.ROOMS[spinnerRoom.getSelectedItemPosition()], accountName,
+                datePicker.getText().toString(),"");
         new CalendarAsyncTask().execute(res);
     }
 
@@ -128,8 +116,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
     }
 
     private void loadRoomNames() {
-
-        int roomIntent = getIntent().getIntExtra("room",0);
+        int roomIntent = getIntent().getIntExtra(RoomsOverviewFragment.ROOM_EXTRA,0);
         if(adapter == null){
             roomArray = new ArrayList<>();
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roomArray);
@@ -138,15 +125,20 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }
         roomArray.clear();
         for (Room room:CalendarConnection.ROOMS) {
-            Log.d("room cap",room.getCapacity()+"" );
-            Log.d("spin cap",spinnerCapacity.getSelectedItem().toString() );
-            if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString())) {
+            if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
                 roomArray.add(room.getName());
-            }
         }
         adapter.notifyDataSetChanged();
-
         spinnerRoom.setSelection(roomIntent);
+    }
+
+    private void loadDateData(){
+        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+        SimpleDateFormat stf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
+        Calendar calendar = Calendar.getInstance();
+
+        datePicker.setText(sdf.format(calendar.getTime()));
+        timePicker.setText(stf.format(calendar.getTime()));
     }
 
     private void loadDurationData() {
@@ -191,7 +183,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }, hour, minute, false);
         timePickerDialog.show();
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
