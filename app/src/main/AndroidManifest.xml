@@ -31,9 +31,6 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login">
         </activity>
-        <activity
-            android:name=".activities.TabActivity"
-            android:label="@string/title_activity_tab" />
 
         <activity
             android:name=".activities.StateActivity"
