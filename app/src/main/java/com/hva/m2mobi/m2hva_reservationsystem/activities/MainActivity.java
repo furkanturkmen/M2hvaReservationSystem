@@ -20,6 +20,7 @@ import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.ReservationOverviewFragment;
 
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private Toolbar mToolbar;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
 
         FloatingActionButton fab = findViewById(R.id.fab_btn);
         fab.setOnClickListener(new View.OnClickListener() {

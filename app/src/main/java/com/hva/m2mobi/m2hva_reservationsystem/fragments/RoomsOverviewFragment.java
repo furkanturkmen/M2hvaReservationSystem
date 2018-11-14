@@ -37,7 +37,11 @@ public class RoomsOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        dbRooms = DatabaseConnection.getRooms();
+        try {
+            dbRooms = DatabaseConnection.getRooms();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         View view = inflater.inflate(R.layout.fragment_rooms_overview, container, false);
         buildRecyclerView(view);
