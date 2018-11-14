@@ -2,6 +2,8 @@ package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
@@ -118,14 +121,29 @@ public class ReservationOverviewFragment extends Fragment {
 
                     //Called when a user swipes left or right on a ViewHolder
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         //Get the index corresponding to the selected position
-                        final int position = (viewHolder.getAdapterPosition());
-                        Snackbar snackbar = Snackbar.make(view,
-                                mReservationList.get(position).getReservationRoom().getName()
-                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
-                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(mReservationList.get(position));
-                        snackbar.show();
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.remove_title)
+                                .setMessage(R.string.remove_description)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        final int position = (viewHolder.getAdapterPosition());
+                                        Snackbar snackbar = Snackbar.make(view,
+                                                mReservationList.get(position).getReservationRoom().getName()
+                                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
+                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(mReservationList.get(position));
+                                        snackbar.show();
+                                    }})
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        new CalendarAsyncTask(GET_RESERVATIONS).execute();
+                                    }
+                                }).show();
+
                     }
                 };
 
@@ -136,8 +154,14 @@ public class ReservationOverviewFragment extends Fragment {
         private int task;
         private CalendarAsyncTask(int task) {
             this.task = task;
-            mLoaderLayout.setVisibility(View.VISIBLE);
+            if(task != REFRESH_RESERVATIONS)
+                mLoaderLayout.setVisibility(View.VISIBLE);
             mNoBookingLayout.setVisibility(View.GONE);
+
+            mAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
+            //mAdapter.setReservationList(list);
+            mAdapter.notifyDataSetChanged();
+            mRecyclerView.setAdapter(mAdapter);
         }
 
         @Override
@@ -151,8 +175,6 @@ public class ReservationOverviewFragment extends Fragment {
                     case ADD_RESERVATION:
                         con.addEvent(reservations[0]);
                         break;
-                    case REFRESH_RESERVATIONS:
-                        mLoaderLayout.setVisibility(View.GONE);
                 }
                 try {
                     return con.getMyEvents(10);
