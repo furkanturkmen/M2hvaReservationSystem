@@ -66,6 +66,10 @@ public class ReservationOverviewFragment extends Fragment {
         buildRecyclerView();
         requestPermissions();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccentBlue,
+                R.color.m2mobiLightGrey);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -126,7 +130,7 @@ public class ReservationOverviewFragment extends Fragment {
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.remove_title)
                                 .setMessage(R.string.remove_description)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setIcon(R.drawable.ic_warning)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int whichButton) {
