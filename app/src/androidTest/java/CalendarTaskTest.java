@@ -80,8 +80,8 @@ public class CalendarTaskTest{
         params.calendarAction = CalendarTaskParams.ADD_EVENT;
         params.event = new Event();
         params.room = CalendarTaskParams.ROOM_ICSW;
-        params.event.setSummary("Add event test");
-        params.event.setDescription("Add event test desc");
+        params.event.setSummary("Add event no_permission");
+        params.event.setDescription("Add event no_permission desc");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
         params.event.setStart(new EventDateTime().setDate(new DateTime(calendar.getTime())));
