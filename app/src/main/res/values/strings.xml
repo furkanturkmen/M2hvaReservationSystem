@@ -135,4 +135,7 @@
     <string name="until_booked_time">@string/rsv_clock</string>
     <string name="room_name">Room name</string>
     <string name="room_description">Description</string>
+    <string name="remove_title">Remove Reservation</string>
+    <string name="remove_description">Are you sure you want to remove this reservation?</string>
+
 </resources>

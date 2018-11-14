@@ -1,6 +1,10 @@
 package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -16,7 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
@@ -36,13 +43,16 @@ public class ReservationOverviewFragment extends Fragment {
     private RelativeLayout mLoaderLayout;
     private RelativeLayout mNoBookingLayout;
     private RecyclerView mRecyclerView;
-
+    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     private static final int GET_RESERVATIONS = 0;
     private static final int REMOVE_RESERVATION = 1;
     private static final int ADD_RESERVATION = 2;
+    private static final int REFRESH_RESERVATIONS = 3;
 
     private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
+    private static final int REQUEST_ACCOUNT_CALENDAR = 222;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +65,19 @@ public class ReservationOverviewFragment extends Fragment {
         mNoBookingLayout.setVisibility(View.GONE);
         buildRecyclerView();
         requestPermissions();
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccentBlue,
+                R.color.m2mobiLightGrey);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        new CalendarAsyncTask(REFRESH_RESERVATIONS).execute();
+                    }
+                }
+        );
         return view;
     }
 
@@ -75,10 +98,18 @@ public class ReservationOverviewFragment extends Fragment {
             requestPermissions();
         }
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_ACCOUNT_CALENDAR){
+            new CalendarAsyncTask(GET_RESERVATIONS).execute();
+        }else{
+            //SHOW 'WE NEED ACCESS TO CALENDAR' PAGE
+        }
+    }
 
     public void buildRecyclerView() {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
-        mRecyclerView.setHasFixedSize(true);
+//        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -94,14 +125,29 @@ public class ReservationOverviewFragment extends Fragment {
 
                     //Called when a user swipes left or right on a ViewHolder
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         //Get the index corresponding to the selected position
-                        final int position = (viewHolder.getAdapterPosition());
-                        Snackbar snackbar = Snackbar.make(view,
-                                mReservationList.get(position).getReservationRoom().getName()
-                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
-                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(mReservationList.get(position));
-                        snackbar.show();
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.remove_title)
+                                .setMessage(R.string.remove_description)
+                                .setIcon(R.drawable.ic_warning)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        final int position = (viewHolder.getAdapterPosition());
+                                        Snackbar snackbar = Snackbar.make(view,
+                                                mReservationList.get(position).getReservationRoom().getName()
+                                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
+                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(mReservationList.get(position));
+                                        snackbar.show();
+                                    }})
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        new CalendarAsyncTask(GET_RESERVATIONS).execute();
+                                    }
+                                }).show();
+
                     }
                 };
 
@@ -112,8 +158,14 @@ public class ReservationOverviewFragment extends Fragment {
         private int task;
         private CalendarAsyncTask(int task) {
             this.task = task;
-            mLoaderLayout.setVisibility(View.VISIBLE);
+            if(task != REFRESH_RESERVATIONS)
+                mLoaderLayout.setVisibility(View.VISIBLE);
             mNoBookingLayout.setVisibility(View.GONE);
+
+            mAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
+            //mAdapter.setReservationList(list);
+            mAdapter.notifyDataSetChanged();
+            mRecyclerView.setAdapter(mAdapter);
         }
 
         @Override
@@ -126,8 +178,14 @@ public class ReservationOverviewFragment extends Fragment {
                         break;
                     case ADD_RESERVATION:
                         con.addEvent(reservations[0]);
+                        break;
                 }
-                return con.getMyEvents(10);
+                try {
+                    return con.getMyEvents(10);
+                }catch (UserRecoverableAuthIOException e) {
+                    startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_CALENDAR);
+                    return null;
+                }
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
                 return null;
@@ -137,7 +195,7 @@ public class ReservationOverviewFragment extends Fragment {
         @Override
         protected void onPostExecute(List list) {
             super.onPostExecute(list);
-
+            mySwipeRefreshLayout.setRefreshing(false);
             mLoaderLayout.setVisibility(View.GONE);
             if(list != null) {
                 mReservationList = list;

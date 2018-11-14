@@ -111,20 +111,24 @@ public class CalendarConnection{
         List <Reservation> res = new ArrayList<>();
         for (Event event:events) {
             if(event != null) {
-                SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
-                SimpleDateFormat tf = new SimpleDateFormat(TIME_FORMAT);
-                SimpleDateFormat pf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                Date startDate = pf.parse(event.getStart().getDateTime().toString());
-                Date endDate = pf.parse(event.getEnd().getDateTime().toString());
+                DateTime startDateTime = event.getStart().getDateTime();
+                DateTime endDateTime = event.getEnd().getDateTime();
+                if(startDateTime != null && endDateTime != null) {
+                    SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                    SimpleDateFormat tf = new SimpleDateFormat(TIME_FORMAT);
+                    SimpleDateFormat pf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Date startDate = pf.parse(startDateTime.toString());
+                    Date endDate = pf.parse(endDateTime.toString());
 
-                String startTime = tf.format(startDate);
-                String endTime = tf.format(endDate);
-                String date = df.format(startDate);
+                    String startTime = tf.format(startDate);
+                    String endTime = tf.format(endDate);
+                    String date = df.format(startDate);
 
-                Reservation newRes = new Reservation(0, startTime, endTime, room,
-                        event.getCreator().getEmail(), date,event.getId());
+                    Reservation newRes = new Reservation(0, startTime, endTime, room,
+                            event.getCreator().getEmail(), date, event.getId());
 
-                res.add(newRes);
+                    res.add(newRes);
+                }
             }
         }
         return res;

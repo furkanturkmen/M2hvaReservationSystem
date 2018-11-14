@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -56,6 +57,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         loadCapacityData();
+
         loadRoomNames();
         loadDurationData();
         loadDateData();
@@ -75,9 +77,15 @@ public class ReserveRoomActivity extends AppCompatActivity {
         String duration = spinnerDuration.getSelectedItem().toString().substring(0,1);
         cal.add(Calendar.HOUR,Integer.parseInt(duration));
         String endTime =  sdf.format(cal.getTime());
-       String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime,
-                CalendarConnection.ROOMS[spinnerRoom.getSelectedItemPosition()], accountName,
+        String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
+        Log.d("Room", roomName);
+        Room room = CalendarConnection.ROOMS[0];
+        for (Room r:CalendarConnection.ROOMS) {
+            if(r.getName().equals(roomName))
+                room = r;
+        }
+        Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime, room, accountName,
                 datePicker.getText().toString(),"");
         new CalendarAsyncTask().execute(res);
     }
