@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -17,17 +18,29 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 //A model to retrieve events from the public calendar - can't be used on the main thread (needs to be called in async task);
 //Need to request GET_ACCOUNTS and WRITE_CALENDAR permissions
@@ -45,6 +58,7 @@ public class CalendarConnection{
             new Room(R.drawable.beach_house,"Zoo","Auditorium", "abujhftkqu0k3a9h2dbtcm9d5k@group.calendar.google.com",20)
     };
 
+
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     public static final String TIME_FORMAT = "HH:mm";
 
@@ -52,6 +66,10 @@ public class CalendarConnection{
     private String accountName;
 
     public CalendarConnection(Context context){
+//        Log.d(TAG, "Rooms: " + dbRef.child("a") + "\n" + dbRef.child("b") + "\n" + dbRef.child("c") + "\n" + dbRef.child("d") + "\n" + dbRef.child("e") + "\n" + dbRef.child("f"));
+
+
+
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
             throw new SecurityException("Calendar Connection requires WRITE_CALENDAR permission");

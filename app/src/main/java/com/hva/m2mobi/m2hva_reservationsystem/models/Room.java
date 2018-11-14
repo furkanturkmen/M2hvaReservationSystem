@@ -1,5 +1,12 @@
 package com.hva.m2mobi.m2hva_reservationsystem.models;
 
+import com.google.firebase.database.DataSnapshot;
+import com.hva.m2mobi.m2hva_reservationsystem.R;
+
+import java.util.HashMap;
+
+import static java.lang.StrictMath.toIntExact;
+
 public class Room {
     private int imgResource;
     private String name;
@@ -8,6 +15,12 @@ public class Room {
     private int capacity;
     private boolean availability = true;
     private String time;
+
+
+    public Room(){
+        imgResource = R.drawable.hunting_room;
+        time = "16:00";
+    }
 
     public Room(int imgResource, String name, String description, String calendarID, int capacity) {
         this.imgResource = imgResource;
