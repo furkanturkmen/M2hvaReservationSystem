@@ -32,9 +32,10 @@ import java.util.Objects;
 public class ReservationOverviewFragment extends Fragment {
     View view;
     private List<Reservation> mReservationList = new ArrayList<>();
-    private final ReservationsOverviewAdapter mAdapter = new ReservationsOverviewAdapter(mReservationList);
+    private ReservationsOverviewAdapter mAdapter = new ReservationsOverviewAdapter(mReservationList);
     private RelativeLayout mLoaderLayout;
     private RelativeLayout mNoBookingLayout;
+    private RecyclerView mRecyclerView;
 
 
     private static final int GET_RESERVATIONS = 0;
@@ -76,11 +77,11 @@ public class ReservationOverviewFragment extends Fragment {
     }
 
     public void buildRecyclerView() {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_reservations);
-        recyclerView.setHasFixedSize(true);
+        mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
+        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -105,7 +106,7 @@ public class ReservationOverviewFragment extends Fragment {
                 };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
     private class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
         private int task;
@@ -140,8 +141,10 @@ public class ReservationOverviewFragment extends Fragment {
             mLoaderLayout.setVisibility(View.GONE);
             if(list != null) {
                 mReservationList = list;
-                mAdapter.setReservationList(list);
+                mAdapter = new ReservationsOverviewAdapter(mReservationList);
+                //mAdapter.setReservationList(list);
                 mAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(mAdapter);
                 if(list.isEmpty()){
                     mNoBookingLayout.setVisibility(View.VISIBLE);
                 }
