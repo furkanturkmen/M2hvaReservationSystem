@@ -2,21 +2,27 @@
 <resources>
 
     <!-- font sizes -->
-    <dimen name="font_larger">25sp</dimen>
+    <dimen name="font_huge">34sp</dimen>
+    <dimen name="font_larger">26sp</dimen>
     <dimen name="font_large">20sp</dimen>
-    <dimen name="font_normal">14sp</dimen>
-    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_normal">16sp</dimen>
+    <dimen name="font_small">14sp</dimen>
 
     <!-- card margins -->
     <dimen name="card_margins">16dp</dimen>
     <dimen name="text_card_margins">20dp</dimen>
 
-    <!-- typical spacing between two views -->
-    <dimen name="spacing_huge">40dp</dimen>
-    <dimen name="spacing_large">24dp</dimen>
-    <dimen name="spacing_normal">14dp</dimen>
-    <dimen name="spacing_small">10dp</dimen>
-    <dimen name="spacing_tiny">4dp</dimen>
+    <!-- typical spacing between two elements -->
+    <dimen name="spacing_huge">180dp</dimen>
+    <dimen name="spacing_large">120dp</dimen>
+    <dimen name="spacing_normal">60dp</dimen>
+    <dimen name="spacing_small">20dp</dimen>
+    <dimen name="spacing_tiny">10dp</dimen>
+
+        <!-- Textview sizes -->
+    <dimen name="text_normal">320dp</dimen>
+    <dimen name="text_small">160dp</dimen>
+    <dimen name="text_tiny">80dp</dimen>
 
     <!-- typical sizes of views -->
     <dimen name="button_height_tall">60dp</dimen>

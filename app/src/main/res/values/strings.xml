@@ -119,9 +119,12 @@
     <string name="status_green">&#xf058;</string>
 
     <string name="no_connection_title">Connection failure!</string>
-    <string name="no_connection_text">Something has gone wrong with the internet connection.\nLet\'s give it another shot.</string>
-    <string name="no_booking_title">OMG!</string>
-    <string name="no_booking_text">You have no upcoming meetings.\nLet\'s change that!</string>
+    <string name="no_connection_text">Something has gone wrong with the internet connection. Let\'s give it another shot.</string>
+    <string name="give_permission_title">Don"'t you trust us?</string>
+    <string name="give_permission_text">To use this app you need to give us more access to your data. To do that just refresh the page and press allow.</string>
+
+    <string name="no_booking_title">No meetings?</string>
+    <string name="no_booking_text">Let\'s change that!</string>
     <string name="no_booking_action_text">Book a room now!</string>
     <string name="make_a_reservation">Make a reservation</string>
     <string name="reserve_room_duration">Duration</string>
