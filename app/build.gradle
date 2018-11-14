@@ -25,7 +25,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.no_permission.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -56,8 +56,8 @@ android {
             renderscriptDebuggable true
             minifyEnabled true
             pseudoLocalesEnabled false
-            applicationIdSuffix 'no_permission'
-            versionNameSuffix 'no_permission'
+            applicationIdSuffix 'test'
+            versionNameSuffix 'test'
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -107,8 +107,8 @@ dependencies {
 
     //Test
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation "com.android.support.no_permission:runner:${testVersion}"
-    androidTestImplementation "com.android.support.no_permission:rules:${testVersion}"
+    androidTestImplementation "com.android.support.test:runner:${testVersion}"
+    androidTestImplementation "com.android.support.test:rules:${testVersion}"
     androidTestImplementation "com.android.support:support-annotations:${compileVersion}"
     androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
 

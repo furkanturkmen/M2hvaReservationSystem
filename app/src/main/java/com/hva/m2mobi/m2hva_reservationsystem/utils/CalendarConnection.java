@@ -50,14 +50,6 @@ public class CalendarConnection{
     //List of calendar ID's (this will be replaced with getting each ID from the database)
 
     private static final java.util.List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    public static final Room[] ROOMS = {new Room(R.drawable.beach_house,"Mammut","Big Room", "h1omqjoq2o29qs177sb27fleec@group.calendar.google.com",10),
-            new Room(R.drawable.beach_house,"Jungle","Medium Room", "nrqltuh2vd42ge4rgfsa909mdo@group.calendar.google.com",8),
-            new Room(R.drawable.beach_house,"Elephant","Medium Room", "k26b7a8cvd0rk4oamf58d16ph4@group.calendar.google.com",8),
-            new Room(R.drawable.hunting_room,"Hunting Room","Small Room", "l117asict045c4ii2d3da65m54@group.calendar.google.com",6),
-            new Room(R.drawable.beach_house,"Beach House 2.0","Small Room", "352a8lc5v10v6qm5prf3sp89gs@group.calendar.google.com",2),
-            new Room(R.drawable.beach_house,"Zoo","Auditorium", "abujhftkqu0k3a9h2dbtcm9d5k@group.calendar.google.com",20)
-    };
-
 
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     public static final String TIME_FORMAT = "HH:mm";
@@ -66,10 +58,6 @@ public class CalendarConnection{
     private String accountName;
 
     public CalendarConnection(Context context){
-//        Log.d(TAG, "Rooms: " + dbRef.child("a") + "\n" + dbRef.child("b") + "\n" + dbRef.child("c") + "\n" + dbRef.child("d") + "\n" + dbRef.child("e") + "\n" + dbRef.child("f"));
-
-
-
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
             throw new SecurityException("Calendar Connection requires WRITE_CALENDAR permission");
@@ -134,7 +122,7 @@ public class CalendarConnection{
         return res;
     }
 
-    public List<Reservation> getMyEvents(int noOfEvents) throws IOException, ParseException {
+    public List<Reservation> getMyEvents(int noOfEvents) throws IOException, ParseException, InterruptedException {
         List<Reservation> allEvents = getAllEvents(noOfEvents);
         return filterEventsByOwner(allEvents,accountName);
     }
@@ -150,9 +138,9 @@ public class CalendarConnection{
         return eventListToReservation(result.getItems(),room);
     }
 
-    private List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException {
+    private List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException, InterruptedException {
         List<Reservation> items = new ArrayList<>();
-        for (Room room: ROOMS) {
+        for (Room room: DatabaseConnection.getRooms()) {
             List<Reservation> result = getRoomEvents(room,noOfEvents);
             if (!result.isEmpty())
                 items.addAll(result);

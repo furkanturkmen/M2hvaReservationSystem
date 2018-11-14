@@ -21,11 +21,12 @@ public class DatabaseConnection {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference dbRef = database.getReference("rooms");
 
-    private static final ArrayList<Room> roomList = new ArrayList<Room>();
+    private static final ArrayList<Room> roomList = new ArrayList<>();
 
-    public static ArrayList<Room> getRooms(){
+    public static ArrayList<Room> getRooms() throws InterruptedException {
         if(roomList.isEmpty()){
             dbOphalen();
+            Thread.sleep(2000L);
         }
         System.out.println("ROOMLIST: " + roomList);
         return roomList;

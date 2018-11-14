@@ -43,6 +43,7 @@ public class ReservationOverviewFragment extends Fragment {
     private RelativeLayout mLoaderLayout;
     private RelativeLayout mNoBookingLayout;
     private RecyclerView mRecyclerView;
+    private RelativeLayout mNoPermissionLayout;
     private SwipeRefreshLayout mySwipeRefreshLayout;
 
     private static final int GET_RESERVATIONS = 0;
@@ -63,6 +64,9 @@ public class ReservationOverviewFragment extends Fragment {
         mNoBookingLayout = view.findViewById(R.id.noBooking);
         inflater.inflate(R.layout.no_bookings, mNoBookingLayout);
         mNoBookingLayout.setVisibility(View.GONE);
+        mNoPermissionLayout = view.findViewById(R.id.noPermission);
+        inflater.inflate(R.layout.no_permission, mNoPermissionLayout);
+        mNoPermissionLayout.setVisibility(View.GONE);
         buildRecyclerView();
         requestPermissions();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
@@ -103,7 +107,7 @@ public class ReservationOverviewFragment extends Fragment {
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_ACCOUNT_CALENDAR){
             new CalendarAsyncTask(GET_RESERVATIONS).execute();
         }else{
-            //SHOW 'WE NEED ACCESS TO CALENDAR' PAGE
+            mNoPermissionLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -157,6 +161,7 @@ public class ReservationOverviewFragment extends Fragment {
     private class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
         private int task;
         private CalendarAsyncTask(int task) {
+            mNoPermissionLayout.setVisibility(View.GONE);
             this.task = task;
             if(task != REFRESH_RESERVATIONS)
                 mLoaderLayout.setVisibility(View.VISIBLE);
@@ -185,8 +190,11 @@ public class ReservationOverviewFragment extends Fragment {
                 }catch (UserRecoverableAuthIOException e) {
                     startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_CALENDAR);
                     return null;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return null;
                 }
-            } catch (IOException | ParseException e) {
+            } catch (IOException | ParseException e ) {
                 e.printStackTrace();
                 return null;
             }

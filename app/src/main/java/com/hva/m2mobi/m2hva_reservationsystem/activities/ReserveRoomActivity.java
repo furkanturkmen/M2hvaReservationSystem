@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -80,10 +82,16 @@ public class ReserveRoomActivity extends AppCompatActivity {
         String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         Log.d("Room", roomName);
-        Room room = CalendarConnection.ROOMS[0];
-        for (Room r:CalendarConnection.ROOMS) {
-            if(r.getName().equals(roomName))
-                room = r;
+        Room room = null;
+        try {
+            room = DatabaseConnection.getRooms().get(0);
+
+            for (Room r:DatabaseConnection.getRooms()) {
+                if(r.getName().equals(roomName))
+                    room = r;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime, room, accountName,
                 datePicker.getText().toString(),"");
@@ -132,9 +140,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
             spinnerRoom.setAdapter(adapter);
         }
         roomArray.clear();
-        for (Room room:CalendarConnection.ROOMS) {
-            if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
-                roomArray.add(room.getName());
+        try {
+            for (Room room:DatabaseConnection.getRooms()) {
+                if(room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
+                    roomArray.add(room.getName());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         adapter.notifyDataSetChanged();
         spinnerRoom.setSelection(roomIntent);
