@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onResume() {
         super.onResume();
-        mBottomNav.setSelectedItemId(R.id.nav_reservations);
+        mBottomNav.setSelectedItemId(R.id.nav_rooms);
     }
 
     @Override
