@@ -63,7 +63,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
             android:gravity="start"
-            android:text="Date"
+            android:text="@string/reserve_room_date"
             android:textStyle="bold" />
 
         <TextView
@@ -136,6 +136,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="start"
+            android:text="@string/reserve_room_slots"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/meeting_times"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
         <Button
             android:id="@+id/reserve_room_button"
             android:layout_width="match_parent"
@@ -146,6 +160,7 @@
             android:text="@string/make_a_reservation"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />
+
 
     </LinearLayout>
 </LinearLayout>

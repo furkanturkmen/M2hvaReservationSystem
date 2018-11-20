@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -46,9 +47,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
     Spinner spinnerDuration;
     @BindView(R.id.reserve_room_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.meeting_times)
+    RecyclerView meetingTimes;
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> roomArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -132,6 +132,8 @@
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Amount of attendees</string>
     <string name="capacity">Capacity</string>
+    <string name="reserve_room_date">Date</string>
+    <string name="reserve_room_slots">Slots taken:</string>
     <string name="until_booked_time">@string/rsv_clock</string>
     <string name="room_name">Room name</string>
     <string name="room_description">Description</string>
