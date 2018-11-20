@@ -186,7 +186,7 @@ public class ReservationOverviewFragment extends Fragment {
                         break;
                 }
                 try {
-                    return con.getMyEvents(10);
+                    return con.orderListByDate(con.getMyEvents(10));
                 }catch (UserRecoverableAuthIOException e) {
                     startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_CALENDAR);
                     return null;
