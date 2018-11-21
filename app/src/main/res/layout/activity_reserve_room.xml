@@ -19,16 +19,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:gravity="start"
             android:text="@string/reserve_room_capacity"
             android:textStyle="bold" />
 
@@ -45,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:gravity="start"
             android:text="@string/reserve_room_name"
             android:textStyle="bold" />
 
@@ -62,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:gravity="start"
             android:text="@string/reserve_room_date"
             android:textStyle="bold" />
 
@@ -82,57 +77,59 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:text="@string/reserve_room_time"
-                android:textStyle="bold"
-                tools:text="Time" />
+                android:orientation="vertical">
 
-            <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/reserve_room_time"
+                    android:textStyle="bold"
+                    tools:text="Time" />
+
+                <TextView
+                    android:id="@+id/reserve_room_timepicker"
+                    style="?android:attr/spinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/reserve_room_time"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    tools:text="12:00" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:paddingStart="12dp"
-                android:text="@string/reserve_room_duration"
-                android:textStyle="bold"
-                tools:text="Duration" />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="12dp"
+                    android:text="@string/reserve_room_duration"
+                    android:textStyle="bold"
+                    tools:text="Duration" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/reserve_room_timepicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/reserve_room_time"
-                style="?android:attr/spinnerStyle"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                tools:text="12:00" />
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/reserve_room_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/reserve_room_border_spinner"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                tools:text="1h" />
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/reserve_room_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/reserve_room_border_spinner"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    tools:text="1h" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -141,21 +138,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:gravity="start"
             android:text="@string/reserve_room_slots"
             android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/meeting_times"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+        </android.support.v7.widget.RecyclerView>
 
         <Button
             android:id="@+id/reserve_room_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="12dp"
             android:background="@color/colorAccentBlue"
             android:text="@string/make_a_reservation"
             android:textColor="@color/colorWhite"
@@ -163,4 +160,5 @@
 
 
     </LinearLayout>
+
 </LinearLayout>

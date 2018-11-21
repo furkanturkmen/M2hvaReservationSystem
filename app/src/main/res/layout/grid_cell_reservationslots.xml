@@ -5,25 +5,27 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/reserved_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:text="@string/reserved_from" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/reserved_from_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
 
     <TextView
+        android:id="@+id/reserved_until"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:text="@string/reserved_until" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/reserved_until_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>

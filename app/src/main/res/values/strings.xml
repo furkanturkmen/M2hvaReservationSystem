@@ -108,9 +108,8 @@
 <string name="error_incorrect_password">This password is incorrect</string>
 <string name="error_field_required">This field is required</string>
 <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-  
+        completions." </string>
+
     <!--Icons by fontawsome cheatsheet-->
     <string name="rsv_date">&#xf073;</string>
     <string name="rsv_clock">&#xf017;</string>
@@ -126,6 +125,8 @@
     <string name="no_booking_title">No meetings?</string>
     <string name="no_booking_text">Let\'s change that!</string>
     <string name="no_booking_action_text">Book a room now!</string>
+
+    <!--Reservations-->
     <string name="make_a_reservation">Make a reservation</string>
     <string name="reserve_room_duration">Duration</string>
     <string name="reserve_room_time">Time</string>
@@ -134,7 +135,10 @@
     <string name="capacity">Capacity</string>
     <string name="reserve_room_date">Date</string>
     <string name="reserve_room_slots">Slots taken:</string>
+    <string name="reserved_from">From</string>
+    <string name="reserved_until">until</string>
     <string name="until_booked_time">@string/rsv_clock</string>
+
     <string name="room_name">Room name</string>
     <string name="room_description">Description</string>
     <string name="remove_title">Remove Reservation</string>

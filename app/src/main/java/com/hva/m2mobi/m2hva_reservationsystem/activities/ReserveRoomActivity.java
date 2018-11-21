@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -17,6 +19,7 @@ import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationSlotsAdapter;
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
@@ -28,6 +31,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +56,10 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> roomArray;
+    private List<Reservation> mReservationList = new ArrayList<>();
+    private ReservationSlotsAdapter mAdapter;
+
+    private Room testRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,10 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadRoomNames();
         loadDurationData();
         loadDateData();
+
+        mReservationList.add(new Reservation(2, "10:00", "12:00",
+                testRoom, "bla", "bla", "bla"));
+        buildRecyclerView();
     }
 
     @OnClick(R.id.reserve_room_button)
@@ -206,6 +218,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
             }
         }, hour, minute, false);
         timePickerDialog.show();
+    }
+
+    public void buildRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mAdapter = new ReservationSlotsAdapter(mReservationList);
+
+        meetingTimes.setLayoutManager(layoutManager);
+        meetingTimes.setAdapter(mAdapter);
     }
 
     @Override
