@@ -167,6 +167,22 @@ public class CalendarConnection{
         return eventListToReservation(result.getItems(),room);
     }
 
+        public List<Reservation> getDateEvents(Room room, String date) throws IOException, ParseException {
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        cal.setTime(sdf.parse(date));
+        DateTime startDay = new DateTime(cal.getTime());
+        cal.add(java.util.Calendar.DATE, 1);
+        DateTime endDay = new DateTime(cal.getTime());
+        Calendar.Events.List events = calendar.events().list(room.getCalendarID());
+        events.setTimeMax(endDay)
+                .setTimeMin(startDay)
+                .setOrderBy("startTime")
+                .setSingleEvents(true);
+        Events result = events.execute();
+        return eventListToReservation(result.getItems(),room);
+    }
+
     private List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException, InterruptedException {
         List<Reservation> items = new ArrayList<>();
         for (Room room: DatabaseConnection.getRooms()) {
