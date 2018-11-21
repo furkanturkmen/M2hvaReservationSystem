@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,27 +25,43 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.firebase.auth.FirebaseAuth;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseService;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
 
 
 public class ReservationOverviewFragment extends Fragment {
     View view;
-    private List<Reservation> mReservationList = new ArrayList<>();
-    private ReservationsOverviewAdapter mAdapter = new ReservationsOverviewAdapter(mReservationList);
+
+    private List<Reservation> dbReservationList = new ArrayList<>();
+    private ReservationsOverviewAdapter dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
+
     private RelativeLayout mLoaderLayout;
     private RelativeLayout mNoBookingLayout;
     private RecyclerView mRecyclerView;
     private RelativeLayout mNoPermissionLayout;
     private SwipeRefreshLayout mySwipeRefreshLayout;
+
+    LinearLayoutManager layoutManager;
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
+    ItemTouchHelper itemTouchHelper;
 
     private static final int GET_RESERVATIONS = 0;
     private static final int REMOVE_RESERVATION = 1;
@@ -53,6 +70,7 @@ public class ReservationOverviewFragment extends Fragment {
 
     private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
     private static final int REQUEST_ACCOUNT_CALENDAR = 222;
+    String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
 
     @Override
@@ -67,6 +85,8 @@ public class ReservationOverviewFragment extends Fragment {
         mNoPermissionLayout = view.findViewById(R.id.noPermission);
         inflater.inflate(R.layout.no_permission, mNoPermissionLayout);
         mNoPermissionLayout.setVisibility(View.GONE);
+
+//        requestData();
         buildRecyclerView();
         requestPermissions();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
@@ -113,12 +133,11 @@ public class ReservationOverviewFragment extends Fragment {
 
     public void buildRecyclerView() {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
-//        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(dbAdapter);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
+        simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                     @Override
                     public boolean onMove(@NonNull RecyclerView recyclerView,
@@ -140,9 +159,9 @@ public class ReservationOverviewFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         final int position = (viewHolder.getAdapterPosition());
                                         Snackbar snackbar = Snackbar.make(view,
-                                                mReservationList.get(position).getReservationRoom().getName()
+                                                dbReservationList.get(position).getReservationRoom().getName()
                                                         + " reservation has been deleted.", Snackbar.LENGTH_LONG);
-                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(mReservationList.get(position));
+                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
                                         snackbar.show();
                                     }})
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -155,7 +174,7 @@ public class ReservationOverviewFragment extends Fragment {
                     }
                 };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
     private class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
@@ -163,41 +182,32 @@ public class ReservationOverviewFragment extends Fragment {
         private CalendarAsyncTask(int task) {
             mNoPermissionLayout.setVisibility(View.GONE);
             this.task = task;
-            if(task != REFRESH_RESERVATIONS)
                 mLoaderLayout.setVisibility(View.VISIBLE);
-            mNoBookingLayout.setVisibility(View.GONE);
-
-            mAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
-            //mAdapter.setReservationList(list);
-            mAdapter.notifyDataSetChanged();
-            mRecyclerView.setAdapter(mAdapter);
+                mNoBookingLayout.setVisibility(View.GONE);
+                dbAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
+                //mAdapter.setReservationList(list);
+                dbAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(dbAdapter);
         }
 
         @Override
         protected List doInBackground(Reservation... reservations) {
             try {
                 CalendarConnection con = new CalendarConnection(getContext());
-                switch(task){
+                dbReservationList = DatabaseConnection.getReservations();
+                dbReservationList = con.filterEventsByOwner(dbReservationList, accountName);
+                    switch(task){
                     case REMOVE_RESERVATION:
-                        con.removeEvent(reservations[0]);
-                        break;
-                    case ADD_RESERVATION:
-                        con.addEvent(reservations[0]);
+                        //con.removeEvent(reservations[0]);
+                        dbReservationList.remove(reservations[0]);
+                        DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
-                try {
-                    return con.getMyEvents(10);
-                }catch (UserRecoverableAuthIOException e) {
-                    startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_CALENDAR);
-                    return null;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            } catch (IOException | ParseException e ) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-                return null;
             }
+
+            return dbReservationList;
         }
 
         @Override
@@ -206,11 +216,12 @@ public class ReservationOverviewFragment extends Fragment {
             mySwipeRefreshLayout.setRefreshing(false);
             mLoaderLayout.setVisibility(View.GONE);
             if(list != null) {
-                mReservationList = list;
-                mAdapter = new ReservationsOverviewAdapter(mReservationList);
+                dbReservationList = list;
+                dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
                 //mAdapter.setReservationList(list);
-                mAdapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(mAdapter);
+                dbAdapter.setReservationList(list);
+                dbAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(dbAdapter);
                 if(list.isEmpty()){
                     mNoBookingLayout.setVisibility(View.VISIBLE);
                 }

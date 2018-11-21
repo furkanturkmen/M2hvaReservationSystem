@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
@@ -32,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import timber.log.Timber;
 
 public class ReserveRoomActivity extends AppCompatActivity {
     @BindView(R.id.reserve_room_capacity)
@@ -49,10 +52,15 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> roomArray;
+    private FirebaseDatabase dbCon = FirebaseDatabase.getInstance();
+
+    private DatabaseReference dbRef = dbCon.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_room);
+
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -67,6 +75,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     @OnClick(R.id.reserve_room_button)
     void submitReservation() {
+        System.out.println("dbCon.toString: " + dbRef.toString() + "\n" + "dbCon: " + dbRef);
         String cap = spinnerCapacity.getSelectedItem().toString();
         String startTime = timePicker.getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
@@ -81,7 +90,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         String endTime =  sdf.format(cal.getTime());
         String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
-        Log.d("Room", roomName);
+        Timber.tag("Room").d(roomName);
         Room room = null;
         try {
             room = DatabaseConnection.getRooms().get(0);
@@ -93,9 +102,10 @@ public class ReserveRoomActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime, room, accountName,
+        Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime , room, accountName,
                 datePicker.getText().toString(),"");
         new CalendarAsyncTask().execute(res);
+
     }
 
     @OnClick(R.id.reserve_room_date)
@@ -215,12 +225,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Reservation... reservations) {
             try {
-                new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
+                CalendarConnection con = new CalendarConnection(ReserveRoomActivity.this);
+                String id = con.addEvent(reservations[0]);
+                reservations[0].setID(id);
+                dbRef.child("reservations").child(id).setValue(reservations[0]);
                 return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
                 return null;
             }
