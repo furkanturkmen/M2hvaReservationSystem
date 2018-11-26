@@ -1,13 +1,17 @@
 package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -210,6 +214,24 @@ public class ReserveRoomActivity extends AppCompatActivity {
         return true;
     }
 
+    private Dialog onCreateDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ReserveRoomActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = ReserveRoomActivity.this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater.inflate(R.layout.dialog_confirm_reserve_room, null))
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                     finish();
+                    }
+                });
+        return builder.create();
+    }
+
     public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
 
         @Override
@@ -229,7 +251,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            finish();
+             onCreateDialog();
         }
     }
 }
