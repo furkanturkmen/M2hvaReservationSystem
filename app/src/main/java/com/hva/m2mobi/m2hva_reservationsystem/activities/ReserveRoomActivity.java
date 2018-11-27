@@ -54,6 +54,9 @@ public class ReserveRoomActivity extends AppCompatActivity {
     @BindView(R.id.meeting_times)
     RecyclerView meetingTimes;
 
+    private static final int ADD_RESERVATION = 0;
+    private static final int GET_RESERVATION = 1;
+
     private ArrayAdapter<String> adapter;
     private ArrayList<String> roomArray;
     private List<Reservation> mReservationList = new ArrayList<>();
@@ -111,7 +114,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }
         Reservation res = new Reservation(Integer.parseInt(cap), startTime,endTime, room, accountName,
                 datePicker.getText().toString(),"");
-        new CalendarAsyncTask().execute(res);
+        new CalendarAsyncTask(ADD_RESERVATION).execute(res);
     }
 
     @OnClick(R.id.reserve_room_date)
@@ -196,8 +199,23 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
                 calendar.set(year,monthOfYear,dayOfMonth);
-
                 datePicker.setText(sdf.format(calendar.getTime()));
+
+                String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
+        Log.d("Room", roomName);
+        Room room = null;
+        try {
+           // room = DatabaseConnection.getRooms().get(0);
+
+            for (Room r:DatabaseConnection.getRooms()) {
+                if(r.getName().equals(roomName))
+                    room = r;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+                Reservation reservation = new Reservation(0,"","", room, "", datePicker.getText().toString(), "");
+                new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -236,11 +254,26 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     public class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
 
+        private int task;
+        public CalendarAsyncTask(int task){
+            this.task = task;
+
+        }
         @Override
         protected Void doInBackground(Reservation... reservations) {
             try {
-                new CalendarConnection(ReserveRoomActivity.this).addEvent(reservations[0]);
-                return null;
+                CalendarConnection con = new CalendarConnection(ReserveRoomActivity.this);
+                switch(task){
+                    case ADD_RESERVATION:
+                        con.addEvent(reservations[0]);
+                        break;
+                    case GET_RESERVATION:
+                        List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), reservations[0].getDate());
+                        for (Reservation res: reservationList) {
+                            Log.d("message", res.getStartTime());
+                        }
+                        break;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -248,13 +281,15 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return null;
             }
+            return null;
         }
 
-        @Override
+            @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            finish();
-        }
+            // finish();
+            }
+
     }
 }
 
