@@ -1,6 +1,8 @@
 package com.hva.m2mobi.m2hva_reservationsystem.models;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 
 import java.util.HashMap;
@@ -16,6 +18,21 @@ public class Room {
     private boolean availability;
     private String time;
 
+    @SerializedName("calendarID")
+    @Expose
+    private String calendarID;
+
+    @SerializedName("capacity")
+    @Expose
+    private int capacity;
+
+    @SerializedName("description")
+    @Expose
+    private String description;
+
+    @SerializedName("name")
+    @Expose
+    private String name;
 
     public Room(){
         imgResource = R.drawable.hunting_room;
@@ -85,4 +102,5 @@ public class Room {
     public void setTime(String time) {
         this.time = time;
     }
+
 }

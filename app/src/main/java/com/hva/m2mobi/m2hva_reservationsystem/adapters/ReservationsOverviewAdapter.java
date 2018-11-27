@@ -79,6 +79,9 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         holder.resRoom.setImageResource(currentItem.getReservationRoom().getImgResource());
         holder.title.setText(currentItem.getReservationRoom().getName());
 
+        holder.date.setText(R.string.rsv_date);
+        holder.time.setText(R.string.rsv_clock);
+        holder.attendees.setText(R.string.rsv_user);
         holder.date.setText(String.format("%s %s", holder.date.getText(), currentItem.getDate()));
         holder.time.setText(String.format("%s %s - %s", holder.time.getText(), currentItem.getStartTime(), currentItem.getEndTime()));
         holder.attendees.setText(String.format("%s %s", holder.attendees.getText(), currentItem.getAttendees()));
@@ -88,6 +91,14 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         holder.date.setTypeface(custom_font);
         holder.time.setTypeface(custom_font);
         holder.attendees.setTypeface(custom_font);
+    }
+
+    public void swapList(List<Reservation> newList) {
+        mReservationList = newList;
+        if (newList != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override
