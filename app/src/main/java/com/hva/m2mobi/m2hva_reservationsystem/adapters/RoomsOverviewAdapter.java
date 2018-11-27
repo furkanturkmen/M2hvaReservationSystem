@@ -84,13 +84,12 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         if(room.isAvailable()){
             holder.availability.setTextColor(Color.rgb(0, 150, 0));
             holder.availability.setText(R.string.status_green);
-            holder.time.setText(String.format("%s %s", holder.time.getText(), room.getTime()));
 
         } else{
             holder.availability.setTextColor(Color.rgb(150, 0, 0));
             holder.availability.setText(R.string.status_red);
-            holder.time.setText("");
         }
+        holder.time.setText(room.getTime());
 
         Typeface custom_font;
         custom_font = ResourcesCompat.getFont(holder.time.getContext(), R.font.fa_solid_900);
