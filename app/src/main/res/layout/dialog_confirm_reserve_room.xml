@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
-        android:src="@drawable/ic_dialog_confirm"
         android:layout_width="match_parent"
-        android:scaleType="center"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:background="#9CCC65"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_check_circle_white_72dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your reservation has been made"
-         android:gravity="center"
-        />
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/reservation_added"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/btn_ok_button_reserve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFF"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:text="@string/confirm"
+        android:textColor="#9CCC65" />
 </LinearLayout>
