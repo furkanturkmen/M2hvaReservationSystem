@@ -95,6 +95,35 @@ public class CalendarConnection{
         return calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute().getId();
     }
 
+    public List<Reservation> orderListByDate(List<Reservation> reservations) throws ParseException {
+        int n = reservations.size();
+        int k;
+        for (int m = n; m >= 0; m--) {
+            for (int i = 0; i < n - 1; i++) {
+                k = i + 1;
+                if(reservationIsEarlier(reservations.get(k), reservations.get(i))){
+                    reservations = swapReservations(i, k, reservations);
+                }
+            }
+        }
+        return reservations;
+    }
+
+    private boolean reservationIsEarlier(Reservation a, Reservation b) throws ParseException {
+        //a>b
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT+TIME_FORMAT);
+        Date aDate = sdf.parse(a.getDate() + a.getStartTime());
+        Date bDate = sdf.parse(b.getDate() + b.getStartTime());
+        return aDate.before(bDate);
+    }
+
+    private List<Reservation> swapReservations(int i, int j, List<Reservation> reservations){
+        Reservation temp = reservations.get(i);
+        reservations.set(i,reservations.get(j));
+        reservations.set(j,temp);
+        return reservations;
+    }
+
     private List<Reservation> eventListToReservation(List<Event> events, Room room) throws ParseException {
         List <Reservation> res = new ArrayList<>();
         for (Event event:events) {
@@ -127,7 +156,7 @@ public class CalendarConnection{
         return filterEventsByOwner(allEvents,accountName);
     }
 
-    private List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
+    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)

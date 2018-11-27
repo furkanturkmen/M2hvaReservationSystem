@@ -203,10 +203,15 @@ public class ReservationOverviewFragment extends Fragment {
                 }
                 resList = DatabaseConnection.getReservations();
                 resList = con.filterEventsByOwner(resList, accountName);
+            }catch (UserRecoverableAuthIOException e) {
+                    startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_CALENDAR);
+                    return null;
             } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return null;      
+            } catch (IOException | ParseException e ) {
                 e.printStackTrace();
             }
-
             return resList;
         }
 

@@ -11,7 +11,11 @@ import static java.lang.StrictMath.toIntExact;
 
 public class Room {
     private int imgResource;
-    private boolean availability = true;
+    private String name;
+    private String description;
+    private String calendarID;
+    private int capacity;
+    private boolean availability;
     private String time;
 
     @SerializedName("calendarID")
@@ -32,7 +36,6 @@ public class Room {
 
     public Room(){
         imgResource = R.drawable.hunting_room;
-        time = "16:00";
     }
 
     public Room(int imgResource, String name, String description, String calendarID, int capacity) {
