@@ -80,7 +80,7 @@ public class CalendarConnection{
         calendar.events().delete(reservation.getReservationRoom().getCalendarID(), reservation.getID()).execute();
     }
 
-    public void addEvent(Reservation reservation) throws IOException, ParseException {
+    public String addEvent(Reservation reservation) throws IOException, ParseException {
         Event event = new Event();
         java.util.Calendar utilCalendar = java.util.Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT+TIME_FORMAT);
@@ -92,7 +92,7 @@ public class CalendarConnection{
         event.setEnd(edt);
         event.setSummary("Meeting with " + accountName);
         event.setDescription(reservation.getAttendees() + " people attending.");
-        calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute();
+        return calendar.events().insert(reservation.getReservationRoom().getCalendarID(),event).execute().getId();
     }
 
     public List<Reservation> orderListByDate(List<Reservation> reservations) throws ParseException {
@@ -156,7 +156,7 @@ public class CalendarConnection{
         return filterEventsByOwner(allEvents,accountName);
     }
 
-    private List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
+    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)
@@ -193,7 +193,7 @@ public class CalendarConnection{
         return items;
     }
 
-    private List<Reservation> filterEventsByOwner(List<Reservation> items, String accountName){
+    public List<Reservation> filterEventsByOwner(List<Reservation> items, String accountName){
         if (items.isEmpty())
             return items;
         List<Reservation> newItems = new ArrayList<>();

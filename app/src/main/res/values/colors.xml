@@ -17,4 +17,7 @@
 
     <color name="navigation_bar_txt_color">#ffffff</color>
 
+    <!--Launch color-->
+    <color name="ic_launcher_background">#FFAA41</color>
+
 </resources>

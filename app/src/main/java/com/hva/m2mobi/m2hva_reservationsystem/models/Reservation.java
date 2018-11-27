@@ -19,6 +19,10 @@ public class Reservation {
     private String creator;
     private String ID;
 
+    public Reservation(){
+
+    }
+
     //reservation object
     public Reservation(int attendees, String startTime, String endTime, Room room, String creator, String date, String ID) {
         this.attendees = attendees;
