@@ -13,13 +13,12 @@ public class Room {
     private String description;
     private String calendarID;
     private int capacity;
-    private boolean availability = true;
+    private boolean availability;
     private String time;
 
 
     public Room(){
         imgResource = R.drawable.hunting_room;
-        time = "16:00";
     }
 
     public Room(int imgResource, String name, String description, String calendarID, int capacity) {

@@ -156,7 +156,7 @@ public class CalendarConnection{
         return filterEventsByOwner(allEvents,accountName);
     }
 
-    private List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
+    public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)
