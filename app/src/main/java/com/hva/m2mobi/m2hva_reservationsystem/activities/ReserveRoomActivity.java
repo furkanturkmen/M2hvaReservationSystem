@@ -184,13 +184,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
                 SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
                 calendar.set(year, monthOfYear, dayOfMonth);
-
                 datePicker.setText(sdf.format(calendar.getTime()));
             }
         }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
