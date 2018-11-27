@@ -305,9 +305,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
                         List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), reservations[0].getDate());
                         return reservationList;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
                 return null;
