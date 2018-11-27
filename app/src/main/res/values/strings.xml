@@ -137,5 +137,7 @@
     <string name="room_description">Description</string>
     <string name="remove_title">Remove Reservation</string>
     <string name="remove_description">Are you sure you want to remove this reservation?</string>
+    <string name="reservation_added">Well Done! Your Room Reservation Has Been Made</string>
+    <string name="confirm">OK</string>
 
 </resources>
