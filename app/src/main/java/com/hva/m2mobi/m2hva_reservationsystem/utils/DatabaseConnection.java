@@ -31,7 +31,7 @@ public class DatabaseConnection {
 
     public static ArrayList<Reservation> getReservations() throws InterruptedException{
             getDbReservations();
-            Thread.sleep(2000L);
+            Thread.sleep(1000L);
         return reservationList;
     }
 
@@ -61,6 +61,7 @@ public class DatabaseConnection {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
+                reservationList.clear();
                 for (DataSnapshot nextDS : dataSnapshot.getChildren()) {
                     Reservation reservation = nextDS.getValue(Reservation.class);
                     reservationList.add(reservation);

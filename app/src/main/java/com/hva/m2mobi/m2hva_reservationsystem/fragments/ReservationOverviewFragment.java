@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.MainActivity;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationsOverviewAdapter;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
@@ -41,17 +42,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import timber.log.Timber;
-
 
 public class ReservationOverviewFragment extends Fragment {
     View view;
 
     private List<Reservation> dbReservationList = new ArrayList<>();
-    private ReservationsOverviewAdapter dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
+    private ReservationsOverviewAdapter dbAdapter;
 
     private RelativeLayout mLoaderLayout;
     private RelativeLayout mNoBookingLayout;
@@ -102,6 +98,8 @@ public class ReservationOverviewFragment extends Fragment {
                     }
                 }
         );
+        updateUI();
+
         return view;
     }
 
@@ -135,7 +133,7 @@ public class ReservationOverviewFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
         layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(dbAdapter);
+        updateUI();
 
         simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -184,30 +182,32 @@ public class ReservationOverviewFragment extends Fragment {
             this.task = task;
                 mLoaderLayout.setVisibility(View.VISIBLE);
                 mNoBookingLayout.setVisibility(View.GONE);
-                dbAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
+//                dbAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
                 //mAdapter.setReservationList(list);
-                dbAdapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(dbAdapter);
+//                dbAdapter.notifyDataSetChanged();
+//                mRecyclerView.setAdapter(dbAdapter);
+            updateUI();
         }
 
         @Override
         protected List doInBackground(Reservation... reservations) {
+            List<Reservation> resList = new ArrayList<>();
             try {
+
                 CalendarConnection con = new CalendarConnection(getContext());
-                dbReservationList = DatabaseConnection.getReservations();
-                dbReservationList = con.filterEventsByOwner(dbReservationList, accountName);
                     switch(task){
                     case REMOVE_RESERVATION:
                         //con.removeEvent(reservations[0]);
-                        dbReservationList.remove(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
+                resList = DatabaseConnection.getReservations();
+                resList = con.filterEventsByOwner(resList, accountName);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            return dbReservationList;
+            return resList;
         }
 
         @Override
@@ -216,16 +216,28 @@ public class ReservationOverviewFragment extends Fragment {
             mySwipeRefreshLayout.setRefreshing(false);
             mLoaderLayout.setVisibility(View.GONE);
             if(list != null) {
+                dbReservationList.clear();
                 dbReservationList = list;
-                dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
-                //mAdapter.setReservationList(list);
-                dbAdapter.setReservationList(list);
-                dbAdapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(dbAdapter);
+//                dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
+//                //mAdapter.setReservationList(list);
+//                dbAdapter.setReservationList(list);
+//                dbAdapter.notifyDataSetChanged();
+//                mRecyclerView.setAdapter(dbAdapter);
                 if(list.isEmpty()){
                     mNoBookingLayout.setVisibility(View.VISIBLE);
                 }
             }
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
+        if (dbAdapter == null) {
+            dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
+            mRecyclerView.setAdapter(dbAdapter);
+        } else {
+            //Refresh list
+            dbAdapter.swapList(dbReservationList);
         }
     }
 }
