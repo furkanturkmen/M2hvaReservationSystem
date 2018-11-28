@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
+import com.hva.m2mobi.m2hva_reservationsystem.models.TimeSlot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -212,5 +213,24 @@ public class CalendarConnection{
                 newItems.add(res);
         }
         return newItems;
+    }
+
+    public List<TimeSlot> getAvailableTimeSlots(List<Reservation> reservations, int i, Date now, List<TimeSlot> timeSlots) throws ParseException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT);
+        if (i == reservations.size()){
+            Date endOfDay = simpleDateFormat.parse("23:59");
+            TimeSlot timeSlot = new TimeSlot(now, endOfDay);
+            timeSlots.add(timeSlot);
+            return timeSlots;
+        }
+        Date startTime = simpleDateFormat.parse(reservations.get(i).getStartTime());
+        Date endTime = simpleDateFormat.parse(reservations.get(i).getEndTime());
+
+        if (now.before(startTime)){
+            TimeSlot timeSlot = new TimeSlot(now,startTime);
+            timeSlots.add(timeSlot);
+        }
+        return getAvailableTimeSlots(reservations, ++i, endTime, timeSlots);
     }
 }
