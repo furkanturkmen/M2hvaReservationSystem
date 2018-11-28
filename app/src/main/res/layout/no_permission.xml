@@ -38,4 +38,12 @@
         android:textSize="@dimen/font_normal"
         />
 
+    <Button
+        android:id="@+id/givePermission"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_tiny"
+        android:text="@string/give_permission_button"/>
+
 </LinearLayout>

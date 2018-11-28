@@ -293,7 +293,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         @Override
         protected List<Reservation> doInBackground(Reservation... reservations) {
             try {
-                CalendarConnection con = new CalendarConnection(ReserveRoomActivity.this);
+                CalendarConnection con = CalendarConnection.getInstance(ReserveRoomActivity.this);
 
                 switch(task){
                     case ADD_RESERVATION:
@@ -316,13 +316,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
         protected void onPostExecute(List<Reservation> v) {
             super.onPostExecute(v);
             if (v == null){
+                onCreateDialog().show();
                 finish();
             } else {
                 mReservationList.clear();
                 mReservationList.addAll(v);
                 mAdapter.notifyDataSetChanged();
             }
-            onCreateDialog().show();
         }
 
     }

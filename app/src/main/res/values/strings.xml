@@ -121,6 +121,7 @@
     <string name="no_connection_text">Something has gone wrong with the internet connection. Let\'s give it another shot.</string>
     <string name="give_permission_title">Don"'t you trust us?</string>
     <string name="give_permission_text">To use this app you need to give us more access to your data. To do that just refresh the page and press allow.</string>
+    <string name="give_permission_button">Allow permissions</string>
 
     <string name="no_booking_title">No meetings?</string>
     <string name="no_booking_text">Let\'s change that!</string>

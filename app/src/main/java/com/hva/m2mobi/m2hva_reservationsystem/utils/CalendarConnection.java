@@ -57,7 +57,9 @@ public class CalendarConnection{
     private Calendar calendar;
     private String accountName;
 
-    public CalendarConnection(Context context){
+    private static CalendarConnection instance;
+
+    private CalendarConnection(Context context){
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
             throw new SecurityException("Calendar Connection requires WRITE_CALENDAR permission");
@@ -74,6 +76,13 @@ public class CalendarConnection{
         calendar = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, mCredential)
                 .setApplicationName(context.getString(R.string.app_name))
                 .build();
+    }
+
+    public static CalendarConnection getInstance(Context context){
+        if (instance == null){
+            instance = new CalendarConnection(context);
+        }
+        return instance;
     }
 
     public void removeEvent(Reservation reservation) throws IOException {
