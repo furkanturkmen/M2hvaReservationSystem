@@ -103,7 +103,6 @@ public class ReservationOverviewFragment extends Fragment {
 
         //requestData();
         buildRecyclerView();
-        requestPermissions();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setColorSchemeResources(
                 R.color.colorPrimary,
@@ -118,29 +117,13 @@ public class ReservationOverviewFragment extends Fragment {
                 }
         );
 
+        new CalendarAsyncTask(GET_RESERVATIONS).execute();
         updateUI();
         getFirstElementInRecyclerView();
         return view;
 
     }
 
-    private void requestPermissions(){
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.WRITE_CALENDAR)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),new String[]{Manifest.permission.WRITE_CALENDAR},REQUEST_PERMISSIONS_CALENDAR);
-        }else if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),new String[]{Manifest.permission.GET_ACCOUNTS},REQUEST_PERMISSIONS_CALENDAR);
-        }else{
-            new CalendarAsyncTask(GET_RESERVATIONS).execute();
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        if(requestCode == REQUEST_PERMISSIONS_CALENDAR && grantResults[0] == 0){
-            requestPermissions();
-        }
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_ACCOUNT_CALENDAR){
@@ -211,7 +194,7 @@ public class ReservationOverviewFragment extends Fragment {
             List<Reservation> resList = null;
             try {
 
-                CalendarConnection con = new CalendarConnection(getContext());
+                CalendarConnection con = CalendarConnection.getInstance(getContext());
                     switch(task){
                     case REMOVE_RESERVATION:
                         try {

@@ -93,7 +93,7 @@ public class RoomsOverviewFragment extends Fragment {
         protected List<Reservation> doInBackground(Room... rooms) {
             try {
                 List<Reservation> reservationList;
-                reservationList = new CalendarConnection(view.getContext()).getRoomEvents(rooms[0], 1);
+                reservationList = CalendarConnection.getInstance(view.getContext()).getRoomEvents(rooms[0], 1);
                 if (reservationList.isEmpty()){
                     reservationList.add(new Reservation(0, " ", " ", rooms[0], " ", ALL_DAY, " "));
                 }
