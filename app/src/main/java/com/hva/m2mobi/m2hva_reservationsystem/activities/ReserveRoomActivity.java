@@ -322,7 +322,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 mReservationList.addAll(v);
                 mAdapter.notifyDataSetChanged();
             }
-            onCreateDialog().show();
+//            onCreateDialog().show();
         }
 
     }
