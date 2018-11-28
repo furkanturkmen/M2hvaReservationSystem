@@ -40,6 +40,7 @@ public class DatabaseConnection {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
+                roomList.clear();
                 for (DataSnapshot nextDS : dataSnapshot.getChildren()) {
                     Room room = nextDS.getValue(Room.class);
                     roomList.add(room);

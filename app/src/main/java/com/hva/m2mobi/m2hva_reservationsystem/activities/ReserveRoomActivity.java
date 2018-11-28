@@ -324,7 +324,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         }
-
     }
 }
 

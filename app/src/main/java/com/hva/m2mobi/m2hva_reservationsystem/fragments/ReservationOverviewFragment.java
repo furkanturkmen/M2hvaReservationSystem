@@ -1,27 +1,38 @@
 package com.hva.m2mobi.m2hva_reservationsystem.fragments;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -41,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import timber.log.Timber;
 
 
 public class ReservationOverviewFragment extends Fragment {
@@ -67,11 +80,17 @@ public class ReservationOverviewFragment extends Fragment {
     private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
     private static final int REQUEST_ACCOUNT_CALENDAR = 222;
     String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
+    int indexId;
+    private DatePicker datePicker;
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reservations_overview, container, false);
+
+
+        setHasOptionsMenu(true); // Add this!
 
         mLoaderLayout = view.findViewById(R.id.loadingPanel);
         mLoaderLayout.setVisibility(View.GONE);
@@ -82,7 +101,7 @@ public class ReservationOverviewFragment extends Fragment {
         inflater.inflate(R.layout.no_permission, mNoPermissionLayout);
         mNoPermissionLayout.setVisibility(View.GONE);
 
-//        requestData();
+        //requestData();
         buildRecyclerView();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setColorSchemeResources(
@@ -97,10 +116,12 @@ public class ReservationOverviewFragment extends Fragment {
                     }
                 }
         );
+
         new CalendarAsyncTask(GET_RESERVATIONS).execute();
         updateUI();
-
+        getFirstElementInRecyclerView();
         return view;
+
     }
 
     @Override
@@ -165,30 +186,33 @@ public class ReservationOverviewFragment extends Fragment {
             this.task = task;
                 mLoaderLayout.setVisibility(View.VISIBLE);
                 mNoBookingLayout.setVisibility(View.GONE);
-//                dbAdapter = new ReservationsOverviewAdapter(new ArrayList<Reservation>());
-                //mAdapter.setReservationList(list);
-//                dbAdapter.notifyDataSetChanged();
-//                mRecyclerView.setAdapter(dbAdapter);
             updateUI();
         }
 
         @Override
         protected List doInBackground(Reservation... reservations) {
-            List<Reservation> resList = new ArrayList<>();
+            List<Reservation> resList = null;
             try {
 
                 CalendarConnection con = CalendarConnection.getInstance(getContext());
                     switch(task){
                     case REMOVE_RESERVATION:
-                        //con.removeEvent(reservations[0]);
+                        try {
+                            con.removeEvent(reservations[0]);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
                 resList = DatabaseConnection.getReservations();
                 resList = con.filterEventsByOwner(resList, accountName);
+                resList = con.orderListByDate(resList);
             } catch (InterruptedException e) {
                     e.printStackTrace();
                     return null;      
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
             return resList;
         }
@@ -201,11 +225,6 @@ public class ReservationOverviewFragment extends Fragment {
             if(list != null) {
                 dbReservationList.clear();
                 dbReservationList = list;
-//                dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
-//                //mAdapter.setReservationList(list);
-//                dbAdapter.setReservationList(list);
-//                dbAdapter.notifyDataSetChanged();
-//                mRecyclerView.setAdapter(dbAdapter);
                 if(list.isEmpty()){
                     mNoBookingLayout.setVisibility(View.VISIBLE);
                 }
@@ -222,5 +241,60 @@ public class ReservationOverviewFragment extends Fragment {
             //Refresh list
             dbAdapter.swapList(dbReservationList);
         }
+    }
+    public void getFirstElementInRecyclerView(){
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                indexId = layoutManager.findFirstVisibleItemPosition();
+                if(!dbReservationList.isEmpty()){
+                    System.out.println("DATUM VAN ELKE ID: " + dbReservationList.get(indexId).getDate());
+                }
+            }
+        });
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        MenuItem dateItem = menu.findItem(R.id.action_search);
+        datePicker = new DatePicker(getContext());
+        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener(){
+
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public List<Reservation> buildQueriedList(List<Reservation> oldList, String date){
+        if (oldList.isEmpty())
+            return oldList;
+        List<Reservation> newList = new ArrayList<>();
+
+        return newList;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // Not implemented here
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
     }
 }
