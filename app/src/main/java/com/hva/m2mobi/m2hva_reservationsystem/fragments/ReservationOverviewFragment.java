@@ -197,11 +197,7 @@ public class ReservationOverviewFragment extends Fragment {
                 CalendarConnection con = CalendarConnection.getInstance(getContext());
                     switch(task){
                     case REMOVE_RESERVATION:
-                        try {
-                            con.removeEvent(reservations[0]);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        con.removeEvent(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
@@ -211,7 +207,7 @@ public class ReservationOverviewFragment extends Fragment {
             } catch (InterruptedException e) {
                     e.printStackTrace();
                     return null;      
-            } catch (ParseException e) {
+            } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
             return resList;
@@ -261,7 +257,7 @@ public class ReservationOverviewFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
+    /*@TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
@@ -283,7 +279,7 @@ public class ReservationOverviewFragment extends Fragment {
         List<Reservation> newList = new ArrayList<>();
 
         return newList;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
