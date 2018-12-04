@@ -22,10 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
-import com.hva.m2mobi.m2hva_reservationsystem.adapters.ReservationSlotsAdapter;
+import com.hva.m2mobi.m2hva_reservationsystem.adapters.TimeSlotsAdapter;
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
+import com.hva.m2mobi.m2hva_reservationsystem.models.TimeSlot;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
 
@@ -34,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,8 +65,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> roomArray;
-    private List<Reservation> mReservationList = new ArrayList<>();
-    private ReservationSlotsAdapter mAdapter;
+    private List<TimeSlot> mTimeSlotList = new ArrayList<>();
+    private TimeSlotsAdapter mAdapter;
 
     private Room testRoom;
     private FirebaseDatabase dbCon = FirebaseDatabase.getInstance();
@@ -88,8 +90,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadDurationData();
         loadDateData();
 
-        mReservationList.add(new Reservation(2, "10:00", "12:00",
-                testRoom, "bla", "bla", "bla"));
         buildRecyclerView();
     }
 
@@ -251,7 +251,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     public void buildRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mAdapter = new ReservationSlotsAdapter(mReservationList);
+        mAdapter = new TimeSlotsAdapter(mTimeSlotList);
 
         meetingTimes.setLayoutManager(layoutManager);
         meetingTimes.setAdapter(mAdapter);
@@ -283,7 +283,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, List<Reservation>> {
+    public class CalendarAsyncTask extends AsyncTask<Reservation, Void, List<TimeSlot>> {
 
         private int task;
 
@@ -292,7 +292,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }
 
         @Override
-        protected List<Reservation> doInBackground(Reservation... reservations) {
+        protected List<TimeSlot> doInBackground(Reservation... reservations) {
             try {
                 CalendarConnection con = CalendarConnection.getInstance(ReserveRoomActivity.this);
 
@@ -303,8 +303,9 @@ public class ReserveRoomActivity extends AppCompatActivity {
                         dbRef.child("reservations").child(id).setValue(reservations[0]);
                         return null;
                     case GET_RESERVATION:
-                        List<Reservation> reservationList = con.getDateEvents(reservations[0].getReservationRoom(), reservations[0].getDate());
-                        return reservationList;
+                        List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), reservations[0].getDate());
+                        List<TimeSlot> timeSlots = con.getAvailableTimeSlots(reservationList, 0, new Date(), new ArrayList<TimeSlot>());
+                        return timeSlots;
                 }
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
@@ -314,13 +315,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<Reservation> v) {
+        protected void onPostExecute(List<TimeSlot> v) {
             super.onPostExecute(v);
             if (v == null) {
                 onCreateDialog();
             } else {
-                mReservationList.clear();
-                mReservationList.addAll(v);
+                mTimeSlotList.clear();
+                mTimeSlotList.addAll(v);
                 mAdapter.notifyDataSetChanged();
             }
         }

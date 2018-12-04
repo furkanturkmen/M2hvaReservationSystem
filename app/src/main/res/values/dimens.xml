@@ -9,8 +9,8 @@
     <dimen name="font_small">14sp</dimen>
 
     <!-- card margins -->
-    <dimen name="card_margins">16dp</dimen>
-    <dimen name="text_card_margins">20dp</dimen>
+    <dimen name="card_margins">8dp</dimen>
+    <dimen name="text_card_margins">10dp</dimen>
 
     <!-- typical spacing between two elements -->
     <dimen name="spacing_huge">180dp</dimen>
