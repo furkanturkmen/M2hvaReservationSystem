@@ -1,32 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/card_margins">
 
-    <TextView
-        android:id="@+id/reserved_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/reserved_from" />
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            android:radius="360dp">
 
-    <TextView
-        android:id="@+id/reserved_from_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/reserved_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/text_card_margins"
+                android:text="@string/reserved_from"
+                style="@style/CardContent"/>
 
-    <TextView
-        android:id="@+id/reserved_until"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/reserved_until" />
+            <TextView
+                android:id="@+id/reserved_from_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/text_card_margins"
+                style="@style/CardTitle"/>
 
-    <TextView
-        android:id="@+id/reserved_until_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/reserved_until"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/text_card_margins"
+                android:text="@string/reserved_until"
+                style="@style/CardContent"/>
+
+            <TextView
+                android:id="@+id/reserved_until_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/text_card_margins"
+                style="@style/CardTitle"/>
+        </LinearLayout>
+
+    <View
+        android:id="@+id/horizontal_divisor_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/m2mobiLightGrey"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout" />
+
 </LinearLayout>

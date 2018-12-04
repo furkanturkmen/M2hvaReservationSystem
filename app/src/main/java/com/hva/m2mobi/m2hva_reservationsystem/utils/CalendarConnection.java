@@ -217,15 +217,15 @@ public class CalendarConnection{
 
     public List<TimeSlot> getAvailableTimeSlots(List<Reservation> reservations, int i, Date now, List<TimeSlot> timeSlots) throws ParseException {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT + DATE_FORMAT);
         if (i == reservations.size()){
-            Date endOfDay = simpleDateFormat.parse("23:59");
+            Date endOfDay = simpleDateFormat.parse("23:59" + "14-11-1998");
             TimeSlot timeSlot = new TimeSlot(now, endOfDay);
             timeSlots.add(timeSlot);
             return timeSlots;
         }
-        Date startTime = simpleDateFormat.parse(reservations.get(i).getStartTime());
-        Date endTime = simpleDateFormat.parse(reservations.get(i).getEndTime());
+        Date startTime = simpleDateFormat.parse(reservations.get(i).getStartTime() + reservations.get(i).getDate());
+        Date endTime = simpleDateFormat.parse(reservations.get(i).getEndTime() + reservations.get(i).getDate());
 
         if (now.before(startTime)){
             TimeSlot timeSlot = new TimeSlot(now,startTime);
