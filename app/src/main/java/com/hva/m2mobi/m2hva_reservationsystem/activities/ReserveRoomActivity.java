@@ -2,7 +2,6 @@ package com.hva.m2mobi.m2hva_reservationsystem.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -124,7 +123,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Reservation res = new Reservation(Integer.parseInt(cap), startTime, endTime, room, accountName,
-                datePicker.getText().toString(),"");
+                datePicker.getText().toString(), "");
         new CalendarAsyncTask(ADD_RESERVATION).execute(res);
     }
 
@@ -153,14 +152,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
         try {
             // room = DatabaseConnection.getRooms().get(0);
 
-            for (Room r:DatabaseConnection.getRooms()) {
-                if(r.getName().equals(roomName))
+            for (Room r : DatabaseConnection.getRooms()) {
+                if (r.getName().equals(roomName))
                     room = r;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Reservation reservation = new Reservation(0,"","", room, "", datePicker.getText().toString(), "");
+        Reservation reservation = new Reservation(0, "", "", room, "", datePicker.getText().toString(), "");
         new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
     }
 
@@ -264,35 +263,40 @@ public class ReserveRoomActivity extends AppCompatActivity {
         return true;
     }
 
-    private Dialog onCreateDialog() {
+    private void onCreateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ReserveRoomActivity.this);
         // Get the layout inflater
         LayoutInflater inflater = ReserveRoomActivity.this.getLayoutInflater();
-        TextView confirmButton = findViewById(R.id.btn_ok_button_reserve);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.dialog_confirm_reserve_room, null));
+        View dialogView = inflater.inflate(R.layout.dialog_confirm_reserve_room, null);
+        builder.setView(dialogView);
+        TextView confirmButton = dialogView.findViewById(R.id.btn_ok_button_reserve);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        return builder.create();
+        // create alert dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public class CalendarAsyncTask extends AsyncTask<Reservation, Void, List<TimeSlot>> {
 
         private int task;
-        public CalendarAsyncTask(int task){
+
+        public CalendarAsyncTask(int task) {
             this.task = task;
         }
+
         @Override
         protected List<TimeSlot> doInBackground(Reservation... reservations) {
             try {
                 CalendarConnection con = CalendarConnection.getInstance(ReserveRoomActivity.this);
 
-                switch(task){
+                switch (task) {
                     case ADD_RESERVATION:
                         String id = con.addEvent(reservations[0]);
                         reservations[0].setID(id);
@@ -313,16 +317,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<TimeSlot> v) {
             super.onPostExecute(v);
-            if (v == null){
-                onCreateDialog().show();
-                finish();
+            if (v == null) {
+                onCreateDialog();
             } else {
                 mTimeSlotList.clear();
                 mTimeSlotList.addAll(v);
                 mAdapter.notifyDataSetChanged();
             }
         }
-
     }
 }
 
