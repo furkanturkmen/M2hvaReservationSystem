@@ -41,17 +41,11 @@ import static android.content.ContentValues.TAG;
 public class RoomsOverviewFragment extends Fragment {
     private RoomsOverviewAdapter mAdapter;
     public static final String ROOM_EXTRA = "m2_room_extra";
-    private ArrayList<Room> dbRooms;
+    private List<Room> dbRooms = MainActivity.roomsOutDB;
     private static final String ALL_DAY = "all day";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        try {
-            dbRooms = DatabaseConnection.getRooms();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         View view = inflater.inflate(R.layout.fragment_rooms_overview, container, false);
         buildRecyclerView(view);
         updateAvailability(view);
@@ -61,10 +55,12 @@ public class RoomsOverviewFragment extends Fragment {
     public void buildRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new RoomsOverviewAdapter(dbRooms);
+        mAdapter = new RoomsOverviewAdapter(dbRooms, getContext());
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
+
+
 
         mAdapter.setOnItemClickListener(new RoomsOverviewAdapter.OnItemClickListener() {
             @Override
@@ -75,6 +71,8 @@ public class RoomsOverviewFragment extends Fragment {
             }
         });
     }
+
+
 
     public void updateAvailability(View v){
         for (Room room:dbRooms){
@@ -98,10 +96,7 @@ public class RoomsOverviewFragment extends Fragment {
                     reservationList.add(new Reservation(0, " ", " ", rooms[0], " ", ALL_DAY, " "));
                 }
                 return reservationList;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
                 return null;
             }

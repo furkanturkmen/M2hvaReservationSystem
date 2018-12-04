@@ -28,12 +28,16 @@ import android.widget.RelativeLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.ReservationOverviewFragment;
 
 import com.hva.m2mobi.m2hva_reservationsystem.fragments.RoomsOverviewFragment;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private static final int REQUEST_PERMISSIONS_CALENDAR = 111;
     private static final int REQUEST_ACCOUNT_CALENDAR = 222;
+    public static List<Room> roomsOutDB = new ArrayList<>();
 
     private View permissionView;
     @Override
@@ -68,6 +73,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
         });
+
+        try {
+            roomsOutDB = DatabaseConnection.getRooms();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         mBottomNav = findViewById(R.id.bottom_navigation);
         mBottomNav.setOnNavigationItemSelectedListener(this);
