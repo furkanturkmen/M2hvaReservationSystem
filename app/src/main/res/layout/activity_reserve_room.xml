@@ -135,6 +135,16 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/invalid_time"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/invalid_time"
+            style="@style/TextAppearance.Design.Error"/>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -154,9 +164,8 @@
             android:id="@+id/reserve_room_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccentBlue"
+
             android:text="@string/make_a_reservation"
-            android:textColor="@color/colorWhite"
             android:textStyle="bold" />
 
 

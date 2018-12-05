@@ -177,10 +177,10 @@ public class CalendarConnection{
         return eventListToReservation(result.getItems(),room);
     }
 
-        public List<Reservation> getDateEvents(Room room, String date) throws IOException, ParseException {
+        public List<Reservation> getDateEvents(Room room, Date date) throws IOException, ParseException {
         java.util.Calendar cal = java.util.Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        cal.setTime(sdf.parse(date));
+
+        cal.setTime(date);
         DateTime startDay = new DateTime(cal.getTime());
         cal.add(java.util.Calendar.DATE, 1);
         DateTime endDay = new DateTime(cal.getTime());
@@ -218,8 +218,9 @@ public class CalendarConnection{
     public List<TimeSlot> getAvailableTimeSlots(List<Reservation> reservations, int i, Date now, List<TimeSlot> timeSlots) throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT + DATE_FORMAT);
+        SimpleDateFormat dayFormat = new SimpleDateFormat(DATE_FORMAT);
         if (i == reservations.size()){
-            Date endOfDay = simpleDateFormat.parse("23:59" + "14-11-1998");
+            Date endOfDay = simpleDateFormat.parse("23:59" + dayFormat.format(now));
             TimeSlot timeSlot = new TimeSlot(now, endOfDay);
             timeSlots.add(timeSlot);
             return timeSlots;
