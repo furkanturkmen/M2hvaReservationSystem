@@ -129,13 +129,13 @@
 
     <!--Reservations-->
     <string name="make_a_reservation">Make a reservation</string>
-    <string name="reserve_room_duration">Duration</string>
-    <string name="reserve_room_time">Time</string>
+    <string name="reserve_room_endtime">End time</string>
+    <string name="reserve_room_starttime">Start time</string>
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Amount of attendees</string>
     <string name="capacity">Capacity</string>
     <string name="reserve_room_date">Date</string>
-    <string name="reserve_room_slots">Available slots:</string>
+    <string name="reserve_room_slots">Available slots</string>
     <string name="reserved_from">From</string>
     <string name="reserved_until">until</string>
     <string name="until_booked_time">@string/rsv_clock</string>
