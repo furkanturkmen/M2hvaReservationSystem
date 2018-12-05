@@ -240,7 +240,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay,
                                   int minute) {
-                SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
+                SimpleDateFormat sdf = new SimpleDateFormat( CalendarConnection.TIME_FORMAT);
                 myCalender.set(0, 0, 0, hourOfDay, minute);
 
                 timePicker.setText(sdf.format(myCalender.getTime()));

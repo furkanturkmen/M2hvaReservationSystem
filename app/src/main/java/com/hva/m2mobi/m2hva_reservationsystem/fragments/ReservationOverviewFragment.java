@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -31,8 +33,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -48,8 +52,11 @@ import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseService;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -81,9 +88,8 @@ public class ReservationOverviewFragment extends Fragment {
     private static final int REQUEST_ACCOUNT_CALENDAR = 222;
     String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     int indexId;
-    private DatePicker datePicker;
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
+    String chosenDateRes;
+    TextView dateOfFirstElement;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +106,8 @@ public class ReservationOverviewFragment extends Fragment {
         mNoPermissionLayout = view.findViewById(R.id.noPermission);
         inflater.inflate(R.layout.no_permission, mNoPermissionLayout);
         mNoPermissionLayout.setVisibility(View.GONE);
+
+        dateOfFirstElement = getActivity().findViewById(R.id.dateText);
 
         //requestData();
         buildRecyclerView();
@@ -120,72 +128,76 @@ public class ReservationOverviewFragment extends Fragment {
         new CalendarAsyncTask(GET_RESERVATIONS).execute();
         updateUI();
         getFirstElementInRecyclerView();
+
         return view;
 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_ACCOUNT_CALENDAR){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_ACCOUNT_CALENDAR) {
             new CalendarAsyncTask(GET_RESERVATIONS).execute();
-        }else{
+        } else {
             mNoPermissionLayout.setVisibility(View.VISIBLE);
         }
     }
 
     public void buildRecyclerView() {
         mRecyclerView = view.findViewById(R.id.recyclerView_reservations);
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
         updateUI();
 
         simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView,
-                                          @NonNull RecyclerView.ViewHolder viewHolder,
-                                          @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                    //Called when a user swipes left or right on a ViewHolder
-                    @Override
-                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        //Get the index corresponding to the selected position
-                        new AlertDialog.Builder(getContext())
-                                .setTitle(R.string.remove_title)
-                                .setMessage(R.string.remove_description)
-                                .setIcon(R.drawable.ic_warning)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            //Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                //Get the index corresponding to the selected position
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.remove_title)
+                        .setMessage(R.string.remove_description)
+                        .setIcon(R.drawable.ic_warning)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        final int position = (viewHolder.getAdapterPosition());
-                                        Snackbar snackbar = Snackbar.make(view,
-                                                dbReservationList.get(position).getReservationRoom().getName()
-                                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
-                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
-                                        snackbar.show();
-                                    }})
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        new CalendarAsyncTask(GET_RESERVATIONS).execute();
-                                    }
-                                }).show();
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                final int position = (viewHolder.getAdapterPosition());
+                                Snackbar snackbar = Snackbar.make(view,
+                                        dbReservationList.get(position).getReservationRoom().getName()
+                                                + " reservation has been deleted.", Snackbar.LENGTH_LONG);
+                                new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
+                                snackbar.show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                new CalendarAsyncTask(GET_RESERVATIONS).execute();
+                            }
+                        }).show();
 
-                    }
-                };
+            }
+        };
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
+
     private class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
         private int task;
+
         private CalendarAsyncTask(int task) {
             mNoPermissionLayout.setVisibility(View.GONE);
             this.task = task;
-                mLoaderLayout.setVisibility(View.VISIBLE);
-                mNoBookingLayout.setVisibility(View.GONE);
+            mLoaderLayout.setVisibility(View.VISIBLE);
+            mNoBookingLayout.setVisibility(View.GONE);
             updateUI();
         }
 
@@ -195,7 +207,7 @@ public class ReservationOverviewFragment extends Fragment {
             try {
 
                 CalendarConnection con = CalendarConnection.getInstance(getContext());
-                    switch(task){
+                switch (task) {
                     case REMOVE_RESERVATION:
                         con.removeEvent(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
@@ -205,8 +217,8 @@ public class ReservationOverviewFragment extends Fragment {
                 resList = con.filterEventsByOwner(resList, accountName);
                 resList = con.orderListByDate(resList);
             } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return null;      
+                e.printStackTrace();
+                return null;
             } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
@@ -218,10 +230,10 @@ public class ReservationOverviewFragment extends Fragment {
             super.onPostExecute(list);
             mySwipeRefreshLayout.setRefreshing(false);
             mLoaderLayout.setVisibility(View.GONE);
-            if(list != null) {
+            if (list != null) {
                 dbReservationList.clear();
                 dbReservationList = list;
-                if(list.isEmpty()){
+                if (list.isEmpty()) {
                     mNoBookingLayout.setVisibility(View.VISIBLE);
                 }
             }
@@ -238,59 +250,83 @@ public class ReservationOverviewFragment extends Fragment {
             dbAdapter.swapList(dbReservationList);
         }
     }
-    public void getFirstElementInRecyclerView(){
+
+    public void getFirstElementInRecyclerView() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 indexId = layoutManager.findFirstVisibleItemPosition();
-                if(!dbReservationList.isEmpty()){
-                    System.out.println("DATUM VAN ELKE ID: " + dbReservationList.get(indexId).getDate());
+                if (!dbReservationList.isEmpty()) {
+                    System.out.println("datum - Datum van element is: " + dbReservationList.get(indexId).getDate());
+                    System.out.println("datum - Index van element is: " + indexId);
+                    dateOfFirstElement.setText(dbReservationList.get(indexId).getDate());
                 }
             }
         });
     }
+
+    public void setFirstElementInRecylcerView(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+        for (int i = 0; i < dbReservationList.size(); i++) {
+            try {
+                Date resDate = sdf.parse(dbReservationList.get(i).getDate());
+                if(resDate.equals(date) || resDate.after(date)){
+                    layoutManager.setSmoothScrollbarEnabled(true);
+                    layoutManager.scrollToPositionWithOffset(i, layoutManager.getDecoratedMeasuredHeight(layoutManager.getChildAt(0)));
+                    i = dbReservationList.size();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
-    /*@TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
-        MenuItem dateItem = menu.findItem(R.id.action_search);
-        datePicker = new DatePicker(getContext());
-        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener(){
-
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-            }
-        });
         super.onCreateOptionsMenu(menu, inflater);
+
     }
 
-    public List<Reservation> buildQueriedList(List<Reservation> oldList, String date){
-        if (oldList.isEmpty())
-            return oldList;
-        List<Reservation> newList = new ArrayList<>();
+    private void datePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return newList;
-    }*/
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+
+                calendar.set(year, monthOfYear, dayOfMonth);
+
+                chosenDateRes = sdf.format(calendar.getTime());
+                setFirstElementInRecylcerView(calendar.getTime());
+
+            }
+        }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                // Not implemented here
+                datePickerDialog();
                 return false;
             default:
                 break;
         }
-        searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
     }
 }
