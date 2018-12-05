@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,14 +52,18 @@ public class ReserveRoomActivity extends AppCompatActivity {
     Spinner spinnerRoom;
     @BindView(R.id.reserve_room_date)
     TextView datePicker;
-    @BindView(R.id.reserve_room_timepicker)
+    @BindView(R.id.reserve_room_starttimepicker)
     TextView timePicker;
-    @BindView(R.id.reserve_room_duration)
-    Spinner spinnerDuration;
+    @BindView(R.id.reserve_room_endtimepicker)
+    TextView endTimePicker;
     @BindView(R.id.reserve_room_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.invalid_time)
+    TextView invalidTime;
     @BindView(R.id.meeting_times)
     RecyclerView meetingTimes;
+    @BindView(R.id.reserve_room_button)
+    Button reserveRoomButton;
 
     private static final int ADD_RESERVATION = 0;
     private static final int GET_RESERVATION = 1;
@@ -87,7 +92,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadCapacityData();
 
         loadRoomNames();
-        loadDurationData();
         loadDateData();
 
         buildRecyclerView();
@@ -98,16 +102,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
         System.out.println("dbCon.toString: " + dbRef.toString() + "\n" + "dbCon: " + dbRef);
         String cap = spinnerCapacity.getSelectedItem().toString();
         String startTime = timePicker.getText().toString();
-        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(sdf.parse(startTime));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String duration = spinnerDuration.getSelectedItem().toString().substring(0, 1);
-        cal.add(Calendar.HOUR, Integer.parseInt(duration));
-        String endTime = sdf.format(cal.getTime());
+        String endTime = endTimePicker.getText().toString();
+
         String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         Timber.tag("Room").d(roomName);
@@ -132,9 +128,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
         datePickerDialog();
     }
 
-    @OnClick(R.id.reserve_room_timepicker)
-    void chooseTime() {
-        timePickerDialog();
+    @OnClick(R.id.reserve_room_starttimepicker)
+    void chooseStartTime() {
+        timePickerDialog(timePicker);
+    }
+
+    @OnClick(R.id.reserve_room_endtimepicker)
+    void chooseEndTime() {
+        timePickerDialog(endTimePicker);
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
@@ -159,13 +160,9 @@ public class ReserveRoomActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         Reservation reservation = new Reservation(0, "", "", room, "", datePicker.getText().toString(), "");
         new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
-    }
-
-    @OnItemSelected(R.id.reserve_room_duration)
-    void roomDurationSelected(int position) {
-        spinnerDuration.getItemAtPosition(position);
     }
 
     private void loadCapacityData() {
@@ -203,13 +200,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
         datePicker.setText(sdf.format(calendar.getTime()));
         timePicker.setText(stf.format(calendar.getTime()));
-    }
-
-    private void loadDurationData() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.duration_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDuration.setAdapter(adapter);
+        calendar.add(Calendar.HOUR, 1);
+        endTimePicker.setText(stf.format(calendar.getTime()));
     }
 
     private void datePickerDialog() {
@@ -226,27 +218,31 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 calendar.set(year, monthOfYear, dayOfMonth);
                 datePicker.setText(sdf.format(calendar.getTime()));
 
+                roomNameSelected(spinnerRoom.getSelectedItemPosition());
             }
         }, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
-    private void timePickerDialog() {
+    private void timePickerDialog(final TextView textView) {
         final Calendar myCalender = Calendar.getInstance();
         int hour = myCalender.get(Calendar.HOUR_OF_DAY);
         int minute = myCalender.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay,
                                   int minute) {
                 SimpleDateFormat sdf = new SimpleDateFormat( CalendarConnection.TIME_FORMAT);
                 myCalender.set(0, 0, 0, hourOfDay, minute);
 
-                timePicker.setText(sdf.format(myCalender.getTime()));
+                textView.setText(sdf.format(myCalender.getTime()));
+                isValidTimeslot(timePicker.getText().toString() + datePicker.getText().toString(), endTimePicker.getText().toString() + datePicker.getText().toString());
             }
-        }, hour, minute, false);
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, onTimeSetListener, hour, minute, true);
         timePickerDialog.show();
+
     }
 
     public void buildRecyclerView() {
@@ -303,8 +299,13 @@ public class ReserveRoomActivity extends AppCompatActivity {
                         dbRef.child("reservations").child(id).setValue(reservations[0]);
                         return null;
                     case GET_RESERVATION:
-                        List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), reservations[0].getDate());
-                        List<TimeSlot> timeSlots = con.getAvailableTimeSlots(reservationList, 0, new Date(), new ArrayList<TimeSlot>());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+                        Date selectedDate = simpleDateFormat.parse(reservations[0].getDate());
+                        Date now = new Date();
+                        if(now.after(selectedDate))
+                            selectedDate = now;
+                        List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), selectedDate);
+                        List<TimeSlot> timeSlots = con.getAvailableTimeSlots(reservationList, 0, selectedDate, new ArrayList<TimeSlot>());
                         return timeSlots;
                 }
             } catch (IOException | ParseException e) {
@@ -323,7 +324,32 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 mTimeSlotList.clear();
                 mTimeSlotList.addAll(v);
                 mAdapter.notifyDataSetChanged();
+                isValidTimeslot(timePicker.getText().toString() + datePicker.getText().toString(), endTimePicker.getText().toString() + datePicker.getText().toString());
             }
+        }
+    }
+
+    public void isValidTimeslot(String startTime, String endTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CalendarConnection.TIME_FORMAT + CalendarConnection.DATE_FORMAT);
+        boolean result = false;
+        try {
+            Date start = simpleDateFormat.parse(startTime);
+            Date end = simpleDateFormat.parse(endTime);
+            for (TimeSlot timeSlot:mTimeSlotList) {
+                Log.d("timeslot", timeSlot.toString());
+                if ((start.after(timeSlot.getStartTime()) || start.equals(timeSlot.getStartTime())) && (end.before(timeSlot.getEndTime()) || end.equals(timeSlot.getEndTime()))){
+                    result = true;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (!result){
+            invalidTime.setVisibility(View.VISIBLE);
+            reserveRoomButton.setEnabled(false);
+        } else {
+            invalidTime.setVisibility(View.GONE);
+            reserveRoomButton.setEnabled(true);
         }
     }
 }

@@ -175,14 +175,12 @@ public class ReservationOverviewFragment extends Fragment {
                                 new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
                                 snackbar.show();
                             }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 new CalendarAsyncTask(GET_RESERVATIONS).execute();
                             }
                         }).show();
-
             }
         };
 
@@ -207,13 +205,14 @@ public class ReservationOverviewFragment extends Fragment {
             try {
 
                 CalendarConnection con = CalendarConnection.getInstance(getContext());
-                switch (task) {
+                switch(task){
                     case REMOVE_RESERVATION:
                         con.removeEvent(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
                 resList = DatabaseConnection.getReservations();
+                resList = DatabaseConnection.filterReservations(resList);
                 resList = con.filterEventsByOwner(resList, accountName);
                 resList = con.orderListByDate(resList);
             } catch (InterruptedException e) {
