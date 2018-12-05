@@ -10,6 +10,8 @@ import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import timber.log.Timber;
 
 public class DatabaseConnection {
@@ -18,10 +20,10 @@ public class DatabaseConnection {
     private static DatabaseReference roomRef = database.getReference("rooms");
     private static DatabaseReference reservationRef = database.getReference("reservations");
 
-    private static final ArrayList<Room> roomList = new ArrayList<>();
-    public static final ArrayList<Reservation> reservationList = new ArrayList<>();
+    private static final List<Room> roomList = new ArrayList<>();
+    public static final List<Reservation> reservationList = new ArrayList<>();
 
-    public static ArrayList<Room> getRooms() throws InterruptedException {
+    public static List<Room> getRooms() throws InterruptedException {
         if(roomList.isEmpty()){
             getDbRooms();
             Thread.sleep(2000L);
@@ -29,7 +31,7 @@ public class DatabaseConnection {
         return roomList;
     }
 
-    public static ArrayList<Reservation> getReservations() throws InterruptedException{
+    public static List<Reservation> getReservations() throws InterruptedException{
             getDbReservations();
             Thread.sleep(1000L);
         return reservationList;

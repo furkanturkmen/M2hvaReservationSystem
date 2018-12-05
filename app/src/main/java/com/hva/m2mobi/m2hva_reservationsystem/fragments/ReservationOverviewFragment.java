@@ -231,7 +231,7 @@ public class ReservationOverviewFragment extends Fragment {
 
     private void updateUI() {
         if (dbAdapter == null) {
-            dbAdapter = new ReservationsOverviewAdapter(dbReservationList);
+            dbAdapter = new ReservationsOverviewAdapter(dbReservationList, getContext());
             mRecyclerView.setAdapter(dbAdapter);
         } else {
             //Refresh list

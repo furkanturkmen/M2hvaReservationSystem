@@ -1,5 +1,6 @@
 package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class ReservationsOverviewAdapter extends RecyclerView.Adapter<ReservationsOverviewAdapter.ReservationsViewHolder> {
     private List<Reservation> mReservationList;
     private OnItemClickListener mListener;
+    private Context mContext;
 
 
     public interface OnItemClickListener {
@@ -62,8 +65,9 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
         }
     }
 
-    public ReservationsOverviewAdapter(List<Reservation> reservationsList) {
+    public ReservationsOverviewAdapter(List<Reservation> reservationsList, Context context) {
         mReservationList = reservationsList;
+        mContext = context;
     }
 
     @NonNull
@@ -76,7 +80,7 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     @Override
     public void onBindViewHolder(@NonNull ReservationsViewHolder holder, int position) {
         Reservation currentItem = mReservationList.get(position);
-        holder.resRoom.setImageResource(currentItem.getReservationRoom().getImgResource());
+        Glide.with(mContext).load(currentItem.getReservationRoom().getImage()).into(holder.resRoom);
         holder.title.setText(currentItem.getReservationRoom().getName());
 
         holder.date.setText(R.string.rsv_date);

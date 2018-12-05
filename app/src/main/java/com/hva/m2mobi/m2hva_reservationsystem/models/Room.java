@@ -1,9 +1,9 @@
 package com.hva.m2mobi.m2hva_reservationsystem.models;
 
-import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.bumptech.glide.annotation.GlideModule;
 
 public class Room {
-    private int imgResource;
+    private String image;
     private String name;
     private String description;
     private String calendarID;
@@ -12,11 +12,11 @@ public class Room {
     private String time;
 
     public Room(){
-        imgResource = R.drawable.hunting_room;
+
     }
 
-    public Room(int imgResource, String name, String description, String calendarID, int capacity) {
-        this.imgResource = imgResource;
+    public Room(String image, String name, String description, String calendarID, int capacity) {
+        this.image = image;
         this.name = name;
         this.description = description;
         this.calendarID = calendarID;
@@ -24,12 +24,12 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public int getImgResource() {
-        return imgResource;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgResource(int imgResource) {
-        this.imgResource = imgResource;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {
