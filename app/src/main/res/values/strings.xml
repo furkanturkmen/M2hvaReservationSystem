@@ -139,6 +139,7 @@
     <string name="reserved_from">From</string>
     <string name="reserved_until">until</string>
     <string name="until_booked_time">@string/rsv_clock</string>
+    <string name="invalid_time">This time is not available, please select an available timeslot</string>
 
     <string name="room_name">Room name</string>
     <string name="room_description">Description</string>
