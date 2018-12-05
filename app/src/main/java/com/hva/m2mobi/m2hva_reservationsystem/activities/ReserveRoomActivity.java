@@ -51,10 +51,10 @@ public class ReserveRoomActivity extends AppCompatActivity {
     Spinner spinnerRoom;
     @BindView(R.id.reserve_room_date)
     TextView datePicker;
-    @BindView(R.id.reserve_room_timepicker)
+    @BindView(R.id.reserve_room_starttimepicker)
     TextView timePicker;
-    @BindView(R.id.reserve_room_duration)
-    Spinner spinnerDuration;
+    @BindView(R.id.reserve_room_endtimepicker)
+    TextView endTimePicker;
     @BindView(R.id.reserve_room_toolbar)
     Toolbar toolbar;
     @BindView(R.id.meeting_times)
@@ -87,7 +87,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         loadCapacityData();
 
         loadRoomNames();
-        loadDurationData();
         loadDateData();
 
         buildRecyclerView();
@@ -98,16 +97,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         System.out.println("dbCon.toString: " + dbRef.toString() + "\n" + "dbCon: " + dbRef);
         String cap = spinnerCapacity.getSelectedItem().toString();
         String startTime = timePicker.getText().toString();
-        SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(sdf.parse(startTime));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String duration = spinnerDuration.getSelectedItem().toString().substring(0, 1);
-        cal.add(Calendar.HOUR, Integer.parseInt(duration));
-        String endTime = sdf.format(cal.getTime());
+        String endTime = endTimePicker.getText().toString();
         String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         Timber.tag("Room").d(roomName);
@@ -132,9 +122,14 @@ public class ReserveRoomActivity extends AppCompatActivity {
         datePickerDialog();
     }
 
-    @OnClick(R.id.reserve_room_timepicker)
-    void chooseTime() {
-        timePickerDialog();
+    @OnClick(R.id.reserve_room_starttimepicker)
+    void chooseStartTime() {
+        timePickerDialog(timePicker);
+    }
+
+    @OnClick(R.id.reserve_room_endtimepicker)
+    void chooseEndTime() {
+        timePickerDialog(endTimePicker);
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
@@ -161,11 +156,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
         }
         Reservation reservation = new Reservation(0, "", "", room, "", datePicker.getText().toString(), "");
         new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
-    }
-
-    @OnItemSelected(R.id.reserve_room_duration)
-    void roomDurationSelected(int position) {
-        spinnerDuration.getItemAtPosition(position);
     }
 
     private void loadCapacityData() {
@@ -203,13 +193,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
         datePicker.setText(sdf.format(calendar.getTime()));
         timePicker.setText(stf.format(calendar.getTime()));
-    }
-
-    private void loadDurationData() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.duration_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDuration.setAdapter(adapter);
+        calendar.add(Calendar.HOUR, 1);
+        endTimePicker.setText(stf.format(calendar.getTime()));
     }
 
     private void datePickerDialog() {
@@ -232,20 +217,21 @@ public class ReserveRoomActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void timePickerDialog() {
+    private void timePickerDialog(final TextView textView) {
         final Calendar myCalender = Calendar.getInstance();
         int hour = myCalender.get(Calendar.HOUR_OF_DAY);
         int minute = myCalender.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay,
                                   int minute) {
                 SimpleDateFormat sdf = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
                 myCalender.set(0, 0, 0, hourOfDay, minute);
 
-                timePicker.setText(sdf.format(myCalender.getTime()));
+                textView.setText(sdf.format(myCalender.getTime()));
             }
-        }, hour, minute, false);
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, onTimeSetListener, hour, minute, false);
         timePickerDialog.show();
     }
 

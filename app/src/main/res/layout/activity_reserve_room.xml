@@ -87,12 +87,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/reserve_room_time"
+                    android:text="@string/reserve_room_starttime"
                     android:textStyle="bold"
                     tools:text="Time" />
 
                 <TextView
-                    android:id="@+id/reserve_room_timepicker"
+                    android:id="@+id/reserve_room_starttimepicker"
                     style="?android:attr/spinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,20 +115,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:paddingStart="12dp"
-                    android:text="@string/reserve_room_duration"
+                    android:text="@string/reserve_room_endtime"
                     android:textStyle="bold"
                     tools:text="Duration" />
 
-                <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/reserve_room_duration"
+                <TextView
+                    android:id="@+id/reserve_room_endtimepicker"
+                    style="?android:attr/spinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/reserve_room_border_spinner"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/reserve_room_time"
                     android:paddingStart="12dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    tools:text="1h" />
+                    tools:text="12:00" />
             </LinearLayout>
 
         </LinearLayout>
