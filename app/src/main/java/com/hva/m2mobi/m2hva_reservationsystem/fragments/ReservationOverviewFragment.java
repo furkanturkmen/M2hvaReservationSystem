@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -141,40 +142,40 @@ public class ReservationOverviewFragment extends Fragment {
 
         simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView,
-                                          @NonNull RecyclerView.ViewHolder viewHolder,
-                                          @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                    //Called when a user swipes left or right on a ViewHolder
-                    @Override
-                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        //Get the index corresponding to the selected position
-                        new AlertDialog.Builder(getContext())
-                                .setTitle(R.string.remove_title)
-                                .setMessage(R.string.remove_description)
-                                .setIcon(R.drawable.ic_warning)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            //Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                //Get the index corresponding to the selected position
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.remove_title)
+                        .setMessage(R.string.remove_description)
+                        .setIcon(R.drawable.ic_warning)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        final int position = (viewHolder.getAdapterPosition());
-                                        Snackbar snackbar = Snackbar.make(view,
-                                                dbReservationList.get(position).getReservationRoom().getName()
-                                                        + " reservation has been deleted.", Snackbar.LENGTH_LONG);
-                                        new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
-                                        snackbar.show();
-                                    }})
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        new CalendarAsyncTask(GET_RESERVATIONS).execute();
-                                    }
-                                }).show();
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                final int position = (viewHolder.getAdapterPosition());
+                                Snackbar snackbar = Snackbar.make(view,
+                                        dbReservationList.get(position).getReservationRoom().getName()
+                                                + " reservation has been deleted.", Snackbar.LENGTH_LONG);
+                                new CalendarAsyncTask(REMOVE_RESERVATION).execute(dbReservationList.get(position));
+                                snackbar.show();
+                            }})
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                new CalendarAsyncTask(GET_RESERVATIONS).execute();
+                            }
+                        }).show();
 
-                    }
-                };
+            }
+        };
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -184,8 +185,8 @@ public class ReservationOverviewFragment extends Fragment {
         private CalendarAsyncTask(int task) {
             mNoPermissionLayout.setVisibility(View.GONE);
             this.task = task;
-                mLoaderLayout.setVisibility(View.VISIBLE);
-                mNoBookingLayout.setVisibility(View.GONE);
+            mLoaderLayout.setVisibility(View.VISIBLE);
+            mNoBookingLayout.setVisibility(View.GONE);
             updateUI();
         }
 
@@ -195,18 +196,19 @@ public class ReservationOverviewFragment extends Fragment {
             try {
 
                 CalendarConnection con = CalendarConnection.getInstance(getContext());
-                    switch(task){
+                switch(task){
                     case REMOVE_RESERVATION:
                         con.removeEvent(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
                 resList = DatabaseConnection.getReservations();
+                resList = DatabaseConnection.filterReservations(resList);
                 resList = con.filterEventsByOwner(resList, accountName);
                 resList = con.orderListByDate(resList);
             } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return null;      
+                e.printStackTrace();
+                return null;
             } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }

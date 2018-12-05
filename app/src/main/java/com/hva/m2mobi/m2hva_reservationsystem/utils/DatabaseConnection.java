@@ -5,10 +5,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.ReserveRoomActivity;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -83,5 +87,21 @@ public class DatabaseConnection {
     public static void deleteReservation(String id) {
 
         reservationRef.child(id).removeValue();
+    }
+
+    public static List<Reservation> filterReservations(List<Reservation> reservations){
+        Date now = new Date();
+        List<Reservation> reservationList = new ArrayList<>();
+        for (Reservation reservation:reservations) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CalendarConnection.TIME_FORMAT + CalendarConnection.DATE_FORMAT);
+            try {
+                Date date = simpleDateFormat.parse(reservation.getEndTime() + reservation.getDate());
+                if (date.after(now))
+                    reservationList.add(reservation);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return reservationList;
     }
 }
