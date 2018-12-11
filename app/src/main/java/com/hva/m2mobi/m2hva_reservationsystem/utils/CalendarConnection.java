@@ -218,6 +218,8 @@ public class CalendarConnection{
     public List<TimeSlot> getAvailableTimeSlots(List<Reservation> reservations, int i, Date now, List<TimeSlot> timeSlots) throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT + DATE_FORMAT);
+        String nowString = simpleDateFormat.format(now);
+        now = simpleDateFormat.parse(nowString);
         SimpleDateFormat dayFormat = new SimpleDateFormat(DATE_FORMAT);
         if (i == reservations.size()){
             Date endOfDay = simpleDateFormat.parse("23:59" + dayFormat.format(now));
