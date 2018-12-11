@@ -131,12 +131,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
     @OnClick(R.id.reserve_room_starttimepicker)
     void chooseStartTime() {
-        timePickerDialog(timePicker);
+        timePickerDialog(timePicker, false);
     }
 
     @OnClick(R.id.reserve_room_endtimepicker)
     void chooseEndTime() {
-        timePickerDialog(endTimePicker);
+        timePickerDialog(endTimePicker, true);
     }
 
     @OnItemSelected(R.id.reserve_room_capacity)
@@ -226,7 +226,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void timePickerDialog(final TextView textView) {
+    private void timePickerDialog(final TextView textView, boolean isEndTime) {
         final Calendar myCalender = Calendar.getInstance();
         int hour = myCalender.get(Calendar.HOUR_OF_DAY);
         int minute = myCalender.get(Calendar.MINUTE);
@@ -243,13 +243,34 @@ public class ReserveRoomActivity extends AppCompatActivity {
         };
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
         try {
-            TimePickerDialog timePickerDialog;
+
             Date date = simpleDateFormat.parse(datePicker.getText().toString());
-            if (date.after(new Date())){
-                timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, onTimeSetListener, 0, 0, true);
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(CalendarConnection.TIME_FORMAT);
+            int maxHour = 23;
+            int maxMinute = 59;
+            int minHour = hour;
+            int minMinute = minute;
+            if (isEndTime){
+                Date today = new Date();
+                Date startTime = simpleTimeFormat.parse(timePicker.getText().toString());
+                myCalender.setTime(startTime);
+                minHour = myCalender.get(Calendar.HOUR_OF_DAY);
+                minMinute = myCalender.get(Calendar.MINUTE);
+                if (!date.after(today)){
+                    String nowTime = simpleTimeFormat.format(today);
+                    today = simpleTimeFormat.parse(nowTime);
+                    if (today.after(startTime)){
+                        minHour = hour;
+                        minMinute = minute;
+                    }
+                }
             } else {
-                timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, hour, minute);
+                Date endTime = simpleTimeFormat.parse(endTimePicker.getText().toString());
+                myCalender.setTime(endTime);
+                maxHour = myCalender.get(Calendar.HOUR_OF_DAY);
+                maxMinute = myCalender.get(Calendar.MINUTE);
             }
+            TimePickerDialog timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, minHour, minMinute, maxHour, maxMinute);
             timePickerDialog.show();
         } catch (ParseException e) {
             e.printStackTrace();
