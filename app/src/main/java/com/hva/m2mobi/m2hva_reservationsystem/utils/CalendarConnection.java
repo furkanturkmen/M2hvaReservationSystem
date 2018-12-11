@@ -167,10 +167,19 @@ public class CalendarConnection{
     }
 
     public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
-        DateTime now = new DateTime(System.currentTimeMillis());
+        Date now = new Date();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+
+        cal.setTime(now);
+        DateTime startDay = new DateTime(cal.getTime());
+        cal.set(java.util.Calendar.MINUTE, 0);
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        cal.add(java.util.Calendar.DATE, 1);
+        DateTime endDay = new DateTime(cal.getTime());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
         events.setMaxResults(noOfEvents)
-                .setTimeMin(now)
+                .setTimeMin(startDay)
+                .setTimeMax(endDay)
                 .setOrderBy("startTime")
                 .setSingleEvents(true);
         Events result = events.execute();
@@ -182,6 +191,8 @@ public class CalendarConnection{
 
         cal.setTime(date);
         DateTime startDay = new DateTime(cal.getTime());
+        cal.set(java.util.Calendar.MINUTE, 0);
+        cal.set(java.util.Calendar.HOUR, 0);
         cal.add(java.util.Calendar.DATE, 1);
         DateTime endDay = new DateTime(cal.getTime());
         Calendar.Events.List events = calendar.events().list(room.getCalendarID());
