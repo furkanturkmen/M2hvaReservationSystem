@@ -1,121 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
+    android:focusable="true">
 
     <LinearLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        >
-
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/default_gap">
 
         <ImageView
             android:id="@+id/room_image"
-            android:layout_width="50dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
             app:srcCompat="@drawable/beach_house" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                android:id="@+id/room_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/imageView3"
-                android:text="@string/room_name"
-                style="@style/CardTitle"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                    android:id="@+id/room_name"
+                                    android:background="@color/common_google_signin_btn_text_light_disabled"
 
-                <TextView
-                    android:id="@+id/room_availability"
-                    style="@style/CardContent"
+                    style="@style/CardTitle"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignTop="@+id/room_name"
-                    android:layout_gravity="right"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_weight="1"
-                    android:gravity="center|right"
-                    android:text="@string/status_green" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/room_name"
+                    android:textSize="@dimen/font_larger" />
+
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/room_capacity"
-            style="@style/CardContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/room_name"
-            android:layout_gravity="right"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="right"
-            android:text="Capacity" />
-
-        <TextView
-            android:id="@+id/room_time"
-            style="@style/CardContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="right"
-            android:text="@string/until_booked_time" />
-    </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
 
                 <TextView
                     android:id="@+id/room_description"
                     style="@style/CardContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/room_name"
-                    android:layout_gravity="right"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:gravity="right"
-                    android:text="@string/room_description" />
+                    android:text="@string/room_description"
+                    android:textSize="@dimen/font_large" />
+
+                <TextView
+                    style="@style/CardContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="Capacity"
+                    android:textSize="@dimen/font_normal" />
+                <TextView
+                    android:id="@+id/room_capacity"
+                    style="@style/CardContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="6"
+                    android:textSize="@dimen/font_larger" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/room_availability"
+                    style="@style/CardContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/default_gap"
+                    android:text="@string/status_green"
+                    android:textSize="@dimen/font_huge" />
+
+                <TextView
+                    android:id="@+id/room_time"
+                    style="@style/CardContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/until_booked_time"
+                    android:textSize="@dimen/font_larger" />
+            </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
 
 
     <View
         android:id="@+id/divider3"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="3dp"
         android:background="?android:attr/listDivider" />
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+
+    </LinearLayout>
