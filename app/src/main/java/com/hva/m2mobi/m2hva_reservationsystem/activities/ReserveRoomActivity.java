@@ -29,6 +29,7 @@ import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.models.TimeSlot;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.CalendarConnection;
+import com.hva.m2mobi.m2hva_reservationsystem.utils.CustomTimePickerDialog;
 import com.hva.m2mobi.m2hva_reservationsystem.utils.DatabaseConnection;
 
 import java.io.IOException;
@@ -240,9 +241,19 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 isValidTimeslot(timePicker.getText().toString() + datePicker.getText().toString(), endTimePicker.getText().toString() + datePicker.getText().toString());
             }
         };
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, onTimeSetListener, hour, minute, true);
-        timePickerDialog.show();
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CalendarConnection.DATE_FORMAT);
+        try {
+            TimePickerDialog timePickerDialog;
+            Date date = simpleDateFormat.parse(datePicker.getText().toString());
+            if (date.after(new Date())){
+                timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, onTimeSetListener, 0, 0, true);
+            } else {
+                timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, hour, minute);
+            }
+            timePickerDialog.show();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void buildRecyclerView() {
