@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -270,7 +271,9 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 maxHour = myCalender.get(Calendar.HOUR_OF_DAY);
                 maxMinute = myCalender.get(Calendar.MINUTE);
             }
+
             TimePickerDialog timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, minHour, minMinute, maxHour, maxMinute);
+
             timePickerDialog.show();
         } catch (ParseException e) {
             e.printStackTrace();
