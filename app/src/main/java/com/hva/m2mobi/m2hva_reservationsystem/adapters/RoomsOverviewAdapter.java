@@ -1,9 +1,11 @@
 package com.hva.m2mobi.m2hva_reservationsystem.adapters;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +39,8 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     public static class RoomsOverviewViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView description;
-        private TextView availability;
+        private ImageView time_availability;
+        private TextView text_availability;
         private TextView time;
         private TextView capacity;
         private ImageView imageRoom;
@@ -46,7 +49,8 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
             super(itemView);
             capacity = itemView.findViewById(R.id.room_capacity);
             name = itemView.findViewById(R.id.room_name);
-            availability = itemView.findViewById(R.id.room_availability);
+            time_availability = itemView.findViewById(R.id.room_availability_line);
+            text_availability = itemView.findViewById(R.id.room_availability);
             imageRoom = itemView.findViewById(R.id.room_image);
             description = itemView.findViewById(R.id.room_description);
             time = itemView.findViewById(R.id.room_time);
@@ -77,6 +81,7 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         return new RoomsOverviewViewHolder(view, mListener);
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull RoomsOverviewViewHolder holder, int position) {
         Room room = mListRooms.get(position);
@@ -86,19 +91,24 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
         holder.capacity.setText(String.valueOf(room.getCapacity()));
 
         if(room.isAvailable()){
-            holder.availability.setTextColor(Color.rgb(0, 150, 0));
-            holder.availability.setText(R.string.status_green);
+//            holder.availability.setTextColor(Color.rgb(0, 150, 0));
+//            holder.availability.setText(R.string.status_green);
+            holder.time_availability.setBackgroundResource(R.color.colorGreen);
+            holder.text_availability.setText(R.string.available);
 
         } else{
-            holder.availability.setTextColor(Color.rgb(150, 0, 0));
-            holder.availability.setText(R.string.status_red);
+//            holder.availability.setTextColor(Color.rgb(150, 0, 0));
+//            holder.availability.setText(R.string.status_red);
+                  holder.time_availability.setBackgroundResource(R.color.colorRed);
+                  holder.text_availability.setText(R.string.not_availabile);
+
         }
         holder.time.setText(room.getTime());
 
         Typeface custom_font;
         custom_font = ResourcesCompat.getFont(holder.time.getContext(), R.font.fa_solid_900);
         holder.time.setTypeface(custom_font);
-        holder.availability.setTypeface(custom_font);
+//        holder.availability.setTypeface(custom_font);
     }
 
     @Override

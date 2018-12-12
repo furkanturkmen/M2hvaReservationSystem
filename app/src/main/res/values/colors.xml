@@ -15,6 +15,12 @@
     <color name="colorItem">#000000</color>
     <color name="colorFAB">#F9A825</color>
 
+
+    <color name="colorGreen">#7FB069</color>
+    <color name="colorRed">#CA3C25</color>
+
+
+
     <color name="navigation_bar_txt_color">#ffffff</color>
 
     <!--Launch color-->

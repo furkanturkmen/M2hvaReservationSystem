@@ -133,7 +133,7 @@
     <string name="reserve_room_starttime">Start time</string>
     <string name="reserve_room_name">Room name</string>
     <string name="reserve_room_capacity">Amount of attendees</string>
-    <string name="capacity">Capacity</string>
+    <string name="capacity">Capacity: </string>
     <string name="reserve_room_date">Date</string>
     <string name="reserve_room_slots">Available slots</string>
     <string name="reserved_from">From</string>
@@ -147,5 +147,7 @@
     <string name="remove_description">Are you sure you want to remove this reservation?</string>
     <string name="reservation_added">Well Done! Your Room Reservation Has Been Made</string>
     <string name="confirm">OK</string>
+    <string name="available">Available until: </string>
+    <string name="not_availabile">Not available until: </string>
 
 </resources>
