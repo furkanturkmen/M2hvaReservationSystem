@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 101;
+    public static final String LOGOUT_EXTRA = "logout_extra";
 
 
     private FirebaseAuth mAuth;
@@ -52,13 +53,25 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            updateUI();
-        } else {
-            signIn();
-        }
+        Intent intent = getIntent();
+        boolean logout = intent.getBooleanExtra(LOGOUT_EXTRA, false);
+        if(logout){
+            mAuth.signOut();
+            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    finish();
+                }
+            });
+        }else {
 
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                updateUI();
+            } else {
+                signIn();
+            }
+        }
     }
 
     private void signIn() {

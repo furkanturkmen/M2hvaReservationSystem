@@ -54,6 +54,7 @@ public class CustomTimePickerDialog extends TimePickerDialog {
     public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minuteOfHour){
         Log.d("CustomTimePicker", "updateTime: " + hourOfDay + " " + minuteOfHour);
         super.updateTime(hourOfDay, minuteOfHour);
+        //Use this timepicker to get the minute spinner not save it as a class field
         if (hourOfDay > minHour){
             minuteSpinner.setMinValue(0);
         } else {
