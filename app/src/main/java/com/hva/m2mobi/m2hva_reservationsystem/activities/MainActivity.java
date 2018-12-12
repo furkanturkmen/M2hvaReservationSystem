@@ -161,6 +161,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             });
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                Intent newIntent = new Intent(this, LoginActivity.class);
+                newIntent.putExtra(LoginActivity.LOGOUT_EXTRA, true);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(newIntent);
+                finish();
+                return false;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 
