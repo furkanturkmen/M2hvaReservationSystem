@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorOrange"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/PopupTheme"
         app:title="Make a Reservation" />

@@ -113,9 +113,9 @@ public class ReservationOverviewFragment extends Fragment {
         buildRecyclerView();
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setColorSchemeResources(
-                R.color.colorPrimary,
-                R.color.colorAccentBlue,
-                R.color.m2mobiLightGrey);
+                R.color.colorOrange,
+                R.color.colorBlue,
+                R.color.colorLightGrey);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override

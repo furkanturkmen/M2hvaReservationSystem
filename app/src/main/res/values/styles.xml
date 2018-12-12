@@ -2,13 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-
-        <item name="colorPrimaryDark">@color/colorAccentDarkBlue</item>
-        <item name="colorPrimary">@color/colorAccentBlue</item>
+        <item name="colorPrimaryDark">@color/colorOrangeDark</item>
+        <item name="colorPrimary">@color/colorOrange</item>
         <item name="android:popupTheme">@style/PopupTheme</item>
 
-        <item name="colorAccent">@color/colorAccentOrange</item>
+        <item name="colorAccent">@color/colorOrange</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
@@ -19,47 +17,47 @@
     </style>
 
     <style name="QuickReserveButton">
-        <item name="android:background">@color/colorAccentOrange</item>
+        <item name="android:background">@color/colorOrange</item>
     </style>
 
     //M2Orange Button
     <style name="M2OrangeButton" parent="Base.Theme.AppCompat.Light">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
-        <item name="colorButtonNormal">@color/colorAccentOrange</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="colorControlHighlight">@color/colorBlueDark</item>
+        <item name="colorButtonNormal">@color/colorOrange</item>
         <item name="android:textSize">@dimen/font_small</item>
     </style>
 
     <style name="NavBar" parent="Base.Theme.AppCompat.Light">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccentDarkBlue</item>
-        <item name="colorButtonNormal">@color/colorAccentOrange</item>
-        <item name="android:background">@color/colorAccentDarkBlue</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="colorControlHighlight">@color/colorBlueDark</item>
+        <item name="colorButtonNormal">@color/colorOrange</item>
+        <item name="android:background">@color/colorBlue</item>
     </style>
 
     //Title for Cards
     <style name="CardTitle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:textColor">@color/colorAccentDarkBlue</item>
+        <item name="android:textColor">@color/colorBlueDark</item>
     </style>
 
     //Content for Cards
     <style name="CardContent" parent="Base.Theme.AppCompat.Light">
-        <item name="android:textColor">@color/m2mobiLightGrey</item>
+        <item name="android:textColor">@color/colorLightGrey</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
 
     // Background toolbar menu
     <style name="PopupTheme" parent="Theme.AppCompat.Light">
-        <item name="android:background">@color/colorBackground</item>
-        <item name="android:textColor">@color/colorItem</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
 
     Bottom navigation menu
     <style name="BottomNavigation" parent="Theme.AppCompat.Light">
-        <item name="android:background">@color/colorAccentDarkBlue</item>
+        <item name="android:background">@color/colorBlueDark</item>
     </style>
 
 

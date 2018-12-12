@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorOrange"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/PopupTheme"
         app:title="@string/toolbar_title">
@@ -46,7 +46,7 @@
             android:id="@+id/fab_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorFAB"
+            android:backgroundTint="@color/colorOrange"
             android:src="@drawable/plus"
             app:elevation="12dp"
             app:fabSize="normal"
@@ -59,8 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:itemIconTint="@color/bnv_tab_item_foreground"
-            app:itemTextColor="@color/bnv_tab_item_foreground"
+            app:itemIconTint="@color/colorBlue"
+            app:itemTextColor="@color/colorWhite"
             app:menu="@menu/navigation_menu"
             />
 
