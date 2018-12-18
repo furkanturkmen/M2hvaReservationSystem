@@ -237,7 +237,7 @@ public class ReservationOverviewFragment extends Fragment {
                 if (!dbReservationList.isEmpty()) {
                     System.out.println("datum - Datum van element is: " + dbReservationList.get(indexId).getDate());
                     System.out.println("datum - Index van element is: " + indexId);
-                    dateOfFirstElement.setText(dbReservationList.get(indexId).getDate());
+//                    dateOfFirstElement.setText(dbReservationList.get(indexId).getDate());
                 }
             }
         });

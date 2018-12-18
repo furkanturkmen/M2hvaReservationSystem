@@ -4,10 +4,9 @@
     <item android:id="@+id/action_search"
         android:title="@string/app_name"
         android:icon="@android:drawable/ic_menu_my_calendar"
-        app:showAsAction="collapseActionView|ifRoom"
-        />
+        app:showAsAction="collapseActionView|ifRoom" />
     <item android:id="@+id/action_logout"
-    android:title="@string/logout_button"
-    app:showAsAction="collapseActionView"
-    />
+        android:title="@string/logout_button"
+        android:icon="@drawable/ic_kent_power"
+        app:showAsAction="collapseActionView|ifRoom" />
 </menu>
