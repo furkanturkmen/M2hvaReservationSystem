@@ -108,13 +108,12 @@ public class ReserveRoomActivity extends AppCompatActivity {
         final String cap = spinnerCapacity.getSelectedItem().toString();
         final String startTime = timePicker.getText().toString();
         final String endTime = endTimePicker.getText().toString();
-        final String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         final String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String accountName = "";
+        String preAccountName = "";
         if(user != null)
-            accountName = user.getEmail();
-        Timber.tag("Room").d(roomName);
+            preAccountName = user.getEmail();
+        final String accountName = preAccountName;
 
         DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
             @Override
