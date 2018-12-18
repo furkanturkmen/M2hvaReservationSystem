@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.activities.ReserveRoomActivity;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 import com.hva.m2mobi.m2hva_reservationsystem.models.TimeSlot;
@@ -161,11 +162,6 @@ public class CalendarConnection{
         return res;
     }
 
-    public List<Reservation> getMyEvents(int noOfEvents) throws IOException, ParseException, InterruptedException {
-        List<Reservation> allEvents = getAllEvents(noOfEvents);
-        return filterEventsByOwner(allEvents,accountName);
-    }
-
     public List<Reservation> getRoomEvents(Room room, int noOfEvents) throws IOException, ParseException {
         Date now = new Date();
         java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -202,16 +198,6 @@ public class CalendarConnection{
                 .setSingleEvents(true);
         Events result = events.execute();
         return eventListToReservation(result.getItems(),room);
-    }
-
-    private List<Reservation> getAllEvents(int noOfEvents) throws IOException, ParseException, InterruptedException {
-        List<Reservation> items = new ArrayList<>();
-        for (Room room: DatabaseConnection.getRooms()) {
-            List<Reservation> result = getRoomEvents(room,noOfEvents);
-            if (!result.isEmpty())
-                items.addAll(result);
-        }
-        return items;
     }
 
     public List<Reservation> filterEventsByOwner(List<Reservation> items, String accountName){

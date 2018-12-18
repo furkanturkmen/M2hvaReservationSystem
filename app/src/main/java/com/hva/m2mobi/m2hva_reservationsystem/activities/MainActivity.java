@@ -74,11 +74,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
 
-        try {
-            roomsOutDB = DatabaseConnection.getRooms();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         mBottomNav = findViewById(R.id.bottom_navigation);
         mBottomNav.setOnNavigationItemSelectedListener(this);

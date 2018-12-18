@@ -22,7 +22,6 @@ public class ReservationsOverviewAdapter extends RecyclerView.Adapter<Reservatio
     private OnItemClickListener mListener;
     private Context mContext;
 
-
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
