@@ -108,6 +108,7 @@ public class ReservationOverviewFragment extends Fragment {
         mNoPermissionLayout.setVisibility(View.GONE);
 
         dateOfFirstElement = getActivity().findViewById(R.id.dateText);
+        dateOfFirstElement.setVisibility(view.VISIBLE);
 
         //requestData();
         buildRecyclerView();
@@ -120,12 +121,12 @@ public class ReservationOverviewFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        new CalendarAsyncTask(REFRESH_RESERVATIONS).execute();
+                        getRealReservations();
                     }
                 }
         );
 
-        new CalendarAsyncTask(GET_RESERVATIONS).execute();
+        getRealReservations();
         updateUI();
         getFirstElementInRecyclerView();
 
@@ -178,7 +179,7 @@ public class ReservationOverviewFragment extends Fragment {
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                new CalendarAsyncTask(GET_RESERVATIONS).execute();
+                                getRealReservations();
                             }
                         }).show();
             }
@@ -188,7 +189,7 @@ public class ReservationOverviewFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    private class CalendarAsyncTask extends AsyncTask<Reservation, Void, List> {
+    private class CalendarAsyncTask extends AsyncTask<Reservation, Void, Void> {
         private int task;
 
         private CalendarAsyncTask(int task) {
@@ -200,43 +201,19 @@ public class ReservationOverviewFragment extends Fragment {
         }
 
         @Override
-        protected List doInBackground(Reservation... reservations) {
-            List<Reservation> resList = null;
+        protected Void doInBackground(Reservation... reservations) {
             try {
-
-                CalendarConnection con = CalendarConnection.getInstance(getContext());
+                final CalendarConnection con = CalendarConnection.getInstance(getContext());
                 switch(task){
                     case REMOVE_RESERVATION:
                         con.removeEvent(reservations[0]);
                         DatabaseConnection.deleteReservation(reservations[0].getID());
                         break;
                 }
-                resList = DatabaseConnection.getReservations();
-                resList = DatabaseConnection.filterReservations(resList);
-                resList = con.filterEventsByOwner(resList, accountName);
-                resList = con.orderListByDate(resList);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                return null;
-            } catch (ParseException | IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            return resList;
-        }
-
-        @Override
-        protected void onPostExecute(List list) {
-            super.onPostExecute(list);
-            mySwipeRefreshLayout.setRefreshing(false);
-            mLoaderLayout.setVisibility(View.GONE);
-            if (list != null) {
-                dbReservationList.clear();
-                dbReservationList = list;
-                if (list.isEmpty()) {
-                    mNoBookingLayout.setVisibility(View.VISIBLE);
-                }
-            }
-            updateUI();
+            return null;
         }
     }
 
@@ -327,5 +304,35 @@ public class ReservationOverviewFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getRealReservations(){
+
+        final CalendarConnection con = CalendarConnection.getInstance(getContext());
+
+        DatabaseConnection.getReservations(new DatabaseConnection.ReservationListReturner() {
+
+            public void onReturnList(List<Reservation> resList) {
+
+                resList = DatabaseConnection.filterReservations(resList);
+                resList = con.filterEventsByOwner(resList, accountName);
+                try {
+                    resList = con.orderListByDate(resList);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                mySwipeRefreshLayout.setRefreshing(false);
+                mLoaderLayout.setVisibility(View.GONE);
+                if (resList != null) {
+                    dbReservationList.clear();
+                    dbReservationList = resList;
+                    if (resList.isEmpty()) {
+                        mNoBookingLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+                updateUI();
+            }
+        });
     }
 }

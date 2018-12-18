@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,27 +102,29 @@ public class ReserveRoomActivity extends AppCompatActivity {
     @OnClick(R.id.reserve_room_button)
     void submitReservation() {
         System.out.println("dbCon.toString: " + dbRef.toString() + "\n" + "dbCon: " + dbRef);
-        String cap = spinnerCapacity.getSelectedItem().toString();
-        String startTime = timePicker.getText().toString();
-        String endTime = endTimePicker.getText().toString();
-
-        String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
+        final String cap = spinnerCapacity.getSelectedItem().toString();
+        final String startTime = timePicker.getText().toString();
+        final String endTime = endTimePicker.getText().toString();
+        final String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        final String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         Timber.tag("Room").d(roomName);
-        Room room = null;
-        try {
-            room = DatabaseConnection.getRooms().get(0);
 
-            for (Room r : DatabaseConnection.getRooms()) {
-                if (r.getName().equals(roomName))
-                    room = r;
+        DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
+            @Override
+            public void onReturnList(List<Room> newList) {
+                Room room = newList.get(0);
+                for (Room r : newList) {
+                    if (r.getName().equals(roomName))
+                        room = r;
+                }
+
+                Reservation res = new Reservation(Integer.parseInt(cap), startTime, endTime, room, accountName,
+                        datePicker.getText().toString(), "");
+                new CalendarAsyncTask(ADD_RESERVATION).execute(res);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Reservation res = new Reservation(Integer.parseInt(cap), startTime, endTime, room, accountName,
-                datePicker.getText().toString(), "");
-        new CalendarAsyncTask(ADD_RESERVATION).execute(res);
+        });
+
+
     }
 
     @OnClick(R.id.reserve_room_date)
@@ -148,22 +151,24 @@ public class ReserveRoomActivity extends AppCompatActivity {
     @OnItemSelected(R.id.reserve_room_name)
     void roomNameSelected(int position) {
         spinnerRoom.getItemAtPosition(position);
-        String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
+        final String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
         Log.d("Room", roomName);
-        Room room = null;
-        try {
-            // room = DatabaseConnection.getRooms().get(0);
 
-            for (Room r : DatabaseConnection.getRooms()) {
-                if (r.getName().equals(roomName))
-                    room = r;
+        DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
+            @Override
+            public void onReturnList(List<Room> newList) {
+                Room room = newList.get(0);
+                for (Room r : newList) {
+                    if (r.getName().equals(roomName))
+                        room = r;
+                }
+
+                Reservation reservation = new Reservation(0, "", "", room, "", datePicker.getText().toString(), "");
+                new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        });
 
-        Reservation reservation = new Reservation(0, "", "", room, "", datePicker.getText().toString(), "");
-        new CalendarAsyncTask(GET_RESERVATION).execute(reservation);
+
     }
 
     private void loadCapacityData() {
@@ -174,7 +179,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
     }
 
     private void loadRoomNames() {
-        int roomIntent = getIntent().getIntExtra(RoomsOverviewFragment.ROOM_EXTRA, 0);
+        final int roomIntent = getIntent().getIntExtra(RoomsOverviewFragment.ROOM_EXTRA, 0);
         if (adapter == null) {
             roomArray = new ArrayList<>();
             adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roomArray);
@@ -182,16 +187,19 @@ public class ReserveRoomActivity extends AppCompatActivity {
             spinnerRoom.setAdapter(adapter);
         }
         roomArray.clear();
-        try {
-            for (Room room : DatabaseConnection.getRooms()) {
-                if (room.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
-                    roomArray.add(room.getName());
+
+        DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
+            @Override
+            public void onReturnList(List<Room> newList) {
+                for (Room r : newList) {
+                    if (r.getCapacity() >= Integer.parseInt(spinnerCapacity.getSelectedItem().toString()))
+                        roomArray.add(r.getName());
+                }
+                adapter.notifyDataSetChanged();
+                spinnerRoom.setSelection(roomIntent);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        adapter.notifyDataSetChanged();
-        spinnerRoom.setSelection(roomIntent);
+        });
+
     }
 
     private void loadDateData() {

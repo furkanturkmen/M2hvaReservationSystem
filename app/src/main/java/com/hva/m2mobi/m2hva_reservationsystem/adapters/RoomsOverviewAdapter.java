@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
+import com.hva.m2mobi.m2hva_reservationsystem.models.Reservation;
 import com.hva.m2mobi.m2hva_reservationsystem.models.Room;
 
 import java.util.List;
@@ -24,7 +25,6 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     private List<Room> mListRooms;
     private OnItemClickListener mListener;
     private Context mContext;
-
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -104,6 +104,14 @@ public class RoomsOverviewAdapter extends RecyclerView.Adapter<RoomsOverviewAdap
     @Override
     public int getItemCount() {
         return mListRooms.size();
+    }
+
+    public void swapList(List<Room> newList) {
+        mListRooms = newList;
+        if (newList != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
     }
 
 }

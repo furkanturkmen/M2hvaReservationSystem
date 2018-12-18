@@ -26,19 +26,29 @@ public class DatabaseConnection {
 
     private static final List<Room> roomList = new ArrayList<>();
     public static final List<Reservation> reservationList = new ArrayList<>();
+    private static RoomListReturner mRoomListReturner;
+    private static ReservationListReturner mReservationListReturner;
 
-    public static List<Room> getRooms() throws InterruptedException {
-        if(roomList.isEmpty()){
-            getDbRooms();
-            Thread.sleep(2000L);
-        }
-        return roomList;
+
+    public interface RoomListReturner{
+        void onReturnList(List<Room> list);
+    }
+    public interface ReservationListReturner{
+        void onReturnList(List<Reservation> list);
     }
 
-    public static List<Reservation> getReservations() throws InterruptedException{
+    public static void getRooms(RoomListReturner listReturner){
+        mRoomListReturner = listReturner;
+        if(roomList.isEmpty()){
+            getDbRooms();
+        } else{
+            mRoomListReturner.onReturnList(roomList);
+        }
+    }
+
+    public static void getReservations(ReservationListReturner listReturner){
+        mReservationListReturner = listReturner;
             getDbReservations();
-            Thread.sleep(1000L);
-        return reservationList;
     }
 
     public static void getDbRooms(){
@@ -51,6 +61,7 @@ public class DatabaseConnection {
                     Room room = nextDS.getValue(Room.class);
                     roomList.add(room);
                 }
+                mRoomListReturner.onReturnList(roomList);
             }
 
             @Override
@@ -73,6 +84,8 @@ public class DatabaseConnection {
                     Reservation reservation = nextDS.getValue(Reservation.class);
                     reservationList.add(reservation);
                 }
+                mReservationListReturner.onReturnList(reservationList);
+
             }
 
             @Override
