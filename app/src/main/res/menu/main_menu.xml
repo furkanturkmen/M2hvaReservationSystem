@@ -6,4 +6,8 @@
         android:icon="@android:drawable/ic_menu_my_calendar"
         app:showAsAction="collapseActionView|ifRoom"
         />
+    <item android:id="@+id/action_logout"
+    android:title="@string/logout_button"
+    app:showAsAction="collapseActionView"
+    />
 </menu>

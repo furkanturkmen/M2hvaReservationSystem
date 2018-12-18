@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hva.m2mobi.m2hva_reservationsystem.R;
@@ -40,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,7 +76,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
     private List<TimeSlot> mTimeSlotList = new ArrayList<>();
     private TimeSlotsAdapter mAdapter;
 
-    private Room testRoom;
     private FirebaseDatabase dbCon = FirebaseDatabase.getInstance();
 
     private DatabaseReference dbRef = dbCon.getReference();
@@ -89,8 +89,11 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
         loadCapacityData();
 
         loadRoomNames();
@@ -107,6 +110,10 @@ public class ReserveRoomActivity extends AppCompatActivity {
         final String endTime = endTimePicker.getText().toString();
         final String accountName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         final String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String accountName = "";
+        if(user != null)
+            accountName = user.getEmail();
         Timber.tag("Room").d(roomName);
 
         DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
@@ -152,9 +159,8 @@ public class ReserveRoomActivity extends AppCompatActivity {
     void roomNameSelected(int position) {
         spinnerRoom.getItemAtPosition(position);
         final String roomName = spinnerRoom.getItemAtPosition(spinnerRoom.getSelectedItemPosition()).toString();
-        Log.d("Room", roomName);
 
-        DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
+      DatabaseConnection.getRooms(new DatabaseConnection.RoomListReturner() {
             @Override
             public void onReturnList(List<Room> newList) {
                 Room room = newList.get(0);
@@ -278,7 +284,9 @@ public class ReserveRoomActivity extends AppCompatActivity {
                 maxHour = myCalender.get(Calendar.HOUR_OF_DAY);
                 maxMinute = myCalender.get(Calendar.MINUTE);
             }
-            TimePickerDialog timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, minHour, minMinute, maxHour, maxMinute);
+
+            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(this, onTimeSetListener, minHour, minMinute, maxHour, maxMinute);
+
             timePickerDialog.show();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -323,7 +331,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
 
         private int task;
 
-        public CalendarAsyncTask(int task) {
+        CalendarAsyncTask(int task) {
             this.task = task;
         }
 
@@ -345,8 +353,7 @@ public class ReserveRoomActivity extends AppCompatActivity {
                         if(now.after(selectedDate))
                             selectedDate = now;
                         List<Reservation> reservationList =  con.getDateEvents(reservations[0].getReservationRoom(), selectedDate);
-                        List<TimeSlot> timeSlots = con.getAvailableTimeSlots(reservationList, 0, selectedDate, new ArrayList<TimeSlot>());
-                        return timeSlots;
+                        return con.getAvailableTimeSlots(reservationList, 0, selectedDate, new ArrayList<TimeSlot>());
                 }
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
@@ -376,7 +383,6 @@ public class ReserveRoomActivity extends AppCompatActivity {
             Date start = simpleDateFormat.parse(startTime);
             Date end = simpleDateFormat.parse(endTime);
             for (TimeSlot timeSlot:mTimeSlotList) {
-                Log.d("timeslot", timeSlot.toString());
                 if ((start.after(timeSlot.getStartTime()) || start.equals(timeSlot.getStartTime())) && (end.before(timeSlot.getEndTime()) || end.equals(timeSlot.getEndTime()))){
                     result = true;
                 }

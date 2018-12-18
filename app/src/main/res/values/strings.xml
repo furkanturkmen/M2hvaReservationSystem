@@ -95,6 +95,7 @@
 <string name="section_format">Hello World from section: %1$d</string>
 <string name="button_get_events">Get Events</string>
 <string name="title_activity_login">Sign in</string>
+<string name="logout_button">Sign out</string>
 <string name="title_activity_state">Error</string>
 <string name="toolbar_title">Rooms</string>
 
