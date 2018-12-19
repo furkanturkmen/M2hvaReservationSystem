@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F9A825</color>
-    <color name="colorPrimaryDark">#F57F17</color>
-    <color name="colorAccent">#f7f8f9</color>
-    <color name="colorLaunchScreen">#226fad</color>
-    <color name="colorAccentBlue">#3ca0f0</color>
-    <color name="colorAccentDarkBlue">#226fad</color>
-    <color name="colorAccentOrange">#ffaa41</color>
+    <color name="colorOrange">#FFAA41</color>
+    <color name="colorOrangeDark">#F57F17</color>
+    <color name="colorBlue">#3CA0F0</color>
+    <color name="colorBlueDark">#0072bd</color>
 
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="m2mobiLightGrey">#3C4146</color>
-
-    <color name="colorBackground">#ffffff</color>
-    <color name="colorItem">#000000</color>
-    <color name="colorFAB">#F9A825</color>
-
-    <color name="navigation_bar_txt_color">#ffffff</color>
-
-    <!--Launch color-->
-    <color name="ic_launcher_background">#FFAA41</color>
+    <color name="colorWhite">#F7F8F9</color>
+    <color name="colorLightGrey">#949595</color>
+    <color name="colorGrey">#3C4146</color>
+    <color name="colorBlack">#231F20</color>
 
 </resources>

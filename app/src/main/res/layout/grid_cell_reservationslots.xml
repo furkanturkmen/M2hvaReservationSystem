@@ -54,7 +54,7 @@
         android:id="@+id/horizontal_divisor_line"
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/m2mobiLightGrey"
+        android:background="@color/colorLightGrey"
         app:layout_constraintTop_toBottomOf="@id/linear_layout" />
 
 </LinearLayout>
