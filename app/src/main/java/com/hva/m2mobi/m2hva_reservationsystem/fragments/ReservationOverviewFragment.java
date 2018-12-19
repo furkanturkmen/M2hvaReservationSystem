@@ -95,8 +95,7 @@ public class ReservationOverviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reservations_overview, container, false);
 
-
-        setHasOptionsMenu(true); // Add this!
+        setHasOptionsMenu(true);
 
         mLoaderLayout = view.findViewById(R.id.loadingPanel);
         mLoaderLayout.setVisibility(View.GONE);
@@ -265,13 +264,6 @@ public class ReservationOverviewFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
-
     private void datePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -292,6 +284,12 @@ public class ReservationOverviewFragment extends Fragment {
         }, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.reservation_toolbar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
