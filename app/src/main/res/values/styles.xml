@@ -57,7 +57,11 @@
 
     Bottom navigation menu
     <style name="BottomNavigation" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorBlueDark</item>
+        <item name="colorButtonNormal">@color/colorOrange</item>
         <item name="android:background">@color/colorBlueDark</item>
+        <item name="android:colorPressedHighlight">@color/colorBlue</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
 
